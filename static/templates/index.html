@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+{% load render_bundle from webpack_loader %}
+{% load staticfiles %}
+
+<html lang="en" style="overflow-y: auto">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<meta name="author" content="" />
+
+   	<title>AutoPartsFB</title>
+
+	<!-- Place favicon.ico -->
+	<link rel="shortcut icon" href="{% static "images/favicon.svg" %}">
+
+	<!-- Stylesheets -->
+{#    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">#}
+
+</head>
+
+<body>
+
+    <div id="app"></div>
+    {% csrf_token %}
+{# If production, ucomment the script: #}
+{#    <script src="{% static 'main-a96041a089063d32afd9.js' %}"></script>#}
+    {% render_bundle 'main' %}
+
+</body>
+</html>

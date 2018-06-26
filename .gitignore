@@ -1,0 +1,27 @@
+### Python ###
+*.py[cod]
+
+### Translations ###
+*.mo
+*.pot
+
+### Django ###
+*.log
+.idea
+**/migrations/
+.sass-cache
+/static/js/
+/static/public/
+firebase_auth/*.json
+
+### Vue ###
+.DS_Store
+node_modules/
+package-lock.json
+webpack-stats.json
+
+# Editor directories and files
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
