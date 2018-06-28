@@ -28,7 +28,7 @@ class PartBrand(Manufacturer):
 
 class PartType(models.Model):
     name = models.CharField(max_length=200)
-    brand = models.ForeignKey(PartBrand, models.CASCADE, related_name='parts')
+    brand = models.ForeignKey(PartBrand, models.CASCADE, related_name='part_types')
     CATEGORY_CHOICES = tuple((code, _(name)) for code, name in list(PART_CATEGORIES))
     category = models.CharField(max_length=1, choices=CATEGORY_CHOICES)
 
@@ -39,22 +39,22 @@ class CarBrand(Manufacturer):
 
 class CarModel(models.Model):
     name = models.CharField(max_length=200)
-    brand = models.ForeignKey(CarBrand, models.SET_NULL, null=True)
+    brand = models.ForeignKey(CarBrand, models.SET_NULL, null=True, related_name='car_models')
     description = models.TextField()
     # model_year = models.TextField()
 
 
 class Car(models.Model):
-    owner = models.ForeignKey(User, models.PROTECT)
-    model = models.ForeignKey(CarModel, models.SET_NULL, null=True)
+    owner = models.ForeignKey(User, models.PROTECT, related_name='cars')
+    model = models.ForeignKey(CarModel, models.SET_NULL, null=True, related_name='cars')
     # engine
     # gear
     # body_style
 
 
 class Part(models.Model):
-    type = models.ForeignKey(PartType, models.SET_NULL, null=True)
-    car = models.ForeignKey(Car, models.SET_NULL, null=True)
+    type = models.ForeignKey(PartType, models.SET_NULL, null=True, related_name='parts')
+    car = models.ForeignKey(Car, models.SET_NULL, null=True, related_name='parts')
 
 
 def fb_images_path(instance, filename):
@@ -66,11 +66,11 @@ class FeedBack(models.Model):
     part = models.ForeignKey(Part, models.CASCADE, related_name='feedbacks')
     description = models.TextField()
     STARS = (
-        ('1', 'bad'),
-        ('2', 'no bad'),
-        ('3', 'normal'),
-        ('4', 'good'),
-        ('5', 'very good')
+        ('1', _('bad')),
+        ('2', _('no bad')),
+        ('3', _('normal')),
+        ('4', _('good')),
+        ('5', _('very good'))
     )
     stars = models.TextField(choices=STARS)
     images = models.ImageField(blank=True, max_length=255, upload_to=fb_images_path)
