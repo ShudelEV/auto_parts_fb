@@ -16,7 +16,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'PartsFB.apps.PartsFBConfig'
+    'PartsFB.apps.PartsFBConfig',
 ]
 
 MIDDLEWARE = [
@@ -97,3 +97,14 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 # Change path for production
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'static/public/')
+
+
+DJANGO_RESTER = {
+    'RESPONSE_STRUCTURE': True,
+    'CORS_ACCESS': True,
+    'SOFT_RESPONSE_VALIDATION': True,
+}
+
+DJANGO_RESTER_JWT = {
+    'SECRET': 'SDgwFbertb245wg',
+}

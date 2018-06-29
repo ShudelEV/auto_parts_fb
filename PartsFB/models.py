@@ -12,7 +12,7 @@ def brand_image_path(instance, filename):
 # Abstract class Manufacturer
 class Manufacturer(models.Model):
     name = models.CharField(max_length=200, unique=True)
-    COUNTRY_CHOICES = tuple((code, _(name)) for code, name in list(COUNTRIES))
+    COUNTRY_CHOICES = tuple((key, _(value)) for key, value in COUNTRIES.items())
     country = models.CharField(max_length=2, choices=COUNTRY_CHOICES)
     image = models.ImageField(blank=True, max_length=255, upload_to=brand_image_path)
     description = models.TextField()
@@ -28,8 +28,7 @@ class PartBrand(Manufacturer):
 
 class PartType(models.Model):
     name = models.CharField(max_length=200)
-    brand = models.ForeignKey(PartBrand, models.CASCADE, related_name='part_types')
-    CATEGORY_CHOICES = tuple((code, _(name)) for code, name in list(PART_CATEGORIES))
+    CATEGORY_CHOICES = tuple((key, _(value)) for key, value in PART_CATEGORIES.items())
     category = models.CharField(max_length=1, choices=CATEGORY_CHOICES)
 
 
@@ -54,6 +53,7 @@ class Car(models.Model):
 
 class Part(models.Model):
     type = models.ForeignKey(PartType, models.SET_NULL, null=True, related_name='parts')
+    brand = models.ForeignKey(PartBrand, models.CASCADE, related_name='part_types')
     car = models.ForeignKey(Car, models.SET_NULL, null=True, related_name='parts')
 
 
