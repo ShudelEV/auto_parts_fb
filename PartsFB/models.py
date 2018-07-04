@@ -15,11 +15,14 @@ class Manufacturer(models.Model):
     COUNTRY_CHOICES = tuple((key, _(value)) for key, value in COUNTRIES.items())
     country = models.CharField(max_length=2, choices=COUNTRY_CHOICES)
     image = models.ImageField(blank=True, max_length=255, upload_to=brand_image_path)
-    description = models.TextField()
+    description = models.TextField(blank=True)
 
     class Meta:
         abstract = True
         ordering = ['name']
+
+    def __str__(self):
+        return '{0} ({1})'.format(self.name, self.country)
 
 
 class PartBrand(Manufacturer):
@@ -38,23 +41,23 @@ class CarBrand(Manufacturer):
 
 class CarModel(models.Model):
     name = models.CharField(max_length=200)
-    brand = models.ForeignKey(CarBrand, models.SET_NULL, null=True, related_name='car_models')
+    brand = models.ForeignKey(CarBrand, models.PROTECT, related_name='car_models')
     description = models.TextField()
     # model_year = models.TextField()
 
 
 class Car(models.Model):
     owner = models.ForeignKey(User, models.PROTECT, related_name='cars')
-    model = models.ForeignKey(CarModel, models.SET_NULL, null=True, related_name='cars')
+    model = models.ForeignKey(CarModel, models.PROTECT, related_name='cars')
     # engine
     # gear
     # body_style
 
 
 class Part(models.Model):
-    type = models.ForeignKey(PartType, models.SET_NULL, null=True, related_name='parts')
-    brand = models.ForeignKey(PartBrand, models.CASCADE, related_name='part_types')
-    car = models.ForeignKey(Car, models.SET_NULL, null=True, related_name='parts')
+    type = models.ForeignKey(PartType, models.SET_NULL, null=True, blank=True, related_name='parts')
+    brand = models.ForeignKey(PartBrand, models.PROTECT, related_name='parts')
+    car = models.ForeignKey(Car, models.SET_NULL, null=True, blank=True, related_name='parts')
 
 
 def fb_images_path(instance, filename):
@@ -63,7 +66,7 @@ def fb_images_path(instance, filename):
 
 
 class FeedBack(models.Model):
-    part = models.ForeignKey(Part, models.CASCADE, related_name='feedbacks')
+    part = models.ForeignKey(Part, models.PROTECT, related_name='feedbacks')
     description = models.TextField()
     STARS = (
         ('1', _('bad')),
@@ -75,4 +78,4 @@ class FeedBack(models.Model):
     stars = models.TextField(choices=STARS)
     images = models.ImageField(blank=True, max_length=255, upload_to=fb_images_path)
     created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True, null=True)
+    updated = models.DateTimeField(auto_now=True, blank=True)

@@ -8,7 +8,7 @@ urls_accounts = [
 ]
 
 api_urlpatterns = [
-    path('test/', views.TestView.as_view()),
+    path('part-brands/', views.PartBrandView.as_view()),
     path('account/', include(urls_accounts))
 ]
 
