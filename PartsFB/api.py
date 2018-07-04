@@ -24,7 +24,7 @@ class PartBrandListResource(DjangoResource):
     })
 
     def list(self):
-        return PartBrand.objects.all()
+        return PartBrand.objects.all().prefetch_related('parts')
 
 
 class PartBrandDetailResource(DjangoResource):
