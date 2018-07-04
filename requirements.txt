@@ -1,4 +1,4 @@
 django>=2.0.6
 psycopg2>=2.7.5
 pillow>=5.1.0
-django-rester>=0.0.4.19
+restless>=2.1.1

@@ -1,19 +1,15 @@
 from django.urls import path, include
 from . import views
-from django_rester.views import Login, Logout
+from .api import PartBrandListResource, PartBrandDetailResource
 
-urls_accounts = [
-    path('login/', Login.as_view(), name='login'),
-    path('logout/', Logout.as_view(), name='logout'),
-]
 
-api_urlpatterns = [
-    path('part-brands/', views.PartBrandView.as_view()),
-    path('account/', include(urls_accounts))
+api_urls = [
+    path('part-brands/', PartBrandListResource.as_list()),
+    path('part-brands/<int:pk>/', PartBrandDetailResource.as_detail()),
 ]
 
 urlpatterns = [
     path('', views.page),
     path('index', views.page),
-    path('api/', include(api_urlpatterns))
+    path('api/', include(api_urls))
 ]
