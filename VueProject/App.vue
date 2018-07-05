@@ -12,11 +12,15 @@
                         <vk-navbar-item>
                             <form>
                                 <div class="uk-inline">
+                                    <span class="uk-form-icon" uk-icon="icon: user"></span>
                                     <input class="uk-input uk-form-width-small uk-form-small uk-margin-small-right"
-                                            type="text" placeholder="Login">
+                                            type="text">
                                 </div>
-                                <input class="uk-input uk-form-width-small uk-form-small uk-margin-small-right"
-                                       type="text" placeholder="Password">
+                                <div class="uk-inline">
+                                    <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                                    <input class="uk-input uk-form-width-small uk-form-small uk-margin-small-right"
+                                        type="password">
+                                </div>
                                 <vk-button class="uk-button-small">Login</vk-button>
                             </form>
                         </vk-navbar-item>
@@ -32,7 +36,7 @@
                     <vk-card>Menu</vk-card>
                 </div>
                 <div class="uk-width-expand@m">
-                    <div uk-grid="masonry: true" class="uk-grid-small uk-child-width-1-2@s uk-child-width-1-3@m">
+                    <div uk-grid="masonry: true" class="uk-grid-small uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m">
                         <div v-for="(value, key) in sortedPartBrands"
                              class="uk-margin-bottom"
                         >

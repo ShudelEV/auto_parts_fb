@@ -5,7 +5,7 @@ from .models import PartBrand
 
 # ------------------------------- Debug -----------------------------------------
 import logging
-from silk.profiling.profiler import silk_profile
+# from silk.profiling.profiler import silk_profile
 
 logging.basicConfig(
     filename="test.log",
