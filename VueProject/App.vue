@@ -32,56 +32,31 @@
                     <vk-card>Menu</vk-card>
                 </div>
                 <div class="uk-width-expand@m">
-                    <vk-grid gutter="small" class="uk-child-width-expand@s">
-                        <div v-for="i in [1,2,3]">
-                            <div v-for="item in alphabet.splice(0, 9)"
-                                 class="uk-margin-bottom"
-                            >
-                                <vk-card :key="item"
-                                         hover
-                                         padding="small"
-                                >
-                                    <vk-card-title>{{ item }}</vk-card-title>
-                                    <ul class="uk-list uk-list-bullet">
-                                        <li v-for="value in prepListPartBrands(item)">
-                                            {{ value }}
+                    <div uk-grid="masonry: true" class="uk-grid-small uk-child-width-1-2@s uk-child-width-1-3@m">
+                        <div v-for="(value, key) in sortedPartBrands"
+                             class="uk-margin-bottom"
+                        >
+                            <vk-card :key="key" hover padding="small">
+                                <vk-card-title>{{ key }}</vk-card-title>
+                                <ul class="uk-list uk-list-bullet">
+                                    <template v-if="showAll === key">
+                                        <li v-for="partBrand in value">
+                                            {{ partBrand.name }}
                                         </li>
-                                    </ul>
-                                    <vk-button type="text">...</vk-button>
-                                </vk-card>
-                            </div>
+                                    </template>
+                                    <template v-else>
+                                        <li v-for="i in getArray(value.length)">
+                                            {{ value[i].name }}
+                                        </li>
+                                    </template>
+                                </ul>
+                                <vk-button v-show="itemsShow < value.length && showAll != key"
+                                           @click="showAll = key"
+                                           type="text"
+                                >...</vk-button>
+                            </vk-card>
                         </div>
-                        <!--<div>-->
-                            <!--<div v-for="item in String.fromCharCode(73,74,75,76,77,78,79)" class="uk-margin-bottom">-->
-                                <!--<vk-card :key="item"-->
-                                         <!--hover-->
-                                         <!--padding="small"-->
-                                <!--&gt;-->
-                                    <!--<vk-card-title>{{ item }}</vk-card-title>-->
-                                <!--</vk-card>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div>-->
-                            <!--<div v-for="item in String.fromCharCode(80,81,82,83,84,85)" class="uk-margin-bottom">-->
-                                <!--<vk-card :key="item"-->
-                                         <!--hover-->
-                                         <!--padding="small"-->
-                                <!--&gt;-->
-                                    <!--<vk-card-title>{{ item }}</vk-card-title>-->
-                                <!--</vk-card>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div>-->
-                            <!--<div v-for="item in String.fromCharCode(86,87,88,89,90)" class="uk-margin-bottom">-->
-                                <!--<vk-card :key="item"-->
-                                         <!--hover-->
-                                         <!--padding="small"-->
-                                <!--&gt;-->
-                                    <!--<vk-card-title>{{ item }}</vk-card-title>-->
-                                <!--</vk-card>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    </vk-grid>
+                    </div>
                 </div>
             </vk-grid>
         </div>
@@ -92,7 +67,7 @@
 
 <script>
 import axios from 'axios'
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
     name: 'App',
@@ -101,8 +76,10 @@ export default {
 
     data () {
         return {
-            alphabet: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q",
-                "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+            // a card key when to show all part brands
+            showAll: null,
+            // how many part brands to show in a card?
+            itemsShow: 5
         }
     },
 
@@ -113,19 +90,13 @@ export default {
     },
 
     computed: {
-        ...mapState({
-            partBrands: state => state.all.partBrands
-        }),
+        ...mapGetters(['sortedPartBrands']),
     },
 
     methods: {
-        prepListPartBrands(item) {
-            return this.partBrands
-                .filter( i => i.name[0] === item)
-//                .sort((a, b) => {
-//                    if (a.fb_qty > b.fb_qty) { return 1; }
-//                    else { return -1; }
-//                })
+        // when list of part brands < itemsShow
+        getArray (len) {
+            return len > this.itemsShow ? [...Array(this.itemsShow).keys()] : [...Array(len).keys()]
         }
     }
 }
