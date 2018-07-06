@@ -45,12 +45,16 @@
                                 <ul class="uk-list uk-list-bullet">
                                     <template v-if="showAll === key">
                                         <li v-for="partBrand in value">
-                                            {{ partBrand.name }}
+                                            <vk-button type="text">
+                                                {{ partBrand.name + ' (' + partBrand.fb_quantity + ')' }}
+                                            </vk-button>
                                         </li>
                                     </template>
                                     <template v-else>
                                         <li v-for="i in getArray(value.length)">
-                                            {{ value[i].name }}
+                                            <vk-button type="text">
+                                                {{ value[i].name + ' (' + value[i].fb_quantity + ')' }}
+                                            </vk-button>
                                         </li>
                                     </template>
                                 </ul>

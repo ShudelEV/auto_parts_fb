@@ -13,7 +13,7 @@ const getters = {
             let obj_a = state.partBrands
                 .filter(i => i.name.startsWith(a) || i.name.startsWith(a.toLowerCase()));
             if (obj_a.length) {
-                res[a] = obj_a.sort((a, b) => a.fb_qty > b.fb_qty ? 1 : -1);
+                res[a] = obj_a.sort((a, b) => a.fb_quantity > b.fb_quantity ? 1 : -1);
             }
         }
         return res
