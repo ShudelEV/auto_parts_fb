@@ -15,6 +15,8 @@ if settings.DEBUG:
 
 urlpatterns += [
     path('admin/', admin.site.urls),
+    re_path(r'^auth/', include('djoser.urls')),
+    re_path(r'^auth/', include('djoser.urls.authtoken')),
 ]
 
 urlpatterns += [path('', include('PartsFB.urls'))]

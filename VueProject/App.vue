@@ -1,5 +1,5 @@
 <template>
-<div >
+<div>
     <div class="uk-position-relative">
         <img src="/static/images/header.jpeg" alt="">
         <div class="uk-position-top">
@@ -10,18 +10,20 @@
                     </vk-navbar-nav>
                     <vk-navbar-nav slot="right">
                         <vk-navbar-item>
-                            <form>
+                            <form ref="form">
                                 <div class="uk-inline">
                                     <span class="uk-form-icon" uk-icon="icon: user"></span>
                                     <input class="uk-input uk-form-width-small uk-form-small uk-margin-small-right"
-                                            type="text">
+                                           name="login"
+                                           type="text">
                                 </div>
                                 <div class="uk-inline">
                                     <span class="uk-form-icon" uk-icon="icon: lock"></span>
                                     <input class="uk-input uk-form-width-small uk-form-small uk-margin-small-right"
-                                        type="password">
+                                           name="password"
+                                           type="password">
                                 </div>
-                                <vk-button class="uk-button-small">Login</vk-button>
+                                <vk-button class="uk-button-small" @click="register()">Reg</vk-button>
                             </form>
                         </vk-navbar-item>
                     </vk-navbar-nav>
@@ -36,7 +38,9 @@
                     <vk-card>Menu</vk-card>
                 </div>
                 <div class="uk-width-expand@m">
-                    <div uk-grid="masonry: true" class="uk-grid-small uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m">
+                    <div uk-grid="masonry: true"
+                         class="uk-grid-small uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m"
+                    >
                         <div v-for="(value, key) in sortedPartBrands"
                              class="uk-margin-bottom"
                         >
@@ -105,6 +109,23 @@ export default {
         // when list of part brands < itemsShow
         getArray (len) {
             return len > this.itemsShow ? [...Array(this.itemsShow).keys()] : [...Array(len).keys()]
+        },
+        register () {
+            const form = this.$refs.form.elements;
+            axios.post(
+                '/auth/users/create/',
+                { 'username': form.login.value, 'password': form.password.value },
+            ).then(
+                response => console.log(response.data)
+            ).catch(
+                error => {
+                    if (error.response) {
+                        console.log(error.response.data)
+                    } else {
+                        console.log('Error ', error.message);
+                    }
+                }
+            )
         }
     }
 }
