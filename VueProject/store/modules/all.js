@@ -24,7 +24,7 @@ const actions = {
 };
 
 const mutations = {
-    SET_PART_BRANDS (state, { objects }) {
+    SET_PART_BRANDS (state, objects) {
         state.partBrands = objects
     },
     ADD_PART_BRANDS (state, object) {  }
