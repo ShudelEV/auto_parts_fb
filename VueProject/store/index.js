@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 // import createLogger from '../../../src/plugins/logger'
 
 import all from './modules/all'
+import account from './modules/account'
 
 Vue.use(Vuex);
 
@@ -10,7 +11,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules: {
-        all,
+        all, account
     },
     // strict: debug,
     // plugins: debug ? [createLogger()] : []

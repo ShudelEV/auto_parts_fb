@@ -1,16 +1,17 @@
 <template>
-<div>
+<div class="uk-container">
     <div class="uk-position-relative">
-        <img src="/static/images/header.jpeg" alt="">
+        <img src="/static/images/header.jpeg" alt="" id="offset">
         <div class="uk-position-top">
-            <vk-sticky>
+            <vk-sticky bottom="#offset">
                 <vk-navbar transparent class="uk-navbar-sticky">
                     <vk-navbar-nav>
-                        <vk-navbar-logo>AutoParts</vk-navbar-logo>
+                        <vk-navbar-logo>PartsOK</vk-navbar-logo>
                     </vk-navbar-nav>
                     <vk-navbar-nav slot="right">
-                        <vk-navbar-item>
-                            <form ref="form">
+                        <!--Register/Login bar-->
+                        <vk-navbar-item v-if="!account.loggedIn">
+                            <form ref="form" >
                                 <div class="uk-inline">
                                     <span class="uk-form-icon" uk-icon="icon: user"></span>
                                     <input class="uk-input uk-form-width-small uk-form-small uk-margin-small-right"
@@ -23,8 +24,17 @@
                                            name="password"
                                            type="password">
                                 </div>
-                                <vk-button class="uk-button-small" @click="register()">Reg</vk-button>
+                                <!--<vk-button class="uk-button-small" @click="register()">Reg</vk-button>-->
+                                <vk-icon-link @click="login()" icon="sign-in">Login</vk-icon-link>
                             </form>
+                        </vk-navbar-item>
+                        <!--Account bar-->
+                        <vk-navbar-item v-else>
+                            <ul class="uk-iconnav">
+                                <li><vk-icon icon="user"></vk-icon></li>
+                                <li><vk-icon-link href="#" icon="file-edit"></vk-icon-link></li>
+                                <li><vk-icon-link @click="logout()" icon="sign-out"></vk-icon-link></li>
+                            </ul>
                         </vk-navbar-item>
                     </vk-navbar-nav>
                 </vk-navbar>
@@ -78,8 +88,8 @@
 </template>
 
 <script>
-import axios from 'axios'
-import { mapGetters } from 'vuex'
+// to use $http (import only in one place):
+import { mapGetters, mapState } from 'vuex'
 
 export default {
     name: 'App',
@@ -96,13 +106,16 @@ export default {
     },
 
     created () {
-        axios.get('/api/part-brands/').then(
+        this.$http.get('/api/part-brands/').then(
             response => this.$store.commit('SET_PART_BRANDS', response.data)
         )
     },
 
     computed: {
         ...mapGetters(['sortedPartBrands']),
+        ...mapState({
+            account: state => state.account
+        })
     },
 
     methods: {
@@ -112,20 +125,21 @@ export default {
         },
         register () {
             const form = this.$refs.form.elements;
-            axios.post(
-                '/auth/users/create/',
-                { 'username': form.login.value, 'password': form.password.value },
-            ).then(
-                response => console.log(response.data)
-            ).catch(
-                error => {
-                    if (error.response) {
-                        console.log(error.response.data)
-                    } else {
-                        console.log('Error ', error.message);
-                    }
-                }
-            )
+            this.$store.dispatch('registerWithEmailAndPassword', {
+                'username': form.login.value,
+                'password': form.password.value
+            })
+        },
+        // get token
+        login () {
+            const form = this.$refs.form.elements;
+            this.$store.dispatch('getToken', {
+                'username': form.login.value,
+                'password': form.password.value
+            })
+        },
+        logout () {
+            this.$store.dispatch('destroyToken')
         }
     }
 }
