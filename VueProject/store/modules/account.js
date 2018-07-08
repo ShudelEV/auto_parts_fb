@@ -2,82 +2,77 @@ import axios from 'axios'
 
 const state = {
     id: null,
-    name: '',
-    email: '',
-    loggedIn: false,
-    isAnonymous : true,
-    error: {},
-    token: null
+    name: null,
+    email: null,
+    isAuthenticated: false,
+    isAnonymous: true,
+    error: [],
 };
 
 const getters = {
 };
 
 const actions = {
+    // sig up with email (login) and password
     registerWithEmailAndPassword ({ dispatch, commit }, form) {
         axios.post(
             '/auth/users/create/',
             { 'username': form.username, 'password': form.password }
         ).then(
             response => {
-                commit('SET_USER', response.data);
+                // commit('SET_USER', response.data);
                 // log in
                 dispatch('getToken', form)
             }
         ).catch(
-            error => {
-                if (error.response) {
-                    console.log(error.response.data);
-                    commit('SET_ERROR', error.response.data)
-                } else {
-                    console.log('Error ', error.message)
-                }
-            }
+            error => commit('HANDLE_ERROR', error)
         )
     },
     // log in
-    getToken ({ commit, state }, form) {
+    getToken ({ commit, dispatch }, form) {
         axios.post(
                 '/auth/token/create/',
                 { 'username': form.username, 'password': form.password }
         ).then(
             response => {
-                // console.log(response.data.auth_token);
-                state.token = response.data.auth_token;
-                state.loggedIn = true;
-                state.isAnonymous = false
+                commit('SET_SESSION', response);
+                dispatch('getUser');
             }
         ).catch(
-            error => {
-                if (error.response) {
-                    console.log(error.response.data);
-                    commit('SET_ERROR', error.response.data)
-                } else {
-                    console.log('Error ', error.message)
-                }
+            error => commit('HANDLE_ERROR', error)
+        )
+    },
+    // get user information
+    getUser ({ commit }) {
+        axios.get(
+            '/auth/me/',
+            {
+                headers: { Authorization: 'Token ' + localStorage.getItem('auth_token') }
             }
+        ).then(
+            response => commit('SET_USER', response.data)
+        ).catch(
+            error => commit('HANDLE_ERROR', error)
         )
     },
     // log out
-    destroyToken ({ state }) {
+    destroyToken ({ commit, state }) {
         axios.post(
             '/auth/token/destroy/',
             { },
             {
-                headers: { Authorization: 'Token ' + state.token }
+                headers: { Authorization: 'Token ' + localStorage.getItem('auth_token') }
             }
         ).then(
-            response => {
-                state.token = null;
-                state.loggedIn = false;
-                state.isAnonymous = true
+            () => {
+                localStorage.removeItem('expires_at');
+                localStorage.removeItem('auth_token');
+                commit('REMOVE_USER');
+                state.isAuthenticated = false
             }
         ).catch(
-            error => {
-                console.log('destroyToken', error);
-            }
+            error => commit('HANDLE_ERROR', error)
         )
-
     }
 };
 
@@ -87,9 +82,34 @@ const mutations = {
         state.name = user.username;
         state.email = user.email;
     },
+    REMOVE_USER (state) {
+        state.id = null;
+        state.name = null;
+        state.email = null;
+        state.isAnonymous = true
+    },
+    HANDLE_ERROR (state, error) {
+        if (error.response) {
+            for (let i in error.response.data) {
+                for (let m of error[i]) {
+                    state.error.push(m)
+                }
+            }
+        }
+    },
     SET_ERROR (state, error) {
-        state.error = error;
-        state.loggedIn = false
+        state.error = error
+    },
+    SET_SESSION (state, response) {
+        // console.log(response.headers.date)
+        let date = new Date(response.headers.date);
+        // add 30 days
+        date.setDate(date.getDate() + 30);
+        console.log(date)
+        localStorage.setItem('expires_at', JSON.stringify(date));
+        localStorage.setItem('auth_token', response.data.auth_token);
+        state.isAnonymous = false;
+        state.isAuthenticated = true;
     }
 };
 

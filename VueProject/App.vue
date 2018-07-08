@@ -1,8 +1,8 @@
 <template>
-<div class="uk-container">
+<div>
     <div class="uk-position-relative">
         <img src="/static/images/header.jpeg" alt="" id="offset">
-        <div class="uk-position-top">
+        <div class="uk-container uk-position-top">
             <vk-sticky bottom="#offset">
                 <vk-navbar transparent class="uk-navbar-sticky">
                     <vk-navbar-nav>
@@ -10,7 +10,7 @@
                     </vk-navbar-nav>
                     <vk-navbar-nav slot="right">
                         <!--Register/Login bar-->
-                        <vk-navbar-item v-if="!account.loggedIn">
+                        <vk-navbar-item v-if="!account.isAuthenticated">
                             <form ref="form" >
                                 <div class="uk-inline">
                                     <span class="uk-form-icon" uk-icon="icon: user"></span>
@@ -24,18 +24,20 @@
                                            name="password"
                                            type="password">
                                 </div>
-                                <!--<vk-button class="uk-button-small" @click="register()">Reg</vk-button>-->
+                                <vk-button class="uk-button-small" @click="register()">Reg</vk-button>
                                 <vk-icon-link @click="login()" icon="sign-in">Login</vk-icon-link>
                             </form>
                         </vk-navbar-item>
                         <!--Account bar-->
                         <vk-navbar-item v-else>
                             <ul class="uk-iconnav">
-                                <li><vk-icon icon="user"></vk-icon></li>
-                                <li><vk-icon-link href="#" icon="file-edit"></vk-icon-link></li>
-                                <li><vk-icon-link @click="logout()" icon="sign-out"></vk-icon-link></li>
+                                <li><vk-icon icon="user" :title="account.name"></vk-icon></li>
+                                <li><vk-icon-link href="#" icon="file-edit" title="Edit account"></vk-icon-link></li>
+                                <li><vk-icon-link @click="logout()" icon="sign-out" title="Sing out"></vk-icon-link></li>
                             </ul>
                         </vk-navbar-item>
+                        <!--Error notification-->
+                        <vk-notification :messages.sync="account.error" status="danger"></vk-notification>
                     </vk-navbar-nav>
                 </vk-navbar>
             </vk-sticky>

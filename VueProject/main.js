@@ -7,22 +7,25 @@ import Vuikit from 'vuikit'
 import VuikitIcons from '@vuikit/icons'
 import '@vuikit/theme'
 
+import Cookies from 'js-cookie'
+
 import App from './App.vue'
 
-// default axios configurations
-const conf = axios.create({
+// default axios default configuration
+const axios_conf = {
     headers: {
         'Content-Type': 'application/json',
-        // 'X-CSRFToken': cookies.get('csrftoken')
+        'X-CSRFToken': Cookies.get('csrftoken')
     }
-});
+};
 
 // wrapper for integrating axios to Vuejs
 // usage: this.axios.get() or this.$http.get()
-export default Vue.use(VueAxios, conf);
+Vue.use(VueAxios, axios.create(axios_conf));
 
 // tell Vue whether or not to show tips and warnings in the developer console of browser
 Vue.config.productionTip = true;
+
 //UIKit
 Vue.use(Vuikit);
 Vue.use(VuikitIcons);
