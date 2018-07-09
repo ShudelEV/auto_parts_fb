@@ -1,11 +1,10 @@
 <template>
-<vk-modal show center overflow-auto size="medium">
+<vk-modal :show="show" center size="medium">
     <!--Error notification-->
     <vk-notification :messages.sync="account.error" status="danger"></vk-notification>
-    <vk-modal-close @click="goBack()"></vk-modal-close>
     <vk-tabs align="justify">
-        <vk-tabs-item title="Sig In" class="uk-margin">
-            <div class="uk-margin-auto">
+        <vk-tabs-item title="Sig In" v-vk-margin>
+            <div>
                 <vk-icon-button href="#" class="uk-margin-small-right" icon="twitter"></vk-icon-button>
                 <vk-icon-button href="#" class="uk-margin-small-right" icon="facebook"></vk-icon-button>
                 <vk-icon-button href="#" icon="google-plus"></vk-icon-button>
@@ -25,7 +24,8 @@
                            type="password">
                 </div>
             </form>
-            <vk-icon-link @click="login()" icon="sign-in" class="uk-margin-auto-left"></vk-icon-link>
+            <vk-button @click="$emit('close')">Cancel</vk-button>
+            <vk-button @click="login()">Login</vk-button>
         </vk-tabs-item>
         <vk-tabs-item title="Sign Up">
 
@@ -47,6 +47,8 @@ export default {
         }
     },
 
+    props: ['show'],
+
     computed: {
         ...mapState({
             account: state => state.account
@@ -60,20 +62,23 @@ export default {
         register () {
             const form = this.$refs.form.elements;
             this.$store.dispatch('registerWithEmailAndPassword', {
-                'username': form.login.value,
-                'password': form.password.value
+                form: {
+                    'username': form.login.value,
+                    'password': form.password.value
+                },
+                show: () => this.$emit('close')
             })
         },
         // get token
         login () {
             const form = this.$refs.form.elements;
             this.$store.dispatch('getToken', {
-                'username': form.login.value,
-                'password': form.password.value
+                form: {
+                    'username': form.login.value,
+                    'password': form.password.value
+                },
+                show: () => this.$emit('close')
             })
-        },
-        logout () {
-            this.$store.dispatch('destroyToken')
         }
     }
 }

@@ -3,7 +3,7 @@
     <div class="uk-position-relative">
         <img src="/static/images/header.jpeg" alt="" id="offset">
         <div class="uk-container uk-position-top">
-            <router-view></router-view>
+            <login-window :show="showLoginWindow" @close="showLoginWindow=false"></login-window>
             <vk-sticky bottom="#offset">
                 <vk-navbar transparent class="uk-navbar-sticky">
                     <vk-navbar-nav>
@@ -12,7 +12,7 @@
                     <vk-navbar-nav slot="right">
                         <!--Register/Login bar-->
                         <vk-navbar-item v-if="!account.isAuthenticated">
-                            <vk-button class="uk-button-small" @click="$router.push({ path: 'login' })">Login</vk-button>
+                            <vk-button class="uk-button-small" @click="showLoginWindow=true">Login</vk-button>
                         </vk-navbar-item>
                         <!--Account bar-->
                         <vk-navbar-item v-else>
@@ -76,18 +76,20 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex'
+import LoginWindow from './components/Login.vue'
 
 export default {
     name: 'App',
 
-    components: {  },
+    components: { LoginWindow },
 
     data () {
         return {
             // a card key when to show all part brands
             showAll: null,
             // how many part brands to show in a card?
-            itemsShow: 5
+            itemsShow: 5,
+            showLoginWindow: false
         }
     },
 
@@ -109,6 +111,9 @@ export default {
         // when list of part brands < itemsShow
         getArray (len) {
             return len > this.itemsShow ? [...Array(this.itemsShow).keys()] : [...Array(len).keys()]
+        },
+        logout () {
+            this.$store.dispatch('destroyToken')
         }
     }
 }

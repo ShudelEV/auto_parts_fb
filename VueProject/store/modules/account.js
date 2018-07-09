@@ -1,4 +1,4 @@
-import axios from 'axios'
+import Vue from 'vue'
 
 const state = {
     id: null,
@@ -14,29 +14,28 @@ const getters = {
 
 const actions = {
     // sig up with email (login) and password
-    registerWithEmailAndPassword ({ dispatch, commit }, form) {
-        axios.post(
+    registerWithEmailAndPassword ({ dispatch, commit }, { form, show }) {
+        Vue.axios.post(
             '/auth/users/create/',
             { 'username': form.username, 'password': form.password }
         ).then(
-            response => {
-                // commit('SET_USER', response.data);
-                // log in
-                dispatch('getToken', form)
-            }
+            response => { dispatch('getToken', { form: form, show: show }) }
         ).catch(
             error => commit('HANDLE_ERROR', error)
         )
     },
     // log in
-    getToken ({ commit, dispatch }, form) {
-        axios.post(
+    getToken ({ commit, dispatch }, { form, show }) {
+        Vue.axios.post(
                 '/auth/token/create/',
                 { 'username': form.username, 'password': form.password }
         ).then(
             response => {
                 commit('SET_SESSION', response);
+                // get a user information
                 dispatch('getUser');
+                // close the login window
+                show();
             }
         ).catch(
             error => commit('HANDLE_ERROR', error)
@@ -44,32 +43,16 @@ const actions = {
     },
     // get user information
     getUser ({ commit }) {
-        axios.get(
-            '/auth/me/',
-            {
-                headers: { Authorization: 'Token ' + localStorage.getItem('auth_token') }
-            }
-        ).then(
+        Vue.axios.get('/auth/me/').then(
             response => commit('SET_USER', response.data)
         ).catch(
             error => commit('HANDLE_ERROR', error)
         )
     },
     // log out
-    destroyToken ({ commit, state }) {
-        axios.post(
-            '/auth/token/destroy/',
-            { },
-            {
-                headers: { Authorization: 'Token ' + localStorage.getItem('auth_token') }
-            }
-        ).then(
-            () => {
-                localStorage.removeItem('expires_at');
-                localStorage.removeItem('auth_token');
-                commit('REMOVE_USER');
-                state.isAuthenticated = false
-            }
+    destroyToken ({ commit }) {
+        Vue.axios.post('/auth/token/destroy/').then(
+            () => { commit('REMOVE_USER') }
         ).catch(
             error => commit('HANDLE_ERROR', error)
         )
@@ -86,7 +69,11 @@ const mutations = {
         state.id = null;
         state.name = null;
         state.email = null;
-        state.isAnonymous = true
+        state.isAnonymous = true;
+        state.isAuthenticated = false;
+        localStorage.removeItem('expires_at');
+        localStorage.removeItem('auth_token');
+        delete Vue.axios.defaults.headers.common['Authorization'];
     },
     HANDLE_ERROR (state, error) {
         if (error.response) {
@@ -105,9 +92,10 @@ const mutations = {
         let date = new Date(response.headers.date);
         // add 30 days
         date.setDate(date.getDate() + 30);
-        console.log(date)
         localStorage.setItem('expires_at', JSON.stringify(date));
         localStorage.setItem('auth_token', response.data.auth_token);
+        // set axios default config
+        Vue.axios.defaults.headers.common['Authorization'] = 'Token ' + response.data.auth_token;
         state.isAnonymous = false;
         state.isAuthenticated = true;
     }
