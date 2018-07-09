@@ -80,7 +80,6 @@ const mutations = {
         delete Vue.axios.defaults.headers.common['Authorization'];
     },
     SET_SESSION (state, response) {
-        console.log(response.headers.date)
         let date = new Date(response.headers.date);
         // add 30 days
         date.setDate(date.getDate() + 30);
@@ -93,7 +92,7 @@ const mutations = {
             let err_data = error.response.data;
             for (let i in err_data) {
                 for (let m of err_data[i]) {
-                    i = 'non_field_errors' ? state.error.push(m) : state.error.push(i + ': ' + m)
+                    i == 'non_field_errors' ? state.error.push(m) : state.error.push(i + ': ' + m)
                 }
             }
         }
