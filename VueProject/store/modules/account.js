@@ -32,6 +32,8 @@ const actions = {
         ).then(
             response => {
                 commit('SET_SESSION', response);
+                // set axios default config
+                Vue.axios.defaults.headers.common['Authorization'] = 'Token ' + response.data.auth_token;
                 // get a user information
                 dispatch('getUser');
                 // close the login window
@@ -64,6 +66,8 @@ const mutations = {
         state.id = user.id;
         state.name = user.username;
         state.email = user.email;
+        state.isAnonymous = false;
+        state.isAuthenticated = true;
     },
     REMOVE_USER (state) {
         state.id = null;
@@ -75,29 +79,27 @@ const mutations = {
         localStorage.removeItem('auth_token');
         delete Vue.axios.defaults.headers.common['Authorization'];
     },
+    SET_SESSION (state, response) {
+        console.log(response.headers.date)
+        let date = new Date(response.headers.date);
+        // add 30 days
+        date.setDate(date.getDate() + 30);
+        localStorage.setItem('expires_at', JSON.stringify(date));
+        localStorage.setItem('auth_token', response.data.auth_token)
+    },
     HANDLE_ERROR (state, error) {
         if (error.response) {
-            for (let i in error.response.data) {
-                for (let m of error[i]) {
-                    state.error.push(m)
+            // console.log(error.response.data)
+            let err_data = error.response.data;
+            for (let i in err_data) {
+                for (let m of err_data[i]) {
+                    i = 'non_field_errors' ? state.error.push(m) : state.error.push(i + ': ' + m)
                 }
             }
         }
     },
     SET_ERROR (state, error) {
         state.error = error
-    },
-    SET_SESSION (state, response) {
-        // console.log(response.headers.date)
-        let date = new Date(response.headers.date);
-        // add 30 days
-        date.setDate(date.getDate() + 30);
-        localStorage.setItem('expires_at', JSON.stringify(date));
-        localStorage.setItem('auth_token', response.data.auth_token);
-        // set axios default config
-        Vue.axios.defaults.headers.common['Authorization'] = 'Token ' + response.data.auth_token;
-        state.isAnonymous = false;
-        state.isAuthenticated = true;
     }
 };
 

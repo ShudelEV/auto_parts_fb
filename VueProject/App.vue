@@ -99,6 +99,17 @@ export default {
         )
     },
 
+    mounted () {
+        let expires_at = JSON.parse(localStorage.getItem('expires_at'));
+        if (new Date(expires_at) < new Date(Date.now())) {
+            this.$emit('destroyToken')
+        } else {
+            // set axios default config
+            this.$http.defaults.headers.common['Authorization'] = 'Token ' + localStorage.getItem('auth_token');
+            this.$store.dispatch('getUser')
+        }
+    },
+
     computed: {
         ...mapGetters(['sortedPartBrands']),
         ...mapState({

@@ -4,28 +4,26 @@
     <vk-notification :messages.sync="account.error" status="danger"></vk-notification>
     <vk-tabs align="justify">
         <vk-tabs-item title="Sig In" v-vk-margin>
-            <div>
+            <div class="uk-margin-left">
                 <vk-icon-button href="#" class="uk-margin-small-right" icon="twitter"></vk-icon-button>
                 <vk-icon-button href="#" class="uk-margin-small-right" icon="facebook"></vk-icon-button>
                 <vk-icon-button href="#" icon="google-plus"></vk-icon-button>
             </div>
             <div class="uk-text-center">OR</div>
-            <form ref="form" >
+            <form ref="form" class="uk-margin-left">
                 <div class="uk-inline uk-margin-small-bottom">
                     <span class="uk-form-icon" uk-icon="icon: user"></span>
-                    <input class="uk-input uk-form-small"
-                           name="login"
-                           type="text">
+                    <input class="uk-input uk-form-small" name="login" type="text">
                 </div>
                 <div class="uk-inline uk-margin-small-bottom">
                     <span class="uk-form-icon" uk-icon="icon: lock"></span>
-                    <input class="uk-input uk-form-small"
-                           name="password"
-                           type="password">
+                    <input class="uk-input uk-form-small" name="password" type="password">
                 </div>
             </form>
-            <vk-button @click="$emit('close')">Cancel</vk-button>
-            <vk-button @click="login()">Login</vk-button>
+            <div class="uk-margin-left">
+                <vk-button @click="$emit('close')">Cancel</vk-button>
+                <vk-button @click="login()">Login</vk-button>
+            </div>
         </vk-tabs-item>
         <vk-tabs-item title="Sign Up">
 
