@@ -8,7 +8,7 @@
             <div class="uk-margin-left">
                 <vk-icon-button href="#" class="uk-margin-small-right" icon="twitter"></vk-icon-button>
                 <vk-icon-button href="#" class="uk-margin-small-right" icon="facebook"></vk-icon-button>
-                <vk-icon-button href="#" icon="google-plus"></vk-icon-button>
+                <vk-icon-button href="/auth/o/login/google-oauth2/" icon="google"></vk-icon-button>
             </div>
             <div class="uk-text-center">OR</div>
             <form ref="form" class="uk-margin-left">
