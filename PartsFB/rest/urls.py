@@ -11,4 +11,5 @@ urlpatterns = router.urls
 urlpatterns += [
     path('part-brands/<int:pk>/', views.PartBrandDetailViewSet.as_view({'get': 'retrieve'})),
     path('part-brands/', views.PartBrandShortViewSet.as_view({'get': 'list'})),
+    path('feedbacks/<str:brand_name>/', views.FeedbackList.as_view()),
 ]

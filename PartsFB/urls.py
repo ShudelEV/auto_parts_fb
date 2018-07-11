@@ -1,10 +1,10 @@
-from django.urls import path, include
+from django.urls import path, re_path, include
 from . import views
 from .rest import urls as api_urls
 
 
 urlpatterns = [
-    path('', views.page),
-    path('index', views.page),
-    path('api/', include(api_urls))
+    path('api/', include(api_urls)),
+    re_path(r'^', views.page),
+    # re_path(r'^index$', views.page)
 ]

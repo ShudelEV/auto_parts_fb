@@ -1,9 +1,9 @@
-from rest_framework import viewsets, status, generics
+from rest_framework import viewsets, status, generics, mixins
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from PartsFB.models import PartBrand
-from .serializers import PartBrandDetailSerializer, PartBrandShortSerializer
+from PartsFB.models import PartBrand, FeedBack
+from .serializers import PartBrandDetailSerializer, PartBrandShortSerializer, FeedBackSerializer
 from django.views.decorators.csrf import csrf_protect
 from django.db.models import Prefetch
 import logging
@@ -28,3 +28,13 @@ class PartBrandDetailViewSet(viewsets.ReadOnlyModelViewSet):
 class PartBrandShortViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = PartBrand.objects.all()
     serializer_class = PartBrandShortSerializer
+
+
+class FeedbackList(mixins.ListModelMixin, generics.GenericAPIView):
+    queryset = FeedBack.objects.select_related('part__brand').only('part__brand__name').all()
+    serializer_class = FeedBackSerializer
+
+    def get(self, request, *args, **kwargs):
+        logging.debug('FeedbackList: {}'.format(kwargs['brand_name']))
+        self.queryset.filter(part__brand__name=kwargs['brand_name'])
+        return self.list(request, *args, **kwargs)

@@ -20,3 +20,9 @@ class PartBrandDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = PartBrand
         fields = '__all__'
+
+
+class FeedBackSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FeedBack
+        fields = '__all__'

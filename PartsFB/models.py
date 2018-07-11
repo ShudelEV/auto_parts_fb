@@ -32,7 +32,10 @@ class PartBrand(Manufacturer):
 class PartType(models.Model):
     name = models.CharField(max_length=200)
     CATEGORY_CHOICES = tuple((key, _(value)) for key, value in PART_CATEGORIES.items())
-    category = models.CharField(max_length=1, choices=CATEGORY_CHOICES)
+    category = models.CharField(max_length=2, choices=CATEGORY_CHOICES)
+
+    def __str__(self):
+        return '{0}/{1}'.format(self.category, self.name)
 
 
 class CarBrand(Manufacturer):
@@ -59,6 +62,9 @@ class Part(models.Model):
     brand = models.ForeignKey(PartBrand, models.PROTECT, related_name='parts')
     car = models.ForeignKey(Car, models.SET_NULL, null=True, blank=True, related_name='parts')
 
+    def __str__(self):
+        return '{0}/{1}'.format(self.type.name, self.brand)
+
 
 def fb_images_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/Users/<user_name>/feedbacks/<filename>
@@ -79,3 +85,6 @@ class FeedBack(models.Model):
     images = models.ImageField(blank=True, max_length=255, upload_to=fb_images_path)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, blank=True)
+
+    def __str__(self):
+        return '{0}'.format(self.part)
