@@ -2,12 +2,13 @@
 <div>
     <div class="uk-position-relative">
         <img v-if="$route.path == '/'" src="/static/images/header.jpeg" alt="" id="offset">
+        <div v-else class="uk-section uk-section-default uk-section-small" id="offset"></div>
         <div class="uk-container uk-position-top">
             <login-window :show="showLoginWindow" @close="showLoginWindow=false"></login-window>
             <vk-sticky bottom="#offset">
                 <vk-navbar transparent class="uk-navbar-sticky">
                     <vk-navbar-nav>
-                        <vk-navbar-logo>PartsOK</vk-navbar-logo>
+                        <vk-navbar-logo>{{ logo }}</vk-navbar-logo>
                     </vk-navbar-nav>
                     <vk-navbar-nav slot="right">
                         <!--Register/Login bar-->
@@ -29,7 +30,6 @@
     </div>
     <div class="uk-section uk-section-default uk-section-xsmall">
         <div class="uk-container">
-            <!--component Home.vue-->
             <router-view></router-view>
         </div>
     </div>
@@ -47,6 +47,7 @@ export default {
 
     data () {
         return {
+            logo: 'PartsOK',
             showLoginWindow: false
         }
     },

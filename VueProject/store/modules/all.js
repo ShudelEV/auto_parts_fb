@@ -17,6 +17,9 @@ const getters = {
             }
         }
         return res
+    },
+    getFBByBrand: state => name => {
+        return state.partBrands.find((i => i.name == name)).feedbacks
     }
 };
 
@@ -27,7 +30,16 @@ const mutations = {
     SET_PART_BRANDS (state, objects) {
         state.partBrands = objects
     },
-    ADD_PART_BRANDS (state, object) {  }
+    ADD_PART_BRANDS (state, object) {  },
+    SET_BRAND_FEEDBACKS (state, { name, items }) {
+        let brandIndex = state.partBrands.findIndex(i => i.name == name);
+        if (brandIndex >= 0) {
+            state.partBrands[brandIndex].feedbacks = items
+        } else {
+            console.log('store/SET_BRAND_FEEDBACKS: A brand item ' + name + ' is not find')
+        }
+
+    }
 };
 
 export default {

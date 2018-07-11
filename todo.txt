@@ -1,0 +1,3 @@
+1. + vue-router: if page to reload, page not found
+2. vue: to cash the all data
+3. rest: refactor fb fetching
