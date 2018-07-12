@@ -10,10 +10,7 @@ class PartBrandShortSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'country', 'fb_quantity')
 
     def get_fb_quantity(self, obj):
-        feedbacks_qset = FeedBack.objects\
-            .select_related('part', 'part__brand')\
-            .only('part', 'part__brand')
-        return feedbacks_qset.filter(part__brand=obj).count()
+        return FeedBack.objects.filter(part__brand=obj).count()
 
 
 class PartBrandDetailSerializer(serializers.ModelSerializer):

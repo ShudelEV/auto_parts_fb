@@ -31,10 +31,9 @@ class PartBrandShortViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class FeedbackList(mixins.ListModelMixin, generics.GenericAPIView):
-    queryset = FeedBack.objects.select_related('part__brand').only('part__brand__name').all()
+    queryset = FeedBack.objects.all()
     serializer_class = FeedBackSerializer
 
     def get(self, request, *args, **kwargs):
-        logging.debug('FeedbackList: {}'.format(kwargs['brand_name']))
-        self.queryset.filter(part__brand__name=kwargs['brand_name'])
+        self.queryset = self.queryset.filter(part__brand__name=kwargs['brand_name'])
         return self.list(request, *args, **kwargs)
