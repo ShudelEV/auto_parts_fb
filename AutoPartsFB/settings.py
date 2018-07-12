@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djoser',
     'social_django',
+    # 'Profile.apps.ProfileConfig',
     'PartsFB.apps.PartsFBConfig',
 ]
 
@@ -32,6 +33,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# AUTH_USER_MODEL = 'Profile.User'
 
 ROOT_URLCONF = 'AutoPartsFB.urls'
 

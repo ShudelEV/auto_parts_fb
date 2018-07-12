@@ -1,5 +1,13 @@
 from rest_framework import serializers
-from PartsFB.models import PartBrand, FeedBack
+from rest_framework.relations import StringRelatedField, SlugRelatedField
+from django.contrib.auth.models import User
+from PartsFB.models import PartBrand, FeedBack, Car, CarModel, Part
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
 
 
 class PartBrandShortSerializer(serializers.ModelSerializer):
@@ -19,7 +27,35 @@ class PartBrandDetailSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class PartSerializer(serializers.ModelSerializer):
+    type = StringRelatedField()
+    car = StringRelatedField()
+
+    class Meta:
+        model = Part
+        fields = ['id', 'type', 'car']
+
+
+class CarModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarModel
+        fields = '__all__'
+
+
+class CarSerializer(serializers.ModelSerializer):
+    owner = StringRelatedField()
+    model = StringRelatedField()
+
+    class Meta:
+        model = Car
+        fields = ['id', 'owner', 'model']
+
+
 class FeedBackSerializer(serializers.ModelSerializer):
+    # represent field using __str__ method of the model (read only)
+    owner = StringRelatedField()
+    part = PartSerializer()
+
     class Meta:
         model = FeedBack
-        fields = '__all__'
+        fields = ['id', 'owner', 'part', 'description', 'stars', 'images', 'created', 'updated']

@@ -1,54 +1,36 @@
 <template>
 <div>
-    <div class="uk-position-relative">
-        <img v-if="$route.path == '/'" src="/static/images/header.jpeg" alt="" id="offset">
-        <div v-else class="uk-section uk-section-default uk-section-small" id="offset"></div>
-        <div class="uk-container uk-position-top">
-            <login-window :show="showLoginWindow" @close="showLoginWindow=false"></login-window>
-            <vk-sticky bottom="#offset">
-                <vk-navbar transparent class="uk-navbar-sticky">
-                    <vk-navbar-nav>
-                        <vk-navbar-logo>{{ logo }}</vk-navbar-logo>
-                    </vk-navbar-nav>
-                    <vk-navbar-nav slot="right">
-                        <!--Register/Login bar-->
-                        <vk-navbar-item v-if="!account.isAuthenticated">
-                            <vk-button class="uk-button-small" @click="showLoginWindow=true">Login</vk-button>
-                        </vk-navbar-item>
-                        <!--Account bar-->
-                        <vk-navbar-item v-else>
-                            <ul class="uk-iconnav">
-                                <li><vk-icon icon="user" :title="account.name"></vk-icon></li>
-                                <li><vk-icon-link href="#" icon="file-edit" title="Edit account"></vk-icon-link></li>
-                                <li><vk-icon-link @click="logout()" icon="sign-out" title="Sing out"></vk-icon-link></li>
-                            </ul>
-                        </vk-navbar-item>
-                    </vk-navbar-nav>
-                </vk-navbar>
-            </vk-sticky>
-        </div>
+    <!--Navbar-->
+    <div v-if="$route.name == 'Home'" class="uk-section uk-section-default uk-padding-remove-vertical">
+        <img src="/static/images/header.jpeg" alt="" id="offset">
+        <nav-bar :logo="logoHome" :sticky="'#offset'"></nav-bar>
     </div>
+    <div v-else class="uk-section uk-section-default uk-padding-remove-vertical">
+        <vk-card uk-sticky>
+            <nav-bar :logo="logo"></nav-bar>
+        </vk-card>
+    </div>
+    <!--Body-->
     <div class="uk-section uk-section-default uk-section-xsmall">
         <div class="uk-container">
-            <router-view></router-view>
+            <router-view @setLogo="a => logo = a"></router-view>
         </div>
     </div>
 </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import LoginWindow from './components/Login.vue'
+import NavBar from './components/NavBar.vue'
 
 export default {
     name: 'App',
 
-    components: { LoginWindow },
+    components: { NavBar },
 
     data () {
         return {
-            logo: 'PartsOK',
-            showLoginWindow: false
+            logoHome: 'PartsOK',
+            logo: ''
         }
     },
 
@@ -62,18 +44,5 @@ export default {
             this.$store.dispatch('getUser')
         }
     },
-
-    computed: {
-        ...mapState({
-            account: state => state.account
-        })
-
-    },
-
-    methods: {
-        logout () {
-            this.$store.dispatch('destroyToken')
-        }
-    }
 }
 </script>

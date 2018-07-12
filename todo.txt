@@ -2,3 +2,6 @@
 2. vue: to cash the all data
 3. + rest: refactor fb fetching
 4. + rest: get_fb_quantity: too many queries
+5. alter the part type in the part model as select field
+6. alter the user model to Profile (custom user model)
+    need for feedbacks - user_name and avatar

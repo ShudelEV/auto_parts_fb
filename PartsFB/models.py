@@ -35,7 +35,7 @@ class PartType(models.Model):
     category = models.CharField(max_length=2, choices=CATEGORY_CHOICES)
 
     def __str__(self):
-        return '{0}/{1}'.format(self.category, self.name)
+        return self.name
 
 
 class CarBrand(Manufacturer):
@@ -47,14 +47,17 @@ class CarModel(models.Model):
     brand = models.ForeignKey(CarBrand, models.PROTECT, related_name='car_models')
     description = models.TextField()
     # model_year = models.TextField()
+    # engine
+    # gear
+    # body_style
+
+    def __str__(self):\
+        return '{0} {1}'.format(self.brand, self.name)
 
 
 class Car(models.Model):
     owner = models.ForeignKey(User, models.PROTECT, related_name='cars')
     model = models.ForeignKey(CarModel, models.PROTECT, related_name='cars')
-    # engine
-    # gear
-    # body_style
 
 
 class Part(models.Model):
@@ -72,6 +75,11 @@ def fb_images_path(instance, filename):
 
 
 class FeedBack(models.Model):
+    # set default owner for migration
+    def get_default_owner():
+        return User.objects.get(pk=1).id
+
+    owner = models.ForeignKey(User, models.PROTECT, related_name='feedbacks', default=get_default_owner())
     part = models.ForeignKey(Part, models.PROTECT, related_name='feedbacks')
     description = models.TextField()
     STARS = (

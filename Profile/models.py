@@ -2,6 +2,12 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 
+def avatar_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/Users/<user_name>/<filename>
+    return 'Users/{0}/{1}'.format(instance, filename)
+
+
 class User(AbstractUser):
-    phone = models.CharField(verbose_name="phone number", max_length=13, blank=True)
-    # ? Add a number validator
+    avatar = models.ImageField(
+        verbose_name="avatar", blank=True, max_length=255, upload_to=avatar_path
+    )

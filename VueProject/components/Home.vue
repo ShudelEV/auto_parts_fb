@@ -75,7 +75,8 @@ export default {
             return len > this.itemsShow ? [...Array(this.itemsShow).keys()] : [...Array(len).keys()]
         },
         gotoBrandFeedbacks (name) {
-            this.$router.push({ name: 'Brand', params: { name: name }})
+            this.$router.push({ name: 'Brand', params: { name: name }});
+            this.$emit('setLogo', name)
         }
     }
 }
