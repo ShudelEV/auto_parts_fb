@@ -15,38 +15,52 @@
                     <template v-if="fb.part.car" >
                         <vk-icon icon="cart" class="uk-margin-small-left"></vk-icon> {{ fb.part.car }}
                     </template>
-                    <span class="uk-margin-medium-left">
+                    <div class="uk-margin-medium-left uk-display-inline-block">
                         <vk-icon v-for="i in [1,2,3,4,5]" :key="i"
                              :class="i <= fb.stars ? 'uk-margin-small-right fill-star' : 'uk-margin-small-right'"
                              icon="star"
                         ></vk-icon>
-                    </span>
+                    </div>
                 </a>
                 <!--Content-->
                 <div class="uk-accordion-content">
                     <article class="uk-comment">
                         <!--User information-->
-                        <header class="uk-comment-header uk-grid-medium uk-flex-middle" uk-grid>
-                            <div class="uk-width-auto">
-                                <img class="uk-comment-avatar"
-                                     src="/static/images/portrait-placeholder.jpg"
-                                     width="40" height="40" alt="">
-                            </div>
-                            <div class="uk-width-expand">
-                                <h4 class="uk-comment-title uk-margin-remove">
-                                    <a class="uk-link-reset" href="#">{{ fb.owner }}</a>
-                                </h4>
-                                <ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove">
-                                    <li><a href="#">All fb</a></li>
-                                </ul>
-                            </div>
-                        </header>
+                        <!--<header class="uk-comment-header uk-grid-medium uk-flex-middle" uk-grid>-->
+                            <!--<div class="uk-width-auto">-->
+                                <!--<img class="uk-comment-avatar"-->
+                                     <!--src="/static/images/portrait-placeholder.jpg"-->
+                                     <!--width="40" height="40" alt="">-->
+                            <!--</div>-->
+                            <!--<div class="uk-width-expand">-->
+                                <!--<h4 class="uk-comment-title uk-margin-remove">-->
+                                    <!--<a class="uk-link-reset" href="#">{{ fb.owner }}</a>-->
+                                <!--</h4>-->
+                                <!--<ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove">-->
+                                    <!--<li><a href="#">All fb</a></li>-->
+                                <!--</ul>-->
+                            <!--</div>-->
+                        <!--</header>-->
                         <!--Feedback text-->
                         <div class="uk-comment-body">
                             <p>{{ fb.description }}</p>
                         </div>
+                        <!--Images-->
+                        <div v-if="fb.images" class="uk-position-relative uk-visible-toggle uk-light" uk-slider>
+                            <ul class="uk-slider-items uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m">
+                                <li v-for="img in fb.images">
+                                    <img :src="img" alt="">
+                                </li>
+                            </ul>
+                            <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#"
+                               uk-slidenav-previous uk-slider-item="previous"
+                            ></a>
+                            <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#"
+                               uk-slidenav-next uk-slider-item="next"
+                            ></a>
+                        </div>
                         <div class="uk-comment-meta uk-margin-top">
-                            Created: {{ (new Date(fb.created)).toLocaleString("ru") }}
+                            {{ fb.owner }} &nbsp;&nbsp;&nbsp;&nbsp; Created: {{ (new Date(fb.created)).toLocaleString("ru") }}
                         </div>
                     </article>
                 </div>

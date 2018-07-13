@@ -13,9 +13,9 @@
                         <vk-card-title class="uk-margin-small-left">{{ key }}</vk-card-title>
                         <ul class="uk-list uk-list-bullet">
                             <li v-for="i in getArray(key)">
-                                <vk-button type="text" @click="gotoBrandFeedbacks(value[i].name)">
+                                <a class="uk-link-text" @click="gotoBrandFeedbacks(value[i].name)">
                                     {{ value[i].name }}
-                                </vk-button>
+                                </a>
                                 <span class="uk-badge uk-margin-small-left">
                                     {{ value[i].fb_quantity }}
                                 </span>
