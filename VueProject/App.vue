@@ -1,31 +1,59 @@
 <template>
 <div>
     <!--Navbar-->
-    <div v-if="$route.name == 'Home'" class="uk-section uk-section-default uk-padding-remove-vertical">
-        <img src="/static/images/header.jpeg" alt="" id="offset">
-        <nav-bar :logo="logoHome" :sticky="'#offset'"></nav-bar>
+    <div class="uk-section uk-section-default uk-padding-remove-vertical">
+        <!--Home page navbar-->
+        <template v-if="$route.name == 'Home'">
+            <img src="/static/images/header.jpeg" alt="" id="offset">
+            <div class="uk-container uk-position-top">
+                <vk-sticky :bottom="sticky">
+                    <vk-navbar transparent>
+                        <vk-navbar-nav>
+                            <vk-navbar-logo>{{ logoHome }}</vk-navbar-logo>
+                        </vk-navbar-nav>
+                        <vk-navbar-nav slot="right">
+                            <nav-bar-login></nav-bar-login>
+                        </vk-navbar-nav>
+                    </vk-navbar>
+                </vk-sticky>
+            </div>
+        </template>
+        <!--Other page navbar-->
+        <template v-else>
+            <vk-card uk-sticky>
+                <div class="uk-container uk-position-top">
+                    <vk-navbar transparent>
+                        <vk-navbar-nav>
+                            <vk-navbar-logo>{{ logo }}</vk-navbar-logo>
+                        </vk-navbar-nav>
+                        <vk-navbar-nav slot="right">
+                            <nav-bar-login></nav-bar-login>
+                        </vk-navbar-nav>
+                    </vk-navbar>
+                </div>
+            </vk-card>
+        </template>
     </div>
-    <div v-else class="uk-section uk-section-default uk-padding-remove-vertical">
-        <vk-card uk-sticky>
-            <nav-bar :logo="logo"></nav-bar>
-        </vk-card>
-    </div>
+    <!--Login Window-->
+    <login-window :show="showLoginWindow" @close="showLoginWindow=false"></login-window>
     <!--Body-->
     <div class="uk-section uk-section-default uk-section-xsmall">
         <div class="uk-container">
-            <router-view @setLogo="a => logo = a"></router-view>
+            <!--Home-->
+            <router-view></router-view>
         </div>
     </div>
 </div>
 </template>
 
 <script>
-import NavBar from './components/NavBar.vue'
+import NavBarLogin from './components/NavBarLogin.vue'
+import LoginWindow from './components/Login.vue'
 
 export default {
     name: 'App',
 
-    components: { NavBar },
+    components: { NavBarLogin, LoginWindow },
 
     data () {
         return {
@@ -42,8 +70,8 @@ export default {
             // set axios default config
             this.$http.defaults.headers.common['Authorization'] = 'Token ' + localStorage.getItem('auth_token');
             this.$store.dispatch('getUser')
-        };
-        if (this.$route.name == 'Brand') {
+        }
+        if (this.$route.name == 'BrandFB') {
             this.logo = this.$route.params.name
         }
     },

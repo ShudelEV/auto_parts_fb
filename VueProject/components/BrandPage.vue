@@ -2,9 +2,13 @@
 <div v-if="loading">Loading...</div>
 <div v-else-if="error && !loading">{{error}}</div>
 <vk-grid v-else gutter="large">
+    <!--BrandInfo window-->
+    <router-view></router-view>
+    <!--Menu-->
     <div class="uk-width-1-4@m">
         <vk-card>Menu</vk-card>
     </div>
+    <!--Feedbackes-->
     <div class="uk-width-expand@m">
         <ul uk-accordion="multiple: true" class="uk-list uk-list-divider">
             <!--Feedback-->
