@@ -22,7 +22,7 @@
                             </li>
                         </ul>
                         <vk-icon-link reset icon="more" class="uk-margin-small-left"
-                            v-show="itemsShow < value.length && showAll != key"
+                            v-show="getArray(key).length < value.length && showAll != key"
                             @click="showAll = key"
                         ></vk-icon-link>
                     </vk-card>
@@ -60,11 +60,13 @@ export default {
     methods: {
         // when list of part brands < itemsShow
         getArray (key) {
-            const len = this.sortedPartBrands[key].length;
+            let len = this.sortedPartBrands[key].length;
+            let showLen = this.sortedPartBrands[key].filter(i => i.fb_quantity != 0).length;
+            if (!showLen) { showLen = 1 }
             if (this.showAll === key) {
                 return [...Array(len).keys()]
             } else {
-                return len > this.itemsShow ? [...Array(this.itemsShow).keys()] : [...Array(len).keys()]
+                return showLen < this.itemsShow ? [...Array(showLen).keys()] : [...Array(this.itemsShow).keys()]
             }
         },
         gotoBrandFeedbacks (name) {

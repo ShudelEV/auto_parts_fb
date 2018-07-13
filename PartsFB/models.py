@@ -21,12 +21,10 @@ class Manufacturer(models.Model):
         abstract = True
         ordering = ['name']
 
-    def __str__(self):
-        return '{0} ({1})'.format(self.name, self.country)
-
 
 class PartBrand(Manufacturer):
-    pass
+    def __str__(self):
+        return '{0} ({1})'.format(self.name, self.country)
 
 
 class PartType(models.Model):
@@ -39,7 +37,8 @@ class PartType(models.Model):
 
 
 class CarBrand(Manufacturer):
-    pass
+    def __str__(self):
+        return self.name
 
 
 class CarModel(models.Model):
@@ -51,13 +50,16 @@ class CarModel(models.Model):
     # gear
     # body_style
 
-    def __str__(self):\
+    def __str__(self):
         return '{0} {1}'.format(self.brand, self.name)
 
 
 class Car(models.Model):
     owner = models.ForeignKey(User, models.PROTECT, related_name='cars')
     model = models.ForeignKey(CarModel, models.PROTECT, related_name='cars')
+
+    def __str__(self):
+        return str(self.model)
 
 
 class Part(models.Model):
@@ -66,7 +68,7 @@ class Part(models.Model):
     car = models.ForeignKey(Car, models.SET_NULL, null=True, blank=True, related_name='parts')
 
     def __str__(self):
-        return '{0}/{1}'.format(self.type.name, self.brand)
+        return '{0}/{1}'.format(self.type, self.brand)
 
 
 def fb_images_path(instance, filename):

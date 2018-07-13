@@ -7,10 +7,14 @@
     </div>
     <div class="uk-width-expand@m">
         <ul uk-accordion="multiple: true" class="uk-list uk-list-divider">
+            <!--Feedback-->
             <li v-for="fb in feedbacks" :key="fb.id">
-                <!--Feedback-->
+                <!--Header-->
                 <a class="uk-accordion-title" href="#">
-                    {{ fb.part.type }} {{ fb.part.car ? fb.part.car : '' }}
+                    <vk-icon icon="cog"></vk-icon> {{ fb.part.type }}
+                    <template v-if="fb.part.car" >
+                        <vk-icon icon="cart" class="uk-margin-small-left"></vk-icon> {{ fb.part.car }}
+                    </template>
                     <span class="uk-margin-medium-left">
                         <vk-icon v-for="i in [1,2,3,4,5]" :key="i"
                              :class="i <= fb.stars ? 'uk-margin-small-right fill-star' : 'uk-margin-small-right'"
@@ -18,9 +22,10 @@
                         ></vk-icon>
                     </span>
                 </a>
+                <!--Content-->
                 <div class="uk-accordion-content">
                     <article class="uk-comment">
-                        <!--Header with user information-->
+                        <!--User information-->
                         <header class="uk-comment-header uk-grid-medium uk-flex-middle" uk-grid>
                             <div class="uk-width-auto">
                                 <img class="uk-comment-avatar"
@@ -32,7 +37,6 @@
                                     <a class="uk-link-reset" href="#">{{ fb.owner }}</a>
                                 </h4>
                                 <ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove">
-                                    <li v-if="fb.car">{{ fb.car }}</li>
                                     <li><a href="#">All fb</a></li>
                                 </ul>
                             </div>
