@@ -42,6 +42,9 @@ export default {
             // set axios default config
             this.$http.defaults.headers.common['Authorization'] = 'Token ' + localStorage.getItem('auth_token');
             this.$store.dispatch('getUser')
+        };
+        if (this.$route.name == 'Brand') {
+            this.logo = this.$route.params.name
         }
     },
 }
