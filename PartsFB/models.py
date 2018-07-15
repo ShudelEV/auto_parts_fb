@@ -45,9 +45,6 @@ class CarModel(models.Model):
     name = models.CharField(max_length=200)
     brand = models.ForeignKey(CarBrand, models.PROTECT, related_name='car_models')
     # model_year = models.TextField()
-    # engine
-    # gear
-    # body_style
 
     def __str__(self):
         return '{0} {1}'.format(self.brand, self.name)
@@ -56,9 +53,38 @@ class CarModel(models.Model):
 class Car(models.Model):
     owner = models.ForeignKey(User, models.PROTECT, related_name='cars')
     model = models.ForeignKey(CarModel, models.PROTECT, related_name='cars')
+    engine_volume = models.IntegerField(max_length=4, null=True, blank=True)
+    ENGINE_TYPE = (
+        (1, 'benzine'),
+        (2, 'diesel'),
+        (3, 'gas-benzine'),
+        (4, 'electric'),
+        (5, 'hybrid')
+    )
+    engine_type = models.IntegerField(max_length=1, choices=ENGINE_TYPE, null=True, blank=True)
+    GEAR_TYPE = (
+        (1, 'manual'),
+        (2, 'automatic'),
+        (3, 'semi-automatic'),
+        (4, 'CVT')
+    )
+    gear = models.IntegerField(max_length=1, choices=GEAR_TYPE, null=True, blank=True)
+    BODY_STYLE = (
+        (1, 'Sedan'),
+        (2, 'Coupe'),
+        (3, 'Wagon'),
+        (4, 'Minivan'),
+        (5, 'SUV/Crossover'),
+        (6, 'Convertible'),
+        (7, 'Hatchback'),
+        (8, 'Van')
+    )
+    body_style = models.IntegerField(max_length=1, choices=BODY_STYLE, null=True, blank=True)
 
     def __str__(self):
-        return str(self.model)
+        return '{0} {1} {2} {3} {4}'.format(
+            self.model, self.engine_volume, self.engine_type, self.gear, self.body_style
+        )
 
 
 class Part(models.Model):
