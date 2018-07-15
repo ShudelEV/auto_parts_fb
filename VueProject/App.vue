@@ -6,15 +6,8 @@
         <template v-if="$route.name == 'Home'">
             <img src="/static/images/header.jpeg" alt="" id="offset">
             <div class="uk-container uk-position-top">
-                <vk-sticky :bottom="sticky">
-                    <vk-navbar transparent>
-                        <vk-navbar-nav>
-                            <vk-navbar-logo>{{ logoHome }}</vk-navbar-logo>
-                        </vk-navbar-nav>
-                        <vk-navbar-nav slot="right">
-                            <nav-bar-login></nav-bar-login>
-                        </vk-navbar-nav>
-                    </vk-navbar>
+                <vk-sticky bottom="#offset">
+                    <nav-bar-login :logo="logo" @showLoginWindow="showLoginWindow=true"></nav-bar-login>
                 </vk-sticky>
             </div>
         </template>
@@ -22,14 +15,7 @@
         <template v-else>
             <vk-card uk-sticky>
                 <div class="uk-container uk-position-top">
-                    <vk-navbar transparent>
-                        <vk-navbar-nav>
-                            <vk-navbar-logo>{{ logo }}</vk-navbar-logo>
-                        </vk-navbar-nav>
-                        <vk-navbar-nav slot="right">
-                            <nav-bar-login></nav-bar-login>
-                        </vk-navbar-nav>
-                    </vk-navbar>
+                    <nav-bar-login :logo="logo" @showLoginWindow="showLoginWindow=true"></nav-bar-login>
                 </div>
             </vk-card>
         </template>
@@ -39,7 +25,6 @@
     <!--Body-->
     <div class="uk-section uk-section-default uk-section-xsmall">
         <div class="uk-container">
-            <!--Home-->
             <router-view></router-view>
         </div>
     </div>
@@ -57,8 +42,8 @@ export default {
 
     data () {
         return {
-            logoHome: 'PartsOK',
-            logo: ''
+            logo: 'PartsOK',
+            showLoginWindow: false,
         }
     },
 
@@ -70,9 +55,6 @@ export default {
             // set axios default config
             this.$http.defaults.headers.common['Authorization'] = 'Token ' + localStorage.getItem('auth_token');
             this.$store.dispatch('getUser')
-        }
-        if (this.$route.name == 'BrandFB') {
-            this.logo = this.$route.params.name
         }
     },
 }

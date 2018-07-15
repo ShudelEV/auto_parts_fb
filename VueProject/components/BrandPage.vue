@@ -3,10 +3,15 @@
 <div v-else-if="error && !loading">{{error}}</div>
 <vk-grid v-else gutter="large">
     <!--BrandInfo window-->
-    <router-view></router-view>
+    <vk-modal-full :show.sync="showBrandInfo">
+        <vk-modal-full-close large></vk-modal-full-close>
+        <brand-info :name="brandName"></brand-info>
+    </vk-modal-full>
     <!--Menu-->
     <div class="uk-width-1-4@m">
-        <vk-card>Menu</vk-card>
+        <vk-card>
+            <a class="uk-link-heading" @click="showBrandInfo=true">{{brandName}}</a>
+        </vk-card>
     </div>
     <!--Feedbackes-->
     <div class="uk-width-expand@m">
@@ -17,11 +22,12 @@
                 <a class="uk-accordion-title" href="#">
                     <vk-icon icon="cog"></vk-icon> {{ fb.part.type }}
                     <template v-if="fb.part.car" >
-                        <vk-icon icon="cart" class="uk-margin-small-left"></vk-icon> {{ fb.part.car }}
+                        <vk-icon-image src="/static/images/car.svg" uk-svg class="uk-margin-small-left"></vk-icon-image>
+                        {{ fb.part.car }}
                     </template>
                     <div class="uk-margin-medium-left uk-display-inline-block">
                         <vk-icon v-for="i in [1,2,3,4,5]" :key="i"
-                             :class="i <= fb.stars ? 'uk-margin-small-right fill-star' : 'uk-margin-small-right'"
+                             :class="i <= fb.stars ? 'fill-star' : ''"
                              icon="star"
                         ></vk-icon>
                     </div>
@@ -75,22 +81,27 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
+import BrandInfo from './BrandInfo.vue'
 
 export default {
     name: 'BrandPage',
+
+    components: { BrandInfo },
 
     data () {
         return {
             loading: false,
             error: null,
             brandName: '',
-            feedbacks: []
+            feedbacks: [],
+            showBrandInfo: false
         }
     },
 
     created () {
         this.fetchData();
+        // when window is updated (F5)
         this.brandName = this.$route.params.name
     },
 

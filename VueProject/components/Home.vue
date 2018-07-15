@@ -70,8 +70,7 @@ export default {
             }
         },
         gotoBrandFeedbacks (name) {
-            this.$router.push({ name: 'BrandFB', params: { name: name }});
-            this.$emit('setLogo', name)
+            this.$router.push({ name: 'Brand', params: { name: name }})
         }
     }
 }

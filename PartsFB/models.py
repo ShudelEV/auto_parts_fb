@@ -44,7 +44,6 @@ class CarBrand(Manufacturer):
 class CarModel(models.Model):
     name = models.CharField(max_length=200)
     brand = models.ForeignKey(CarBrand, models.PROTECT, related_name='car_models')
-    description = models.TextField()
     # model_year = models.TextField()
     # engine
     # gear

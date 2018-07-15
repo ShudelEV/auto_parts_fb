@@ -26,10 +26,10 @@
 
         </vk-tabs-item>
     </vk-tabs>
-    <div slot="footer">
-        <vk-button @click="$emit('close')" class="uk-margin-right">Cancel</vk-button>
-        <vk-button v-if="activeTab == 0" @click="login()" type="primary">Login</vk-button>
-        <vk-button v-else @click="register()" type="primary">Reg</vk-button>
+    <div slot="footer" class="uk-clearfix">
+        <vk-button @click="$emit('close')" size="small" class="uk-float-left">Cancel</vk-button>
+        <vk-button v-if="activeTab == 0" @click="login()" type="primary" size="small" class="uk-float-right">Login</vk-button>
+        <vk-button v-else @click="register()" type="primary" size="small" class="uk-float-right">Reg</vk-button>
     </div>
 </vk-modal>
 </div>
@@ -56,9 +56,6 @@ export default {
     },
 
     methods: {
-        goBack () {
-            window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
-        },
         register () {
             const form = this.$refs.form.elements;
             this.$store.dispatch('registerWithEmailAndPassword', {
