@@ -6,6 +6,7 @@ import store from './store/index'
 import Vuikit from 'vuikit'
 import VuikitIcons from '@vuikit/icons'
 import '@vuikit/theme'
+import VueStars from './plugins/plugin'
 
 import Cookies from 'js-cookie'
 
@@ -29,6 +30,9 @@ Vue.config.productionTip = true;
 //UIKit
 Vue.use(Vuikit);
 Vue.use(VuikitIcons);
+
+//Stars
+Vue.use(VueStars);
 
 const app = new Vue({
     el: '#app',

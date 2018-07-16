@@ -120,7 +120,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Media static files (Images, Video)
 MEDIA_URL = '/media/'
 # Change path for production
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'static/public/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'VueProject/static/public/')
 
 # djoser
 # SOCIAL_AUTH_ALLOWED_REDIRECT_URIS = [

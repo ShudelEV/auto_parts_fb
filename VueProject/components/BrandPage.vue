@@ -1,87 +1,34 @@
 <template>
-<div v-if="loading">Loading...</div>
-<div v-else-if="error && !loading">{{error}}</div>
-<vk-grid v-else gutter="large">
+<vk-grid gutter="large">
     <!--BrandInfo window-->
     <vk-modal-full :show.sync="showBrandInfo">
         <vk-modal-full-close large></vk-modal-full-close>
         <brand-info :name="brandName"></brand-info>
     </vk-modal-full>
     <!--Menu-->
-    <div class="uk-width-1-4@m">
-        <vk-card>
-            <a class="uk-link-heading" @click="showBrandInfo=true">{{brandName}}</a>
-        </vk-card>
-    </div>
-    <!--Feedbackes-->
-    <div class="uk-width-expand@m">
-        <ul uk-accordion="multiple: true" class="uk-list uk-list-divider">
-            <!--Feedback-->
-            <li v-for="fb in feedbacks" :key="fb.id">
-                <!--Header-->
-                <a class="uk-accordion-title" href="#">
-                    <vk-icon icon="cog"></vk-icon> {{ fb.part.type }}
-                    <template v-if="fb.part.car" >
-                        <vk-icon-image src="/static/images/car.svg" uk-svg class="uk-margin-small-left"></vk-icon-image>
-                        {{ fb.part.car }}
-                    </template>
-                    <div class="uk-margin-medium-left uk-display-inline-block">
-                        <vk-icon v-for="i in [1,2,3,4,5]" :key="i"
-                             :class="i <= fb.stars ? 'fill-star' : ''"
-                             icon="star"
-                        ></vk-icon>
-                    </div>
-                </a>
-                <!--Content-->
-                <div class="uk-accordion-content">
-                    <article class="uk-comment">
-                        <!--User information-->
-                        <!--<header class="uk-comment-header uk-grid-medium uk-flex-middle" uk-grid>-->
-                            <!--<div class="uk-width-auto">-->
-                                <!--<img class="uk-comment-avatar"-->
-                                     <!--src="/static/images/portrait-placeholder.jpg"-->
-                                     <!--width="40" height="40" alt="">-->
-                            <!--</div>-->
-                            <!--<div class="uk-width-expand">-->
-                                <!--<h4 class="uk-comment-title uk-margin-remove">-->
-                                    <!--<a class="uk-link-reset" href="#">{{ fb.owner }}</a>-->
-                                <!--</h4>-->
-                                <!--<ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove">-->
-                                    <!--<li><a href="#">All fb</a></li>-->
-                                <!--</ul>-->
-                            <!--</div>-->
-                        <!--</header>-->
-                        <!--Feedback text-->
-                        <div class="uk-comment-body">
-                            <p>{{ fb.description }}</p>
-                        </div>
-                        <!--Images-->
-                        <div v-if="fb.images" class="uk-position-relative uk-visible-toggle uk-light" uk-slider>
-                            <ul class="uk-slider-items uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m">
-                                <li v-for="img in fb.images">
-                                    <img :src="img" alt="">
-                                </li>
-                            </ul>
-                            <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#"
-                               uk-slidenav-previous uk-slider-item="previous"
-                            ></a>
-                            <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#"
-                               uk-slidenav-next uk-slider-item="next"
-                            ></a>
-                        </div>
-                        <div class="uk-comment-meta uk-margin-top">
-                            {{ fb.owner }} &nbsp;&nbsp;&nbsp;&nbsp; Created: {{ (new Date(fb.created)).toLocaleString("ru") }}
-                        </div>
-                    </article>
-                </div>
+    <!--<vk-sticky>-->
+    <div class="uk-width-1-4@m uk-margin">
+        <h2>{{brandName}}</h2>
+        <ul class="uk-iconnav">
+            <li><vk-icon-link icon="info" @click="showBrandInfo=true" title="Info"></vk-icon-link></li>
+            <li v-if="$route.name != 'AddFB'">
+                <vk-icon-link icon="plus-circle"
+                              @click="$router.push({ name: 'AddFB' })"
+                              title="Add feedback"
+                ></vk-icon-link>
             </li>
         </ul>
+    </div>
+    <!--</vk-sticky>-->
+    <!--Feedbackes-->
+    <div class="uk-width-3-4@m uk-margin">
+        <!--Add feedback or Show all feedbacks section-->
+        <router-view :brandName="brandName" class="uk-margin-medium-bottom"></router-view>
     </div>
 </vk-grid>
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import BrandInfo from './BrandInfo.vue'
 
 export default {
@@ -94,7 +41,6 @@ export default {
             loading: false,
             error: null,
             brandName: '',
-            feedbacks: [],
             showBrandInfo: false
         }
     },
@@ -102,42 +48,17 @@ export default {
     created () {
         this.fetchData();
         // when window is updated (F5)
-        this.brandName = this.$route.params.name
+        this.brandName = this.$route.params.name;
+        this.$router.push({ name: 'AllFB' })
     },
 
     watch: {
         '$route': 'fetchData'
     },
 
-    computed: {
-        ...mapState({
-            brandItems: state => state.all.partBrands
-        })
-    },
-
     methods: {
         fetchData () {
-            this.error = null;
-            this.loading = true;
-            this.$http.get('/api/feedbacks/' + this.$route.params.name + '/')
-                .then(response => {
-                    this.$store.commit('SET_BRAND_FEEDBACKS', {
-                        name: this.$route.params.name,
-                        items: response.data
-                    });
-                    this.feedbacks = response.data;
-                    this.loading = false
-                })
-                .catch(error => {
-                    this.loading = false;
-                    this.error = error.response.data
-                })
         }
     }
 }
 </script>
-
-<style>
-    .uk-icon svg[meta='vk-icons-star'] { color: gold; }
-    .uk-icon.fill-star svg[meta='vk-icons-star'] polygon { fill: #fdff00; }
-</style>

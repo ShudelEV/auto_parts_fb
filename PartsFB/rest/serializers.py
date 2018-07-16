@@ -27,15 +27,6 @@ class PartBrandDetailSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class PartSerializer(serializers.ModelSerializer):
-    type = StringRelatedField()
-    car = StringRelatedField()
-
-    class Meta:
-        model = Part
-        fields = ['id', 'type', 'car']
-
-
 class CarModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarModel
@@ -48,7 +39,16 @@ class CarSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Car
-        fields = ['id', 'owner', 'model']
+        fields = ['id', 'owner', 'model', 'manufacture_year', 'engine_volume', 'engine_type', 'gear', 'body_style']
+
+
+class PartSerializer(serializers.ModelSerializer):
+    type = StringRelatedField()
+    car = CarSerializer()
+
+    class Meta:
+        model = Part
+        fields = ['id', 'type', 'car']
 
 
 class FeedBackSerializer(serializers.ModelSerializer):

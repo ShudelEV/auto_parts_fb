@@ -4,6 +4,8 @@ import Router from 'vue-router'
 
 import Home from './components/Home.vue'
 import BrandPage from './components/BrandPage.vue'
+import AddFB from './components/AddFB.vue'
+import AllFB from './components/AllFB.vue'
 
 // tell Vue to use the vue-router plugin
 Vue.use(Router);
@@ -20,10 +22,20 @@ export default new Router({
             ]
         },
         {
-            path: '/brand/:name/feedbacks',
+            path: '/brand/:name',
             name: 'Brand',
             component: BrandPage,
             children: [
+                {
+                    path: 'add',
+                    name: 'AddFB',
+                    component: AddFB
+                },
+                {
+                    path: 'feedbacks',
+                    name: 'AllFB',
+                    component: AllFB
+                }
             ]
         }
     ]

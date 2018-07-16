@@ -53,7 +53,8 @@ class CarModel(models.Model):
 class Car(models.Model):
     owner = models.ForeignKey(User, models.PROTECT, related_name='cars')
     model = models.ForeignKey(CarModel, models.PROTECT, related_name='cars')
-    engine_volume = models.IntegerField(max_length=4, null=True, blank=True)
+    manufacture_year = models.IntegerField(null=True, blank=True)
+    engine_volume = models.IntegerField(null=True, blank=True)
     ENGINE_TYPE = (
         (1, 'benzine'),
         (2, 'diesel'),
@@ -61,14 +62,14 @@ class Car(models.Model):
         (4, 'electric'),
         (5, 'hybrid')
     )
-    engine_type = models.IntegerField(max_length=1, choices=ENGINE_TYPE, null=True, blank=True)
+    engine_type = models.IntegerField(choices=ENGINE_TYPE, null=True, blank=True)
     GEAR_TYPE = (
         (1, 'manual'),
         (2, 'automatic'),
         (3, 'semi-automatic'),
         (4, 'CVT')
     )
-    gear = models.IntegerField(max_length=1, choices=GEAR_TYPE, null=True, blank=True)
+    gear = models.IntegerField(choices=GEAR_TYPE, null=True, blank=True)
     BODY_STYLE = (
         (1, 'Sedan'),
         (2, 'Coupe'),
@@ -79,12 +80,10 @@ class Car(models.Model):
         (7, 'Hatchback'),
         (8, 'Van')
     )
-    body_style = models.IntegerField(max_length=1, choices=BODY_STYLE, null=True, blank=True)
+    body_style = models.IntegerField(choices=BODY_STYLE, null=True, blank=True)
 
     def __str__(self):
-        return '{0} {1} {2} {3} {4}'.format(
-            self.model, self.engine_volume, self.engine_type, self.gear, self.body_style
-        )
+        return '{0} / Owner: {1}'.format(self.model, self.owner)
 
 
 class Part(models.Model):
@@ -102,24 +101,20 @@ def fb_images_path(instance, filename):
 
 
 class FeedBack(models.Model):
-    # set default owner for migration
-    def get_default_owner():
-        return User.objects.get(pk=1).id
-
-    owner = models.ForeignKey(User, models.PROTECT, related_name='feedbacks', default=get_default_owner())
+    owner = models.ForeignKey(User, models.PROTECT, related_name='feedbacks', default=1)
     part = models.ForeignKey(Part, models.PROTECT, related_name='feedbacks')
     description = models.TextField()
     STARS = (
-        ('1', _('bad')),
-        ('2', _('no bad')),
-        ('3', _('normal')),
-        ('4', _('good')),
-        ('5', _('very good'))
+        (1, _('bad')),
+        (2, _('no bad')),
+        (3, _('normal')),
+        (4, _('good')),
+        (5, _('very good'))
     )
-    stars = models.TextField(choices=STARS)
+    stars = models.IntegerField(choices=STARS)
     images = models.ImageField(blank=True, max_length=255, upload_to=fb_images_path)
     created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True, blank=True)
+    updated = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     def __str__(self):
         return '{0}'.format(self.part)

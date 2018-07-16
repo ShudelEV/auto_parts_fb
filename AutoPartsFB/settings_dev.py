@@ -5,8 +5,6 @@ DEBUG = True
 INTERNAL_IPS = ['127.0.0.1']
 ALLOWED_HOSTS += INTERNAL_IPS
 ALLOWED_HOSTS.append('localhost')
-# Media static files (Images, Video)
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/public/')
 
 # Debug Tools for api's projects
 INSTALLED_APPS.append('silk')
