@@ -1,12 +1,28 @@
 <template>
 <div>
+    <div class="uk-width-1-1">
+        <h2>Add Your Feedback</h2>
+    </div>
     <form class="uk-grid-small" uk-grid ref="form2">
-        <div class="uk-width-1-1">
-            <h2>Add Your Feedback</h2>
-        </div>
-        <div class="uk-width-1-2@s">
+        <!--Add part-->
+        <template v-if="part == -1">
+            <div class="uk-width-1-4@s">
+                <label class="uk-form-label" for="part_category"> *Part Category</label>
+                <select id="part_category" v-model="part_category" name="part_category" class="uk-select" autofocus>
+                    <option v-for="(value, key) in categories"
+                            :value="key"
+                    >{{ value }}</option>
+                </select>
+            </div>
+            <div class="uk-width-1-4@s">
+                <label class="uk-form-label" for="part_name"> *Part Name</label>
+                <input id="part_name" class="uk-input" v-model="part_name" name="part_name" type="text">
+            </div>
+        </template>
+        <!--Select part-->
+        <div v-else class="uk-width-1-2@s">
             <label class="uk-form-label" for="part"> *Part</label>
-            <select id="part" name="part" class="uk-select" autofocus>
+            <select v-model="part" id="part" name="part" class="uk-select" autofocus>
                 <option></option>
                 <option :value="-1">&emsp;Add..</option>
                 <template v-for="(value, key) in partTypes">
@@ -18,10 +34,22 @@
                 </template>
             </select>
         </div>
-        <!--Car section-->
-        <div class="uk-width-1-2@s">
+        <!--Add car-->
+        <template v-if="car == -1">
+            <div class="uk-width-1-2@s"></div>
+            <div class="uk-width-1-4@s">
+                <label class="uk-form-label" for="car_brand"> *Car Brand</label>
+                <input id="car_brand" class="uk-input" v-model="car_brand" name="car_brand" type="text">
+            </div>
+            <div class="uk-width-1-4@s">
+                <label class="uk-form-label" for="car_model"> *Car Model</label>
+                <input id="car_model" class="uk-input" v-model="car_model" name="car_model" type="text">
+            </div>
+        </template>
+        <!--Select car-->
+        <div v-else class="uk-width-1-2@s">
             <label class="uk-form-label" for="car">Car</label>
-            <select id="car" name="car" class="uk-select" :height="5">
+            <select v-model="car" id="car" name="car" class="uk-select" :height="5">
                 <template v-if="account.isAuthenticated && account.cars">
                     <option v-for="car in account.cars"
                             :key="car.id"
@@ -41,7 +69,7 @@
         </div>
         <!--Stars-->
         <div class="uk-width-1-1@s">
-            <vue-stars name="stars">
+            <vue-stars v-model="stars" name="stars">
                 <vk-icon icon="star" class="fill-star" slot-scope="props" slot="activeLabel"></vk-icon>
                 <vk-icon icon="star" slot-scope="props" slot="inactiveLabel"></vk-icon>
             </vue-stars>
@@ -54,6 +82,7 @@
         <!--</div>-->
         <!--</div>-->
     </form>
+    <hr>
     <article class="uk-comment">
         <div class="uk-comment-meta uk-margin-top"> * - Requirement fields</div>
     </article>
@@ -76,7 +105,14 @@ export default {
 
     data () {
         return {
-            error: []
+            error: [],
+            part: null,
+            part_category: null,
+            part_name: '',
+            car: null,
+            car_brand: null,
+            car_model: null,
+            stars: 0
         }
     },
 
@@ -88,7 +124,8 @@ export default {
 
     computed: {
         ...mapState({
-            account: state => state.account
+            account: state => state.account,
+            categories: state => state.all.partCategories
         }),
         ...mapGetters({
             partTypes: 'getPartTypes'
@@ -98,12 +135,11 @@ export default {
     methods: {
         sendFB () {
             const form = this.$refs.form2.elements;
-            console.log('Send FB: ' + form)
             this.$http.post('/api/feedbacks/' + this.brandName + '/create/', {
-                part: Number(form.part.value),
-                car: Number(form.car.value),
+                part: this.part,
+                car: this.car,
                 description: form.fb.value,
-                stars: form.stars.value,
+                stars: this.stars,
 //                images: form.image.value
             }).then(
                 response => {
