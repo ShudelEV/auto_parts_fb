@@ -58,6 +58,12 @@ class PartSerializer(serializers.ModelSerializer):
         fields = ['id', 'type', 'car']
 
 
+class CreatePartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Part
+        fields = ['type', 'brand', 'car']
+
+
 class FeedBackSerializer(serializers.ModelSerializer):
     # represent field using __str__ method of the model (read only)
     owner = StringRelatedField()
@@ -66,3 +72,9 @@ class FeedBackSerializer(serializers.ModelSerializer):
     class Meta:
         model = FeedBack
         fields = ['id', 'owner', 'part', 'description', 'stars', 'images', 'created', 'updated']
+
+
+class CreateFeedBackSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FeedBack
+        fields = ['part', 'description', 'stars', 'images']
