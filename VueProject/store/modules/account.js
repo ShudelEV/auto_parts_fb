@@ -1,6 +1,8 @@
 import Vue from 'vue'
 
 const state = {
+    suggestLogin: false,
+    showLoginWindow: false,
     id: null,
     name: null,
     email: null,
@@ -25,7 +27,7 @@ const actions = {
         )
     },
     // log in
-    getToken ({ commit, dispatch }, { form, show }) {
+    getToken ({ state, commit, dispatch }, { form, show }) {
         Vue.axios.post(
                 '/auth/token/create/',
                 { 'username': form.username, 'password': form.password }
@@ -37,7 +39,8 @@ const actions = {
                 // get a user information
                 dispatch('getUser');
                 // close the login window
-                show();
+                state.showLoginWindow = false;
+                state.suggestLogin = false;
             }
         ).catch(
             error => commit('HANDLE_ERROR', error)

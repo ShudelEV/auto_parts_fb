@@ -10,9 +10,9 @@
 .idea
 **/migrations/
 .sass-cache
+PartsFB/static/images/
 /static/js/
 /static/public/
-firebase_auth/*.json
 
 ### Vue ###
 .DS_Store

@@ -7,7 +7,7 @@
             <img src="/static/images/header.jpeg" alt="" id="offset">
             <div class="uk-container uk-position-top">
                 <vk-sticky bottom="#offset">
-                    <nav-bar-login :logo="logo" @showLoginWindow="showLoginWindow=true"></nav-bar-login>
+                    <nav-bar-login :logo="logo"></nav-bar-login>
                 </vk-sticky>
             </div>
         </template>
@@ -15,13 +15,13 @@
         <template v-else>
             <vk-card uk-sticky>
                 <div class="uk-container uk-position-top">
-                    <nav-bar-login :logo="logo" @showLoginWindow="showLoginWindow=true"></nav-bar-login>
+                    <nav-bar-login :logo="logo"></nav-bar-login>
                 </div>
             </vk-card>
         </template>
     </div>
     <!--Login Window-->
-    <login-window :show="showLoginWindow" @close="showLoginWindow=false"></login-window>
+    <login-window :show="showLoginWindow"></login-window>
     <!--Body-->
     <div class="uk-section uk-section-default uk-section-xsmall">
         <div class="uk-container">
@@ -34,6 +34,7 @@
 <script>
 import NavBarLogin from './components/NavBarLogin.vue'
 import LoginWindow from './components/Login.vue'
+import { mapState } from 'vuex'
 
 export default {
     name: 'App',
@@ -43,7 +44,6 @@ export default {
     data () {
         return {
             logo: 'PartsOK',
-            showLoginWindow: false,
         }
     },
 
@@ -63,5 +63,9 @@ export default {
             this.$store.dispatch('getUser')
         }
     },
+
+    computed: mapState({
+        showLoginWindow: state => state.account.showLoginWindow
+    })
 }
 </script>

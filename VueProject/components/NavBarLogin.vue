@@ -8,7 +8,7 @@
         <vk-navbar-nav slot="right">
             <!--Register/Login bar-->
             <vk-navbar-item v-if="!account.isAuthenticated">
-                <vk-button class="uk-button-small" @click="$emit('showLoginWindow')">Login</vk-button>
+                <vk-button class="uk-button-small" @click="account.showLoginWindow = true">Login</vk-button>
             </vk-navbar-item>
             <!--Account bar-->
             <vk-navbar-item v-else>

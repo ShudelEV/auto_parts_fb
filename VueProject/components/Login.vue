@@ -27,7 +27,7 @@
         </vk-tabs-item>
     </vk-tabs>
     <div slot="footer" class="uk-clearfix">
-        <vk-button @click="$emit('close')" size="small" class="uk-float-left">Cancel</vk-button>
+        <vk-button @click="account.showLoginWindow = false" size="small" class="uk-float-left">Cancel</vk-button>
         <vk-button v-if="activeTab == 0" @click="login()" type="primary" size="small" class="uk-float-right">Login</vk-button>
         <vk-button v-else @click="register()" type="primary" size="small" class="uk-float-right">Reg</vk-button>
     </div>
@@ -62,8 +62,7 @@ export default {
                 form: {
                     'username': form.login.value,
                     'password': form.password.value
-                },
-                show: () => this.$emit('close')
+                }
             })
         },
         // get token
@@ -73,8 +72,7 @@ export default {
                 form: {
                     'username': form.login.value,
                     'password': form.password.value
-                },
-                show: () => this.$emit('close')
+                }
             })
         }
     }

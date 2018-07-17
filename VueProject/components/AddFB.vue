@@ -23,7 +23,7 @@
         <div v-else class="uk-width-1-2@s">
             <label class="uk-form-label" for="part"> *Part</label>
             <select v-model="part" id="part" name="part" class="uk-select" autofocus>
-                <option></option>
+                <!--<option></option>-->
                 <option :value="-1">&emsp;Add..</option>
                 <template v-for="(value, key) in partTypes">
                     <option disabled style="color: darkgray">{{ key }}</option>
@@ -37,13 +37,39 @@
         <!--Add car-->
         <template v-if="car == -1">
             <div class="uk-width-1-2@s"></div>
-            <div class="uk-width-1-4@s">
-                <label class="uk-form-label" for="car_brand"> *Car Brand</label>
+            <div class="uk-width-1-6@s">
+                <label class="uk-form-label" for="car_brand"> Car Brand</label>
                 <input id="car_brand" class="uk-input" v-model="car_brand" name="car_brand" type="text">
             </div>
-            <div class="uk-width-1-4@s">
-                <label class="uk-form-label" for="car_model"> *Car Model</label>
+            <div class="uk-width-1-6@s">
+                <label class="uk-form-label" for="car_model"> Car Model</label>
                 <input id="car_model" class="uk-input" v-model="car_model" name="car_model" type="text">
+            </div>
+            <div class="uk-width-1-6@s">
+                <label class="uk-form-label" for="car_year"> Car Year</label>
+                <select id="car_year" v-model="car_year" name="car_year" class="uk-select">
+                    <option></option>
+                    <option v-for="year in yearList(1980, 2018)">{{ year }}</option>
+                </select>
+            </div>
+            <!--<div class="uk-width-1-2@s"></div>-->
+            <div class="uk-width-1-6@s">
+                <label class="uk-form-label" for="engine_volume"> Engine Volume</label>
+                <input id="engine_volume" class="uk-input" v-model="engine_volume" name="engine_volume" type="text">
+            </div>
+            <div class="uk-width-1-6@s">
+                <label class="uk-form-label" for="engine_type"> Engine Type</label>
+                <select id="engine_type" v-model="engine_type" name="engine_type" class="uk-select">
+                    <option></option>
+                    <option v-for="(value, key) in engineTypes" :value="key">{{ value }}</option>
+                </select>
+            </div>
+            <div class="uk-width-1-6@s">
+                <label class="uk-form-label" for="gear"> Gear Type</label>
+                <select id="gear" v-model="gear" name="gear" class="uk-select">
+                    <option></option>
+                    <option v-for="(value, key) in gearTypes" :value="key">{{ value }}</option>
+                </select>
             </div>
         </template>
         <!--Select car-->
@@ -86,12 +112,20 @@
     <article class="uk-comment">
         <div class="uk-comment-meta uk-margin-top"> * - Requirement fields</div>
     </article>
-    <!--Buttons-->
     <hr>
-    <p>
-        <vk-button class="uk-margin-right">Clear</vk-button>
-        <vk-button type="primary" @click="sendFB()">Send</vk-button>
-    </p>
+    <!--Buttons-->
+    <template v-if="!account.suggestLogin">
+        <p>
+            <vk-button class="uk-margin-right">Clear</vk-button>
+            <vk-button type="primary" @click="preSend()">Send</vk-button>
+        </p>
+    </template>
+    <!--Suggest to log in-->
+    <template v-else>
+        <p>Хотите войти, чтобы в дальнейшем у Вас была возможность редактировать Ваши комментарии и видеть добавленные вами авто?</p>
+        <vk-button class="uk-margin-right" @click="sendFB()">No</vk-button>
+        <vk-button type="primary" @click="$store.state.account.showLoginWindow = true">Yes</vk-button>
+    </template>
 </div>
 </template>
 
@@ -112,7 +146,25 @@ export default {
             car: null,
             car_brand: null,
             car_model: null,
-            stars: 0
+            car_year: 0,
+            engine_volume: null,
+            engine_type: 0,
+            gear: null,
+            stars: 0,
+            engineTypes: {
+                1: 'benzine',
+                2: 'diesel',
+                3: 'gas-benzine',
+                4: 'electric',
+                5: 'hybrid'
+            },
+            gearTypes: {
+                1: 'manual',
+                2: 'automatic',
+                3: 'semi-automatic',
+                4: 'CVT'
+            },
+            suggestLogin: false
         }
     },
 
@@ -133,6 +185,11 @@ export default {
     },
 
     methods: {
+        preSend () {
+            if (!this.account.isAuthenticated) {
+                this.account.suggestLogin = true
+            } else { this.sendFB() }
+        },
         sendFB () {
             const form = this.$refs.form2.elements;
             this.$http.post('/api/feedbacks/' + this.brandName + '/create/', {
@@ -140,18 +197,28 @@ export default {
                 car: this.car,
                 description: form.fb.value,
                 stars: this.stars,
-//                images: form.image.value
+//               images: form.image.value
             }).then(
                 response => {
                     this.goBack();
                     console.log('Response: ' + response);
                 }
             ).catch(
-                error => {this.error = error; console.log('Response: ' + response)}
+                error => {
+                    this.error = error;
+                    console.log('Response: ' + response)
+                }
             )
         },
         goBack() {
             window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
+        },
+        yearList (start, end) {
+            let res = [];
+            for (let i = end; i >= start; i--) {
+                res.push(i)
+            }
+            return res
         }
     }
 }
