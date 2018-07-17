@@ -6,19 +6,33 @@
         </div>
         <div class="uk-width-1-2@s">
             <label class="uk-form-label" for="part"> *Part</label>
-            <select id="part" class="uk-select">
-                <option>Add..</option>
-                <option>Option 01</option>
-                <option>Option 02</option>
+            <select id="part" class="uk-select" autofocus>
+                <option></option>
+                <option :value="-1">&emsp;Add..</option>
+                <template v-for="(value, key) in partTypes">
+                    <option disabled style="color: darkgray">{{ key }}</option>
+                    <option v-for="partType in value"
+                            :key="partType.id"
+                            :value="partType.id"
+                    > &emsp;{{ partType.name }} </option>
+                </template>
             </select>
         </div>
         <!--Car section-->
         <div class="uk-width-1-2@s">
             <label class="uk-form-label" for="car">Car</label>
-            <select id="car" class="uk-select">
-                <option>Add..</option>
-                <option>Option 01</option>
-                <option>Option 02</option>
+            <select id="car" class="uk-select" :height="5">
+                <template v-if="account.isAuthenticated && account.cars">
+                    <option v-for="car in account.cars"
+                            :key="car.id"
+                            :value="car.id"
+                    >{{ car.name }}</option>
+                    <option :value="-1">Add..</option>
+                </template>
+                <template v-else>
+                    <option></option>
+                    <option :value="-1">Add..</option>
+                </template>
             </select>
         </div>
         <!--Description-->
@@ -47,10 +61,27 @@
 </template>
 
 <script>
+import { mapGetters, mapState } from 'vuex'
+
 export default {
     name: 'AddFB',
 
-    props: ['brandName']
+    props: ['brandName'],
+
+    created () {
+        this.$http.get('/api/part-types/').then(
+            response => this.$store.commit('SET_PART_TYPES', response.data)
+        )
+    },
+
+    computed: {
+        ...mapState({
+            account: state => state.account
+        }),
+        ...mapGetters({
+            partTypes: 'getPartTypes'
+        })
+    }
 }
 </script>
 

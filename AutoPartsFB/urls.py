@@ -20,7 +20,7 @@ urlpatterns += [
     re_path(r'^auth/o/', include('social_django.urls', namespace='social'))
 ]
 
-urlpatterns += [path('', include('PartsFB.urls'))]
-
 # urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += [path('', include('PartsFB.urls'))]

@@ -47,6 +47,12 @@ export default {
         }
     },
 
+    created () {
+        this.$http.get('/api/part-brands/').then(
+            response => this.$store.commit('SET_PART_BRANDS', response.data)
+        )
+    },
+
     mounted () {
         let expires_at = JSON.parse(localStorage.getItem('expires_at'));
         if (new Date(expires_at) < new Date(Date.now())) {

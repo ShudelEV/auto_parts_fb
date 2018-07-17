@@ -28,7 +28,7 @@ class PartBrand(Manufacturer):
 
 
 class PartType(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
     CATEGORY_CHOICES = tuple((key, _(value)) for key, value in PART_CATEGORIES.items())
     category = models.CharField(max_length=2, choices=CATEGORY_CHOICES)
 

@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from rest_framework.relations import StringRelatedField, SlugRelatedField
+from rest_framework.fields import JSONField
 from django.contrib.auth.models import User
-from PartsFB.models import PartBrand, FeedBack, Car, CarModel, Part
+from PartsFB.models import PartBrand, FeedBack, Car, CarModel, Part, PartType
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -40,6 +41,12 @@ class CarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
         fields = ['id', 'owner', 'model', 'manufacture_year', 'engine_volume', 'engine_type', 'gear', 'body_style']
+
+
+class PartTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PartType
+        fields = ['id', 'name', 'category']
 
 
 class PartSerializer(serializers.ModelSerializer):

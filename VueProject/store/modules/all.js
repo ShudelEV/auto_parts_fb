@@ -1,5 +1,7 @@
 const state = {
-    partBrands: []
+    partBrands: [],
+    partTypes: [],
+    partCategories: null
 };
 
 const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I",
@@ -7,6 +9,7 @@ const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I",
     "V", "W", "X", "Y", "Z"];
 
 const getters = {
+    // part brands are sorted and divided by alphabet
     sortedPartBrands ( state ) {
         let res = {};
         for (let a of alphabet) {
@@ -20,6 +23,18 @@ const getters = {
     },
     getFBByBrand: state => name => {
         return state.partBrands.find((i => i.name == name)).feedbacks
+    },
+    // part types are divided by categories
+    getPartTypes ( state ) {
+        let res = {};
+        for (let category in state.partCategories) {
+            let item = state.partTypes
+                .filter(i => i.category === category);
+            if (item.length) {
+                res[state.partCategories[category]] = item.sort((a, b) => a.name > b.name ? 1 : -1);
+            }
+        }
+        return res
     }
 };
 
@@ -38,8 +53,11 @@ const mutations = {
         } else {
             console.log('store/SET_BRAND_FEEDBACKS: A brand item ' + name + ' is not find')
         }
-
-    }
+    },
+    SET_PART_TYPES (state, { category_list, part_types }) {
+        state.partTypes = part_types;
+        state.partCategories = category_list
+    },
 };
 
 export default {

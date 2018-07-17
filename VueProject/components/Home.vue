@@ -47,12 +47,6 @@ export default {
         }
     },
 
-    created () {
-        this.$http.get('/api/part-brands/').then(
-            response => this.$store.commit('SET_PART_BRANDS', response.data)
-        )
-    },
-
     computed: {
         ...mapGetters(['sortedPartBrands']),
     },
