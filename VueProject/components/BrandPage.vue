@@ -10,6 +10,7 @@
     <div class="uk-width-1-4@m uk-margin">
         <h2>{{brandName}}</h2>
         <ul class="uk-iconnav">
+            <li><vk-icon-link icon="arrow-left" @click="goBack()" title="Go back"></vk-icon-link></li>
             <li><vk-icon-link icon="info" @click="showBrandInfo=true" title="Info"></vk-icon-link></li>
             <li v-if="$route.name != 'AddFB'">
                 <vk-icon-link icon="plus-circle"
@@ -58,6 +59,9 @@ export default {
 
     methods: {
         fetchData () {
+        },
+        goBack () {
+            window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
         }
     }
 }

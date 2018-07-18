@@ -1,6 +1,14 @@
 <template>
-<!--Feedbacks section-->
-<ul uk-accordion="multiple: true" class="uk-list uk-list-divider">
+<span>
+<!--Collapse button-->
+<span class="uk-clearfix" v-show="!!feedbacks.length">
+    <vk-icon-link title="Collapse" class="uk-float-right"
+                  :icon="collapse ? 'chevron-up' : 'chevron-down'"
+                  @click="toggleAccordion()"
+    ></vk-icon-link>
+</span>
+    <!--Feedbacks section-->
+<ul uk-accordion="multiple: true" id="accordion" class="uk-list uk-list-divider">
     <!--Feedback-->
     <li v-for="fb in feedbacks" :key="fb.id">
         <!--Header-->
@@ -10,6 +18,7 @@
                 <vk-icon-image src="/static/images/car.svg" uk-svg class="uk-margin-small-left"></vk-icon-image>
                 {{ fb.part.car.model }}
             </template>
+            <!--Stars-->
             <div class="uk-margin-medium-left uk-display-inline-block">
                 <vk-icon v-for="i in [1,2,3,4,5]" :key="i"
                      :class="i <= fb.stars ? 'fill-star' : ''"
@@ -43,11 +52,10 @@
         </div>
     </li>
 </ul>
+</span>
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
 export default {
     name: 'AllFB',
 
@@ -56,7 +64,8 @@ export default {
             loading: false,
             error: null,
             feedbacks: [],
-            showBrandInfo: false
+            showBrandInfo: false,
+            collapse: false
         }
     },
 
@@ -68,12 +77,6 @@ export default {
 
     watch: {
         '$route': 'fetchData'
-    },
-
-    computed: {
-        ...mapState({
-            brandItems: state => state.all.partBrands
-        })
     },
 
     methods: {
@@ -93,6 +96,18 @@ export default {
                     this.loading = false;
                     this.error = error.response.data
                 })
+        },
+        toggleAccordion () {
+            this.collapse = !this.collapse;
+            const acc = UIkit.accordion(accordion);
+            for (let item of acc.items) {
+                if (this.collapse && item.className != 'uk-open') {
+                    UIkit.accordion(accordion).toggle(acc.items.indexOf(item))
+                }
+                if (!this.collapse && item.className == 'uk-open') {
+                    UIkit.accordion(accordion).toggle(acc.items.indexOf(item))
+                }
+            }
         }
     }
 }
