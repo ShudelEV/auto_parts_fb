@@ -29,9 +29,11 @@ class PartBrandDetailSerializer(serializers.ModelSerializer):
 
 
 class CarModelSerializer(serializers.ModelSerializer):
+    brand = StringRelatedField()
+
     class Meta:
         model = CarModel
-        fields = '__all__'
+        fields = ['id', 'name', 'brand']
 
 
 class CarSerializer(serializers.ModelSerializer):

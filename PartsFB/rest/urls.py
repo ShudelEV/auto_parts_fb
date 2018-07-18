@@ -17,4 +17,5 @@ urlpatterns += [
     path('part-brands/', views.PartBrandShortViewSet.as_view({'get': 'list'})),
     path('feedbacks/<str:brand_name>/', include(feedbacks_urls)),
     path('part-types/', views.PartTypeList.as_view()),
+    path('car-models/', views.CarModelList.as_view()),
 ]

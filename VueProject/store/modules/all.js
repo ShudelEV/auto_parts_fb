@@ -1,7 +1,9 @@
 const state = {
     partBrands: [],
     partTypes: [],
-    partCategories: null
+    partCategories: null,
+    carBrands: null,
+    carModels: null
 };
 
 const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I",
@@ -35,6 +37,9 @@ const getters = {
             }
         }
         return res
+    },
+    getCarModels: state => brand => {
+        return state.carModels ? state.carModels.filter((i => i.brand == brand)) : []
     }
 };
 
@@ -58,7 +63,11 @@ const mutations = {
         state.partTypes = part_types;
         state.partCategories = category_list
     },
-};
+    SET_CAR_MODELS (state, { brand_list, car_models }) {
+        state.carBrands = brand_list;
+        state.carModels = car_models;
+    },
+}
 
 export default {
     state,

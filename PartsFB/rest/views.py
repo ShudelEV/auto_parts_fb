@@ -2,9 +2,9 @@ from rest_framework import viewsets, status, generics, mixins
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from PartsFB.models import PartBrand, FeedBack, PartType, Part
+from PartsFB.models import PartBrand, FeedBack, PartType, Part, CarModel, CarBrand
 from .serializers import PartBrandDetailSerializer, PartBrandShortSerializer, FeedBackSerializer, \
-    PartTypeSerializer, CreateFeedBackSerializer, CreatePartSerializer
+    PartTypeSerializer, CreateFeedBackSerializer, CreatePartSerializer, CarModelSerializer
 from django.views.decorators.csrf import csrf_protect
 from django.db.models import Prefetch
 from PartsFB.data import PART_CATEGORIES
@@ -50,6 +50,19 @@ class PartTypeList(mixins.ListModelMixin, generics.GenericAPIView):
         part_types = response.data
         # Add PART_CATEGORIES to response
         response.data = {'category_list': PART_CATEGORIES, 'part_types': part_types}
+        return response
+
+
+class CarModelList(mixins.ListModelMixin, generics.GenericAPIView):
+    queryset = CarModel.objects.all()
+    serializer_class = CarModelSerializer
+
+    def get(self, request, *args, **kwargs):
+        response = self.list(request, *args, **kwargs)
+        car_models = response.data
+        brand_list = [i.name for i in CarBrand.objects.all().only('name')]
+        # Add brand list to response
+        response.data = {'brand_list': brand_list, 'car_models': car_models}
         return response
 
 
