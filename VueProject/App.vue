@@ -2,6 +2,7 @@
 <div>
     <!--Navbar-->
     <div class="uk-section uk-section-default uk-padding-remove-vertical">
+        <nprogress-container></nprogress-container>
         <!--Home page navbar-->
         <template v-if="$route.name == 'Home'">
             <img src="/static/images/header.jpeg" alt="" id="offset">
@@ -35,15 +36,16 @@
 import NavBarLogin from './components/NavBarLogin.vue'
 import LoginWindow from './components/Login.vue'
 import { mapState } from 'vuex'
+import NprogressContainer from 'vue-nprogress/src/NprogressContainer'
 
 export default {
     name: 'App',
 
-    components: { NavBarLogin, LoginWindow },
+    components: { NavBarLogin, LoginWindow, NprogressContainer },
 
     data () {
         return {
-            logo: 'PartsOK',
+            logo: 'PartsOK'
         }
     },
 

@@ -10,7 +10,7 @@ import AllFB from './components/AllFB.vue'
 // tell Vue to use the vue-router plugin
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
     mode: 'history',
     // base: __dirname,
     routes: [
@@ -39,4 +39,6 @@ export default new Router({
             ]
         }
     ]
-})
+});
+
+export default router

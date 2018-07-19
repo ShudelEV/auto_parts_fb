@@ -1,7 +1,7 @@
 <template>
 <span>
 <!--Collapse button-->
-<span class="uk-clearfix" v-show="!!feedbacks.length">
+<span class="uk-clearfix" v-if="!!feedbacks.length">
     <vk-icon-link title="Collapse" class="uk-float-right"
                   :icon="collapse ? 'chevron-up' : 'chevron-down'"
                   @click="toggleAccordion()"
@@ -73,6 +73,9 @@ export default {
 
     created () {
         this.fetchData();
+//        console.log(this.nprogress)
+//        this.nprogress.start();
+//        setTimeout(this.nprogress.done, 3000)
     },
 
     watch: {
