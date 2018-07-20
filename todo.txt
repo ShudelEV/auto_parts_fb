@@ -5,3 +5,6 @@
 5. alter the part type in the part model as select field
 6. alter the user model to Profile (custom user model)
     need for feedbacks - user_name and avatar
+7. refactor the progress bar position
+    (to try a uk-overlay class, to play with position or to add to nav-bar component)
+8.

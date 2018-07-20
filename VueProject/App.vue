@@ -1,8 +1,9 @@
 <template>
 <div>
+    <!--Load Progress Bar-->
+    <nprogress-container style="height: 3px"></nprogress-container>
     <!--Navbar-->
     <div class="uk-section uk-section-default uk-padding-remove-vertical">
-        <nprogress-container></nprogress-container>
         <!--Home page navbar-->
         <template v-if="$route.name == 'Home'">
             <img src="/static/images/header.jpeg" alt="" id="offset">
