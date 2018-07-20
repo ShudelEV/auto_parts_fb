@@ -17,6 +17,8 @@
             <template v-if="fb.part.car" >
                 <vk-icon-image src="/static/images/car.svg" uk-svg class="uk-margin-small-left"></vk-icon-image>
                 {{ fb.part.car.model }}
+                {{ fb.part.car.manufacture_year ? ' ' + fb.part.car.manufacture_year + 'm.y.' : '' }}
+                {{ fb.part.car.engine_volume ? ' ' + fb.part.car.engine_volume + 'cm3' : '' }}
             </template>
             <!--Stars-->
             <div class="uk-margin-medium-left uk-display-inline-block">

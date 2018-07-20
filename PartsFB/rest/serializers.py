@@ -36,6 +36,12 @@ class CarModelSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'brand']
 
 
+class CreateCarModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarModel
+        fields = '__all__'
+
+
 class CarSerializer(serializers.ModelSerializer):
     owner = StringRelatedField()
     model = StringRelatedField()
@@ -43,6 +49,12 @@ class CarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
         fields = ['id', 'owner', 'model', 'manufacture_year', 'engine_volume', 'engine_type', 'gear', 'body_style']
+
+
+class CreateCarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Car
+        fields = '__all__'
 
 
 class PartTypeSerializer(serializers.ModelSerializer):

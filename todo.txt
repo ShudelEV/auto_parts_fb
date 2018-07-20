@@ -7,4 +7,7 @@
     need for feedbacks - user_name and avatar
 7. refactor the progress bar position
     (to try a uk-overlay class, to play with position or to add to nav-bar component)
-8.
+8. ref the display of a car in all_feedbacks page
+9. error handler for the create fb
+10. vue-router: errors when to press F5
+11.

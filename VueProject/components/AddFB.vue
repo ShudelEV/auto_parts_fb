@@ -10,7 +10,7 @@
         <template v-if="part == -1">
             <div class="uk-width-1-4@s">
                 <label class="uk-form-label" for="part_category">*Part Category</label>
-                <select id="part_category" v-model="part_category" name="part_category" class="uk-select" autofocus>
+                <select id="part_category" v-model="new_part_type.category" name="part_category" class="uk-select" autofocus>
                     <option v-for="(value, key) in categories"
                             :value="key"
                     >{{ value }}</option>
@@ -18,7 +18,7 @@
             </div>
             <div class="uk-width-1-4@s">
                 <label class="uk-form-label" for="part_name">*Part Name</label>
-                <input id="part_name" class="uk-input" v-model="part_name" name="part_name" type="text">
+                <input id="part_name" class="uk-input" v-model="new_part_type.name" name="part_name" type="text">
             </div>
         </template>
         <!--Select part-->
@@ -150,7 +150,7 @@
     </article>
     <hr>
     <!--Buttons-->
-    <template v-if="!account.suggestLogin">
+    <template v-if="!account.showSuggestLogin">
         <p>
             <vk-button class="uk-margin-right" @click="resetForm()">Clear</vk-button>
             <vk-button type="primary"
@@ -164,7 +164,7 @@
     <template v-else>
         <p>Хотите войти, чтобы в дальнейшем у Вас была возможность редактировать
             Ваши комментарии и видеть добавленные вами авто?</p>
-        <vk-button class="uk-margin-right" @click="sendFB()">No</vk-button>
+        <vk-button class="uk-margin-right" @click="sendFBAnonymous()">No</vk-button>
         <vk-button type="primary" @click="$store.state.account.showLoginWindow = true">Yes</vk-button>
     </template>
 </div>
@@ -183,8 +183,10 @@ export default {
             error: [],
             message: [],
             part: null,
-            part_category: null,
-            part_name: '',
+            new_part_type: {
+                category: null,
+                name: '',
+            },
             car: null,
             new_car: {
                 brand: null,
@@ -222,7 +224,7 @@ export default {
     computed: {
         sendPermit: function () {
             // Check part fields
-            const a = this.part != -1 ? !!this.part : !!this.part_category && !!this.part_name;
+            const a = this.part != -1 ? !!this.part : !!this.new_part_type.category && !!this.new_part_type.name;
             // Check description
             const b = !!this.description;
             return a && b
@@ -252,7 +254,7 @@ export default {
 
     methods: {
         preSend () {
-            if (!Number(this.new_car.engine_volume)) {
+            if (Number(this.new_car.engine_volume) === NaN) {
                 // Validate engine volume field
                 this.message.push({ message: 'Incorrect engine volume.', status: 'warning' })
             }
@@ -262,28 +264,45 @@ export default {
                 setTimeout(this.setStar, 1250, 0);
                 // Push message
                 this.message.push({ message: 'Please, note the part.', status: 'warning' })
-            } else if (!this.account.isAuthenticated) {
-                this.account.suggestLogin = true
+            } else if (
+                // Show the suggest only once for a session
+                !this.account.isAuthenticated && !this.account.showSuggestLogin && !sessionStorage.getItem('notSuggestLogin')
+            ) {
+                this.account.showSuggestLogin = true
             } else { this.sendFB() }
         },
-        setStar (a) {this.stars = a},
+        setStar (a) { this.stars = a },
+        sendFBAnonymous () {
+            sessionStorage.setItem('notSuggestLogin', true);
+            this.sendFB()
+        },
         sendFB () {
             let form = {
-                part: this.part,
                 description: this.description,
                 stars: this.stars,
 //               images: form.image.value
             };
+            if ( this.part != -1 ) {
+                form.part = this.part
+            } else {
+                // Create a new part type
+                form.new_part_type = this.new_part_type;
+            }
             if ( this.car != -1 || !this.new_car.brand ) {
                 form.car = this.car
             } else {
+                // Create a new car
                 form.new_car = this.new_car;
-                this.new_car.model == -1 ? delete form.new_car.model : delete form.new_car.model_name;
+                form.new_car.engine_volume = Number(this.new_car.engine_volume);
+                if (this.new_car.model == -1) {
+                    delete form.new_car.model
+                } else {
+                    delete form.new_car.model_name;
+                }
             }
             this.$http.post('/api/feedbacks/' + this.brandName + '/create/', form)
                 .then(response => { this.goBack(); })
-                .catch(error => { this.error = error; });
-            this.account.suggestLogin = false
+                .catch(error => { this.error = error; })
         },
         goBack() {
             window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
@@ -299,8 +318,10 @@ export default {
             this.error = [];
             this.message = [];
             this.part = null;
-            this.part_category = null;
-            this.part_name = '';
+            this.new_part_type = {
+                category: null,
+                name: ''
+            };
             this.car = null;
             this.new_car = {
                 brand: null,

@@ -50,7 +50,13 @@ export default {
         this.fetchData();
         // when window is updated (F5)
         this.brandName = this.$route.params.name;
-        this.$router.push({ name: 'AllFB' })
+        const brand = this.$store.state.all.partBrands.find(i => i.name == this.brandName);
+        if (brand.fb_quantity) {
+            this.$router.push({ name: 'AllFB' })
+        } else {
+            this.$router.push({ name: 'AddFB' })
+        }
+
     },
 
     watch: {

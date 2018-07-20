@@ -1,8 +1,8 @@
 import Vue from 'vue'
 
 const state = {
-    suggestLogin: false,
     showLoginWindow: false,
+    showSuggestLogin: false,
     id: null,
     name: null,
     email: null,
@@ -40,7 +40,7 @@ const actions = {
                 dispatch('getUser');
                 // close the login window
                 state.showLoginWindow = false;
-                state.suggestLogin = false;
+                state.showSuggestLogin = false;
             }
         ).catch(
             error => commit('HANDLE_ERROR', error)
@@ -55,9 +55,12 @@ const actions = {
         )
     },
     // log out
-    destroyToken ({ commit }) {
+    destroyToken ({ state, commit }) {
         Vue.axios.post('/auth/token/destroy/').then(
-            () => { commit('REMOVE_USER') }
+            () => {
+                commit('REMOVE_USER');
+                state.showSuggestLogin = false;
+            }
         ).catch(
             error => commit('HANDLE_ERROR', error)
         )
