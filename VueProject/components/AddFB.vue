@@ -9,7 +9,7 @@
         <!--Add part-->
         <template v-if="part == -1">
             <div class="uk-width-1-4@s">
-                <label class="uk-form-label" for="part_category"> *Part Category</label>
+                <label class="uk-form-label" for="part_category">*Part Category</label>
                 <select id="part_category" v-model="part_category" name="part_category" class="uk-select" autofocus>
                     <option v-for="(value, key) in categories"
                             :value="key"
@@ -17,13 +17,13 @@
                 </select>
             </div>
             <div class="uk-width-1-4@s">
-                <label class="uk-form-label" for="part_name"> *Part Name</label>
+                <label class="uk-form-label" for="part_name">*Part Name</label>
                 <input id="part_name" class="uk-input" v-model="part_name" name="part_name" type="text">
             </div>
         </template>
         <!--Select part-->
         <div v-else class="uk-width-1-2@s">
-            <label class="uk-form-label" for="part"> *Part</label>
+            <label class="uk-form-label" for="part">*Part</label>
             <select v-model="part" id="part" name="part" class="uk-select" autofocus>
                 <!--<option></option>-->
                 <option :value="-1">&emsp;Add..</option>
@@ -40,9 +40,10 @@
         <template v-if="car == -1">
             <div class="uk-width-1-2@s"></div>
             <div class="uk-width-1-6@s">
-                <label class="uk-form-label" for="car_brand"> Car Brand</label>
-                <select @input="addCarModel = false"
-                        id="car_brand" v-model="car_brand"
+                <label class="uk-form-label" for="car_brand">Car Brand</label>
+                <!--Reset the car model name if the car model is changed-->
+                <select @input="new_car.model_name = ''; new_car.model = null"
+                        id="car_brand" v-model="new_car.brand"
                         name="car_brand" class="uk-select"
                 >
                     <option></option>
@@ -50,28 +51,28 @@
                 </select>
             </div>
             <div class="uk-width-1-6@s">
-                <label class="uk-form-label" for="car_model"> Car Model</label>
-                <input v-if="addCarModel" autofocus
-                       :disabled="!car_brand"
+                <label class="uk-form-label" for="car_model">Car Model</label>
+                <input v-if="new_car.model == -1" autofocus
+                       :disabled="!new_car.brand"
                        id="car_model" class="uk-input" type="text"
-                       v-model="car_model_name"
+                       v-model="new_car.model_name"
                        name="car_model_name"
                 >
                 <select v-else id="car_model"
-                        :disabled="!car_brand"
-                        v-model="car_model"
+                        :disabled="!new_car.brand"
+                        v-model="new_car.model"
                         name="car_model" class="uk-select"
                 >
                     <option value="-1">Add..</option>
-                    <option v-for="model in getCarModels(car_brand)"
+                    <option v-for="model in getCarModels(new_car.brand)"
                             :value="model.id"
                     >{{ model.name }}</option>
                 </select>
             </div>
             <div class="uk-width-1-6@s">
-                <label class="uk-form-label" for="car_year"> Car Year</label>
-                <select :disabled="!car_brand" id="car_year"
-                        v-model="car_year" name="car_year" class="uk-select"
+                <label class="uk-form-label" for="car_year">Car Year</label>
+                <select :disabled="!new_car.brand" id="car_year"
+                        v-model="new_car.year" name="car_year" class="uk-select"
                 >
                     <option></option>
                     <option v-for="year in yearList(1980, 2018)">{{ year }}</option>
@@ -79,26 +80,26 @@
             </div>
             <!--<div class="uk-width-1-2@s"></div>-->
             <div class="uk-width-1-6@s">
-                <label class="uk-form-label" for="engine_volume"> Engine Volume</label>
+                <label class="uk-form-label" for="engine_volume">Engine Volume</label>
                 <input id="engine_volume" class="uk-input"
-                       :disabled="!car_brand"
-                       v-model="engine_volume" maxlength="4"
+                       :disabled="!new_car.brand"
+                       v-model="new_car.engine_volume" maxlength="4"
                        name="engine_volume" type="text"
                 >
             </div>
             <div class="uk-width-1-6@s">
-                <label class="uk-form-label" for="engine_type"> Engine Type</label>
-                <select :disabled="!car_brand" id="engine_type"
-                        v-model="engine_type" name="engine_type" class="uk-select"
+                <label class="uk-form-label" for="engine_type">Engine Type</label>
+                <select :disabled="!new_car.brand" id="engine_type"
+                        v-model="new_car.engine_type" name="engine_type" class="uk-select"
                 >
                     <option></option>
                     <option v-for="(value, key) in engineTypes" :value="key">{{ value }}</option>
                 </select>
             </div>
             <div class="uk-width-1-6@s">
-                <label class="uk-form-label" for="gear"> Gear Type</label>
-                <select :disabled="!car_brand" id="gear"
-                        v-model="gear" name="gear" class="uk-select"
+                <label class="uk-form-label" for="gear">Gear Type</label>
+                <select :disabled="!new_car.brand" id="gear"
+                        v-model="new_car.gear" name="gear" class="uk-select"
                 >
                     <option></option>
                     <option v-for="(value, key) in gearTypes" :value="key">{{ value }}</option>
@@ -185,13 +186,15 @@ export default {
             part_category: null,
             part_name: '',
             car: null,
-            car_brand: null,
-            car_model: null,
-            car_model_name: '',
-            car_year: null,
-            engine_volume: null,
-            engine_type: null,
-            gear: null,
+            new_car: {
+                brand: null,
+                model: null,
+                model_name: '',
+                year: null,
+                engine_volume: '',
+                engine_type: null,
+                gear: null,
+            },
             description: '',
             stars: 0,
             engineTypes: {
@@ -206,8 +209,7 @@ export default {
                 2: 'automatic',
                 3: 'semi-automatic',
                 4: 'CVT'
-            },
-            suggestLogin: false,
+            }
         }
     },
 
@@ -218,15 +220,6 @@ export default {
     },
 
     computed: {
-        addCarModel: {
-            get: function () {
-                return this.car_model == -1 ? true : false
-            },
-            set: function () {
-                this.car_model_name = '';
-                this.car_model = null
-            }
-        },
         sendPermit: function () {
             // Check part fields
             const a = this.part != -1 ? !!this.part : !!this.part_category && !!this.part_name;
@@ -259,7 +252,7 @@ export default {
 
     methods: {
         preSend () {
-            if (!Number(this.engine_volume)) {
+            if (!Number(this.new_car.engine_volume)) {
                 // Validate engine volume field
                 this.message.push({ message: 'Incorrect engine volume.', status: 'warning' })
             }
@@ -275,24 +268,22 @@ export default {
         },
         setStar (a) {this.stars = a},
         sendFB () {
-            const form = this.$refs.form2.elements;
-            this.$http.post('/api/feedbacks/' + this.brandName + '/create/', {
+            let form = {
                 part: this.part,
-                car: this.car,
-                description: form.fb.value,
+                description: this.description,
                 stars: this.stars,
 //               images: form.image.value
-            }).then(
-                response => {
-                    this.goBack();
-                    console.log('Response: ' + response);
-                }
-            ).catch(
-                error => {
-                    this.error = error;
-                    console.log('Response: ' + response)
-                }
-            )
+            };
+            if ( this.car != -1 || !this.new_car.brand ) {
+                form.car = this.car
+            } else {
+                form.new_car = this.new_car;
+                this.new_car.model == -1 ? delete form.new_car.model : delete form.new_car.model_name;
+            }
+            this.$http.post('/api/feedbacks/' + this.brandName + '/create/', form)
+                .then(response => { this.goBack(); })
+                .catch(error => { this.error = error; });
+            this.account.suggestLogin = false
         },
         goBack() {
             window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
@@ -311,13 +302,15 @@ export default {
             this.part_category = null;
             this.part_name = '';
             this.car = null;
-            this.car_brand = null;
-            this.car_model = null;
-            this.car_model_name = '';
-            this.car_year = null;
-            this.engine_volume = null;
-            this.engine_type = null;
-            this.gear = null;
+            this.new_car = {
+                brand: null,
+                model: null,
+                model_name: '',
+                year: null,
+                engine_volume: '',
+                engine_type: null,
+                gear: null,
+            };
             this.description = '';
             this.stars = 0;
         }
