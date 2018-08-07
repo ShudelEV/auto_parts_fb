@@ -12,10 +12,12 @@ const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I",
 
 const getters = {
     // part brands are sorted and divided by alphabet
-    sortedPartBrands ( state ) {
+    sortedPartBrands: state => pattern => {
         let res = {};
+        const PATTERN = new RegExp(pattern, 'i');
         for (let a of alphabet) {
             let obj_a = state.partBrands
+                .filter(i => PATTERN.test(i.name))
                 .filter(i => i.name.startsWith(a) || i.name.startsWith(a.toLowerCase()));
             if (obj_a.length) {
                 res[a] = obj_a.sort((a, b) => a.fb_quantity > b.fb_quantity ? -1 : 1);
