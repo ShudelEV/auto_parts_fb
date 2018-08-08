@@ -111,3 +111,9 @@ PART_CATEGORIES = {
     "BI": _("Body and interior"),
     "OT": _("Other"),
 }
+
+# For generating an anonymous user
+FIRST_NAMES = {"Speedy", "Black", "White", "Major", "Kardan", "Carbon"}
+
+LAST_NAMES = {"Mladshyi", "Starshyi", "Speedy", "Allroad", "AWD"}
+

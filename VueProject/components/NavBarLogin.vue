@@ -7,7 +7,7 @@
         </vk-navbar-nav>
         <vk-navbar-nav slot="right">
             <!--Register/Login bar-->
-            <vk-navbar-item v-if="!account.isAuthenticated">
+            <vk-navbar-item v-if="!account.isAuthenticated || account.isAnonymous">
                 <vk-button class="uk-button-small" @click="account.showLoginWindow = true">Login</vk-button>
             </vk-navbar-item>
             <!--Account bar-->

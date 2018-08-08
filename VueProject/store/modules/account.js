@@ -8,7 +8,7 @@ const state = {
     email: null,
     isAuthenticated: false,
     isAnonymous: true,
-    error: [],
+    message: []
 };
 
 const getters = {
@@ -16,18 +16,18 @@ const getters = {
 
 const actions = {
     // sig up with email (login) and password
-    registerWithEmailAndPassword ({ dispatch, commit }, { form, show }) {
+    registerWithEmailAndPassword ({ dispatch, commit }, { form}) {
         Vue.axios.post(
             '/auth/users/create/',
             { 'username': form.username, 'password': form.password }
         ).then(
-            response => { dispatch('getToken', { form: form, show: show }) }
+            response => { dispatch('getToken', { form: form }) }
         ).catch(
             error => commit('HANDLE_ERROR', error)
         )
     },
     // log in
-    getToken ({ state, commit, dispatch }, { form, show }) {
+    getToken ({ state, commit, dispatch }, { form }) {
         Vue.axios.post(
                 '/auth/token/create/',
                 { 'username': form.username, 'password': form.password }
@@ -50,6 +50,36 @@ const actions = {
     getUser ({ commit }) {
         Vue.axios.get('/auth/me/').then(
             response => commit('SET_USER', response.data)
+        ).catch(
+            error => commit('HANDLE_ERROR', error)
+        )
+    },
+    // create anonymous user
+    registerAnonymousUser ({ dispatch, commit }, callBack) {
+        Vue.axios.get('/auth/users/create-anonymous/')
+            .then(
+                response => {
+                    dispatch('getTokenAnonymousUser', { form: response.data, callBack: callBack });
+                })
+            .catch(
+                error => commit('HANDLE_ERROR', error)
+            )
+    },
+    // log in
+    getTokenAnonymousUser ({ state, commit, dispatch }, { form, callBack }) {
+        Vue.axios.post(
+                '/auth/token/create/',
+                { 'username': form.username, 'password': form.password }
+        ).then(
+            response => {
+                commit('SET_SESSION_ANONYMOUS_USER', response);
+                localStorage.setItem('anonymous_user_name', form.username);
+                localStorage.setItem('anonymous_user_password', form.password);
+                // set axios default config
+                Vue.axios.defaults.headers.common['Authorization'] = 'Token ' + response.data.auth_token;
+                // send FB
+                callBack()
+            }
         ).catch(
             error => commit('HANDLE_ERROR', error)
         )
@@ -83,6 +113,9 @@ const mutations = {
         state.isAuthenticated = false;
         localStorage.removeItem('expires_at');
         localStorage.removeItem('auth_token');
+        localStorage.removeItem('anonymous_user_auth_token');
+        localStorage.removeItem('anonymous_user_name');
+        localStorage.removeItem('anonymous_user_password');
         delete Vue.axios.defaults.headers.common['Authorization'];
     },
     SET_SESSION (state, response) {
@@ -92,19 +125,29 @@ const mutations = {
         localStorage.setItem('expires_at', JSON.stringify(date));
         localStorage.setItem('auth_token', response.data.auth_token)
     },
+    SET_SESSION_ANONYMOUS_USER (state, response) {
+        let date = new Date(response.headers.date);
+        // add 1 year
+        date.setDate(date.getDate() + 365);
+        localStorage.setItem('expires_at', JSON.stringify(date));
+        localStorage.setItem('anonymous_user_auth_token', response.data.auth_token);
+        state.isAnonymous = true;
+        state.isAuthenticated = true;
+    },
     HANDLE_ERROR (state, error) {
         if (error.response) {
             // console.log(error.response.data)
             let err_data = error.response.data;
             for (let i in err_data) {
                 for (let m of err_data[i]) {
-                    i == 'non_field_errors' ? state.error.push(m) : state.error.push(i + ': ' + m)
+                    const message = i == 'non_field_errors' ? m : (i + ': ' + m);
+                    state.message.push({message: message, status: 'danger' })
                 }
             }
         }
     },
     SET_ERROR (state, error) {
-        state.error = error
+        state.message.push({ message: error, status: 'danger' })
     }
 };
 

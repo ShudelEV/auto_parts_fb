@@ -3,7 +3,8 @@ const state = {
     partTypes: [],
     partCategories: null,
     carBrands: null,
-    carModels: null
+    carModels: null,
+    message: []
 };
 
 const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I",
@@ -69,7 +70,10 @@ const mutations = {
         state.carBrands = brand_list;
         state.carModels = car_models;
     },
-}
+    SET_MESSAGE (state, { message, status }) {
+        state.message.push({ message: message, status: status })
+    }
+};
 
 export default {
     state,

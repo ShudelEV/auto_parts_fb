@@ -48,16 +48,11 @@ export default {
 
     created () {
         this.fetchData();
-        // when window is updated (F5)
+//        // when window is updated (F5)
         this.brandName = this.$route.params.name;
-        const brand = this.$store.state.all.partBrands.find(i => i.name == this.brandName);
-        if (brand.fb_quantity) {
-            this.$router.push({ name: 'AllFB' })
-        } else {
-            this.$router.push({ name: 'AddFB' })
-        }
-
     },
+
+    mounted () {},
 
     watch: {
         '$route': 'fetchData'
@@ -67,7 +62,7 @@ export default {
         fetchData () {
         },
         goBack () {
-            this.$route.name != 'AllFB' ? this.$router.go(-1) : this.$router.push('/')
+            window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
         }
     }
 }

@@ -1,7 +1,5 @@
 <template>
 <div>
-<!--Error notification-->
-<vk-notification :messages.sync="account.error" status="danger"></vk-notification>
 <vk-modal :show="show" center size="medium">
     <vk-tabs :activeTab.sync="activeTab" align="justify" active="1">
         <vk-tabs-item title="Sig In" v-vk-margin>

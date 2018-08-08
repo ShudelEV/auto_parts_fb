@@ -5,6 +5,8 @@ from django.urls import path, re_path, include
 from django.conf.urls.static import static
 from django.contrib import admin
 
+from PartsFB.rest.views import create_anonymous_user
+
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 
@@ -15,7 +17,9 @@ if settings.DEBUG:
 
 urlpatterns += [
     path('admin/', admin.site.urls),
+    re_path(r'^auth/users/create-anonymous/', create_anonymous_user),
     re_path(r'^auth/', include('djoser.urls')),
+
     re_path(r'^auth/', include('djoser.urls.authtoken')),
     re_path(r'^auth/o/', include('social_django.urls', namespace='social'))
 ]

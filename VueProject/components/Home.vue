@@ -25,7 +25,7 @@
                         <vk-card-title class="uk-margin-small-left">{{ key }}</vk-card-title>
                         <ul class="uk-list uk-list-bullet">
                             <li v-for="i in getArray(key)">
-                                <a class="uk-link-text" @click="gotoBrandFeedbacks(value[i].name)">
+                                <a class="uk-link-text" @click="gotoBrandFeedbacks(value[i])">
                                     {{ value[i].name }}
                                 </a>
                                 <span class="uk-badge uk-margin-small-left">
@@ -80,8 +80,12 @@ export default {
                 return showLen < this.itemsShow ? [...Array(showLen).keys()] : [...Array(this.itemsShow).keys()]
             }
         },
-        gotoBrandFeedbacks (name) {
-            this.$router.push({ name: 'Brand', params: { name: name }})
+        gotoBrandFeedbacks (brand) {
+            if (brand.fb_quantity) {
+                this.$router.push({ name: 'AllFB', params: { name: brand.name } })
+            } else {
+                this.$router.push({ name: 'AddFB', params: { name: brand.name } })
+            }
         }
     }
 }

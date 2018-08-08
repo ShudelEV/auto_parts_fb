@@ -1,14 +1,17 @@
 from rest_framework import viewsets, status, generics, mixins
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.authentication import BasicAuthentication
 from rest_framework.response import Response
+from django.contrib.auth.models import User
 from PartsFB.models import PartBrand, FeedBack, PartType, Part, CarModel, CarBrand
 from .serializers import PartBrandDetailSerializer, PartBrandShortSerializer, FeedBackSerializer, \
     PartTypeSerializer, CreateFeedBackSerializer, CreatePartSerializer, CarModelSerializer, \
     CreateCarModelSerializer, CreateCarSerializer
 from django.views.decorators.csrf import csrf_protect
 from django.db.models import Prefetch
-from PartsFB.data import PART_CATEGORIES
+from PartsFB.data import PART_CATEGORIES, FIRST_NAMES, LAST_NAMES
+import random
 import logging
 # from silk.profiling.profiler import silk_profile
 
@@ -21,6 +24,35 @@ logging.basicConfig(
 
 def bad_request(err_massage):
     return Response(err_massage, status=status.HTTP_400_BAD_REQUEST)
+
+
+def generate_random_username(**kwargs):
+    if kwargs.get('username'):
+        username = kwargs.get('username') + random.randint(1, 999)
+    else:
+        first = random.sample(FIRST_NAMES, 1)[0]
+        last = random.sample(LAST_NAMES - {first}, 1)[0]
+        username = first + last
+    try:
+        User.objects.get(username=username)
+        return generate_random_username(username=username)
+    except User.DoesNotExist:
+        return username
+
+
+@csrf_protect
+@api_view(['GET'])
+# @authentication_classes((BasicAuthentication, ))
+# @permission_classes((AllowAny, ))
+def create_anonymous_user(request):
+    username = generate_random_username()
+    password = User.objects.make_random_password()
+    try:
+        User.objects.create_user(username, password=password)
+    except Exception:
+        return bad_request('')
+    else:
+        return Response(data={'username': username, 'password': password}, status=status.HTTP_200_OK)
 
 
 class PartBrandDetailViewSet(viewsets.ReadOnlyModelViewSet):
@@ -69,7 +101,7 @@ class CarModelList(mixins.ListModelMixin, generics.GenericAPIView):
 
 @csrf_protect
 @api_view(['POST'])
-@permission_classes((AllowAny, ))
+@permission_classes((IsAuthenticated, ))
 def create_feedback(request, *args, **kwargs):
     data = request.data
     # { Build a part serializer
@@ -90,6 +122,7 @@ def create_feedback(request, *args, **kwargs):
         else:
             return bad_request(part_type_serializer.errors)
     # }
+    user_id = User.objects.get(username=request.user).id
     #   { Add a car to the part serializer data
     if data.get('car'):
         part_data.update({'car': data.get('car')})
@@ -112,7 +145,7 @@ def create_feedback(request, *args, **kwargs):
             else:
                 return bad_request(car_model_serializer.errors)
         car_serializer = CreateCarSerializer(data={
-            'owner': 1,
+            'owner': user_id,
             'model': car_model_id,
             'manufacture_year': new_car_data.get('year'),
             'engine_volume': new_car_data.get('engine_volume'),
@@ -121,8 +154,8 @@ def create_feedback(request, *args, **kwargs):
             'body_style': new_car_data.get('body_style')
         })
         if car_serializer.is_valid():
-            car_serializer.save()
-            part_data.update({'car': car_serializer.save().id})
+            car = car_serializer.save()
+            part_data.update({'car': car.id})
         else:
             if car_model:
                 car_model.delete()
@@ -135,6 +168,7 @@ def create_feedback(request, *args, **kwargs):
         part = part_serializer.save()
         # { Build a fb serializer
         fb_data = {
+            'owner': user_id,
             'part': part.id,
             'description': data.get('description'),
             'stars': data.get('stars'),

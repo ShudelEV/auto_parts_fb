@@ -91,4 +91,4 @@ class FeedBackSerializer(serializers.ModelSerializer):
 class CreateFeedBackSerializer(serializers.ModelSerializer):
     class Meta:
         model = FeedBack
-        fields = ['part', 'description', 'stars', 'images']
+        fields = ['owner', 'part', 'description', 'stars', 'images']

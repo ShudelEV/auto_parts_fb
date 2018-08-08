@@ -1,10 +1,10 @@
 <template>
 <div>
-    <!--Notification-->
-    <vk-notification :messages.sync="message" status="success"></vk-notification>
     <div class="uk-width-1-1">
         <h2>Add Your Feedback</h2>
     </div>
+    <vk-button @click="$store.dispatch('registerAnonymousUser')">Anonymous login</vk-button>
+    <vk-button @click="$store.dispatch('destroyToken')">Anonymous logout</vk-button>
     <form class="uk-grid-small" uk-grid ref="form2">
         <!--Add part-->
         <template v-if="part == -1">
@@ -180,8 +180,6 @@ export default {
 
     data () {
         return {
-            error: [],
-            message: [],
             part: null,
             new_part_type: {
                 category: null,
@@ -254,27 +252,30 @@ export default {
 
     methods: {
         preSend () {
-            if (Number(this.new_car.engine_volume) === NaN) {
+            if (isNaN(this.new_car.engine_volume)) {
                 // Validate engine volume field
-                this.message.push({ message: 'Incorrect engine volume.', status: 'warning' })
-            }
-            if (!this.stars) {
+                this.$store.commit('SET_MESSAGE', { message: 'Incorrect engine volume.', status: 'danger' })
+            } else if (!this.stars) {
                 // star animation
                 for (let i = 0; i <= 5; i++) { setTimeout(this.setStar, i*150, i) }
                 setTimeout(this.setStar, 1250, 0);
                 // Push message
-                this.message.push({ message: 'Please, note the part.', status: 'warning' })
+                this.$store.commit('SET_MESSAGE', { message: 'Please, note the part.', status: 'danger' })
             } else if (
                 // Show the suggest only once for a session
                 !this.account.isAuthenticated && !this.account.showSuggestLogin && !sessionStorage.getItem('notSuggestLogin')
             ) {
                 this.account.showSuggestLogin = true
-            } else { this.sendFB() }
+            } else {
+                this.account.isAnonymous && !this.account.isAuthenticated ? this.sendFBAnonymous() : this.sendFB()
+            }
         },
         setStar (a) { this.stars = a },
         sendFBAnonymous () {
             sessionStorage.setItem('notSuggestLogin', true);
-            this.sendFB()
+            // create anonymous user and then to send the FB
+            const callBack = () => { this.sendFB() };
+            this.$store.dispatch('registerAnonymousUser', callBack);
         },
         sendFB () {
             let form = {
@@ -301,8 +302,13 @@ export default {
                 }
             }
             this.$http.post('/api/feedbacks/' + this.brandName + '/create/', form)
-                .then(response => { this.goBack(); })
-                .catch(error => { this.error = error; })
+                .then(response => {
+                    this.$store.commit('SET_MESSAGE', { message: 'Feedback successful created. ', status: 'success' });
+                    this.$router.push({ name: 'AllFB', params: { name: this.brandName } })
+                })
+                .catch(error => {
+                    this.$store.commit('SET_MESSAGE', { message: error.response.data.detail, status: 'danger' })
+                })
         },
         goBack() {
             window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
@@ -315,8 +321,6 @@ export default {
             return res
         },
         resetForm () {
-            this.error = [];
-            this.message = [];
             this.part = null;
             this.new_part_type = {
                 category: null,

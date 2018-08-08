@@ -2,6 +2,9 @@
 <div>
     <!--Load Progress Bar-->
     <nprogress-container style="height: 3px"></nprogress-container>
+    <!--Error notification-->
+    <vk-notification :messages.sync="account.message"></vk-notification>
+    <vk-notification :messages.sync="all.message"></vk-notification>
     <!--Navbar-->
     <div class="uk-section uk-section-default uk-padding-remove-vertical">
         <!--Home page navbar-->
@@ -23,7 +26,7 @@
         </template>
     </div>
     <!--Login Window-->
-    <login-window :show="showLoginWindow"></login-window>
+    <login-window :show="account.showLoginWindow"></login-window>
     <!--Body-->
     <div class="uk-section uk-section-default uk-section-xsmall">
         <div class="uk-container">
@@ -57,18 +60,26 @@ export default {
     },
 
     mounted () {
-        let expires_at = JSON.parse(localStorage.getItem('expires_at'));
-        if (new Date(expires_at) < new Date(Date.now())) {
-            this.$emit('destroyToken')
-        } else {
-            // set axios default config
-            this.$http.defaults.headers.common['Authorization'] = 'Token ' + localStorage.getItem('auth_token');
-            this.$store.dispatch('getUser')
+        if (localStorage.getItem('expires_at')) {
+            let expires_at = JSON.parse(localStorage.getItem('expires_at'));
+            if (new Date(expires_at) < new Date(Date.now())) {
+                this.$emit('destroyToken')
+            } else if (localStorage.getItem('auth_token')) {
+                // set axios default config
+                this.$http.defaults.headers.common['Authorization'] = 'Token ' + localStorage.getItem('auth_token');
+                this.$store.dispatch('getUser')
+            } else if (localStorage.getItem('auth_token_anonymous_user')) {
+                // set axios default config
+                this.$http.defaults.headers.common['Authorization'] = 'Token ' + localStorage.getItem('auth_token_anonymous_user');
+                this.$store.state.account.isAnonymous = true;
+                this.$store.state.account.isAuthenticated = true
+            }
         }
     },
 
     computed: mapState({
-        showLoginWindow: state => state.account.showLoginWindow
+        account: state => state.account,
+        all: state => state.all,
     })
 }
 </script>

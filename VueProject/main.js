@@ -36,9 +36,9 @@ Vue.use(VueStars);
 
 // Load Progrees Bar
 const options = {
-  latencyThreshold: 100, // Number of ms before progressbar starts showing, default: 100,
-  router: true, // Show progressbar when navigating routes, default: true
-  http: true // Show progressbar when doing Vue.http, default: true
+    latencyThreshold: 100, // Number of ms before progressbar starts showing, default: 100,
+    router: true, // Show progressbar when navigating routes, default: true
+    http: true // Show progressbar when doing Vue.http, default: true
 };
 Vue.use(NProgress, options);
 const nprogress = new NProgress({ parent: '.nprogress-container' });
