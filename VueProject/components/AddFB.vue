@@ -137,12 +137,15 @@
             </vue-stars>
         </div>
         <!--Add images-->
-        <!--<div class="uk-width-1-1@s">-->
+        <div class="uk-width-1-1@s">
             <!--<div uk-form-custom>-->
                 <!--<input type="file" name="image">-->
-            <!--<button class="uk-button uk-button-default" type="button" tabindex="-1">Select Img</button>-->
-        <!--</div>-->
-        <!--</div>-->
+                <!--<button class="uk-button uk-button-default" type="button" tabindex="-1">Select Img</button>-->
+            <!--</div>-->
+            <div class="img-uploader">
+                <upload-image url="/api/Ashika/feedbacks/1/images/"></upload-image>
+            </div>
+        </div>
     </form>
     <hr>
     <article class="uk-comment">
@@ -172,9 +175,12 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex'
+import UploadImage from 'vue-upload-image'
 
 export default {
     name: 'AddFB',
+
+    components: { UploadImage, },
 
     props: ['brandName'],
 
@@ -301,7 +307,7 @@ export default {
                     delete form.new_car.model_name;
                 }
             }
-            this.$http.post('/api/feedbacks/' + this.brandName + '/create/', form)
+            this.$http.post('/api/' + this.brandName + '/feedbacks/create/', form)
                 .then(response => {
                     this.$store.commit('SET_MESSAGE', { message: 'Feedback successful created. ', status: 'success' });
                     this.$router.push({ name: 'AllFB', params: { name: this.brandName } })
@@ -346,4 +352,25 @@ export default {
 <style>
     .uk-icon svg[meta='vk-icons-star'] { color: gold; }
     .uk-icon.fill-star svg[meta='vk-icons-star'] polygon { fill: #fdff00; }
+
+    div.img-uploader {
+        position: relative;
+        min-height: 200px;
+        /*max-height: 490px;*/
+        overflow-y: hidden;
+        border-radius: 6px;
+        border: 1px dashed #ccc;
+        background-color: #fafafa;
+        /*padding: 10px;*/
+    }
+    /*.img-uploader:before {*/
+        /*content: "drop images here";*/
+        /*position: absolute;*/
+        /*font-size: 200%;*/
+        /*left: 0;*/
+        /*width: 100%;*/
+        /*text-align: center;*/
+        /*top: 45%;*/
+        /*opacity: .25;*/
+    /*}*/
 </style>

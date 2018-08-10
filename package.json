@@ -24,6 +24,7 @@
     "vue-axios": "^2.1.3",
     "vue-nprogress": "^0.1.5",
     "vue-router": "^3.0.1",
+    "vue-upload-image": "^1.1.0",
     "vuex": "^3.0.1",
     "vuikit": "^0.8.5"
   },

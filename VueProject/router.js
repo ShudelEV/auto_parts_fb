@@ -27,7 +27,7 @@ const router = new Router({
             component: BrandPage,
             children: [
                 {
-                    path: 'add',
+                    path: 'feedbacks/add',
                     name: 'AddFB',
                     component: AddFB
                 },

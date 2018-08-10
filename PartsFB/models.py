@@ -95,11 +95,6 @@ class Part(models.Model):
         return '{0}/{1}'.format(self.type, self.brand)
 
 
-def fb_images_path(instance, filename):
-    # file will be uploaded to MEDIA_ROOT/Users/<user_name>/feedbacks/<filename>
-    return 'Users/{0}/feedbacks/{1}'.format(instance.part.car.owner, filename)
-
-
 class FeedBack(models.Model):
     owner = models.ForeignKey(User, models.PROTECT, related_name='feedbacks', default=1)
     part = models.ForeignKey(Part, models.PROTECT, related_name='feedbacks')
@@ -112,9 +107,19 @@ class FeedBack(models.Model):
         (5, _('very good'))
     )
     stars = models.IntegerField(choices=STARS)
-    images = models.ImageField(blank=True, max_length=255, upload_to=fb_images_path)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     def __str__(self):
         return '{0}'.format(self.part)
+
+
+def fb_images_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/Users/<user_name>/feedbacks/<filename>
+    return 'Users/{0}/feedbacks/{1}'.format(instance.feedback.part.car.owner, filename)
+
+
+class Image(models.Model):
+    image = models.ImageField(max_length=255, upload_to=fb_images_path)
+    description = models.CharField(max_length=255, null=True, blank=True)
+    feedback = models.ForeignKey(FeedBack, related_name='images', on_delete=models.CASCADE)

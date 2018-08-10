@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.relations import StringRelatedField, SlugRelatedField
 from rest_framework.fields import JSONField
 from django.contrib.auth.models import User
-from PartsFB.models import PartBrand, FeedBack, Car, CarModel, Part, PartType
+from PartsFB.models import PartBrand, FeedBack, Car, CarModel, Part, PartType, Image
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -91,4 +91,10 @@ class FeedBackSerializer(serializers.ModelSerializer):
 class CreateFeedBackSerializer(serializers.ModelSerializer):
     class Meta:
         model = FeedBack
-        fields = ['owner', 'part', 'description', 'stars', 'images']
+        fields = ['owner', 'part', 'description', 'stars']
+
+
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = '__all__'

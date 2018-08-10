@@ -88,7 +88,7 @@ export default {
         fetchData () {
             this.error = null;
             this.loading = true;
-            this.$http.get('/api/feedbacks/' + this.brandName + '/')
+            this.$http.get('/api/' + this.brandName + '/feedbacks/')
                 .then(response => {
                     this.$store.commit('SET_BRAND_FEEDBACKS', {
                         name: this.$route.params.name,
@@ -99,7 +99,12 @@ export default {
                 })
                 .catch(error => {
                     this.loading = false;
-                    this.error = error.response.data
+                    if (error.response) {
+                        this.error = error.response.data
+                    } else {
+                        this.error = error
+                    }
+
                 })
         },
         toggleAccordion () {

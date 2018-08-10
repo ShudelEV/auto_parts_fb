@@ -1,13 +1,15 @@
 from rest_framework import viewsets, status, generics, mixins
+from rest_framework.views import APIView
+from rest_framework.parsers import MultiPartParser
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.response import Response
 from django.contrib.auth.models import User
-from PartsFB.models import PartBrand, FeedBack, PartType, Part, CarModel, CarBrand
+from PartsFB.models import PartBrand, FeedBack, PartType, Part, CarModel, CarBrand, Image
 from .serializers import PartBrandDetailSerializer, PartBrandShortSerializer, FeedBackSerializer, \
     PartTypeSerializer, CreateFeedBackSerializer, CreatePartSerializer, CarModelSerializer, \
-    CreateCarModelSerializer, CreateCarSerializer
+    CreateCarModelSerializer, CreateCarSerializer, ImageSerializer
 from django.views.decorators.csrf import csrf_protect
 from django.db.models import Prefetch
 from PartsFB.data import PART_CATEGORIES, FIRST_NAMES, LAST_NAMES
@@ -171,8 +173,7 @@ def create_feedback(request, *args, **kwargs):
             'owner': user_id,
             'part': part.id,
             'description': data.get('description'),
-            'stars': data.get('stars'),
-            # 'images': ''
+            'stars': data.get('stars')
         }
         fb_serializer = CreateFeedBackSerializer(data=fb_data)
         # }
@@ -185,3 +186,17 @@ def create_feedback(request, *args, **kwargs):
             return bad_request(fb_serializer.errors)
     else:
         return bad_request(part_serializer.errors)
+
+
+class ImageList(APIView):
+    permission_classes = (IsAuthenticated, )
+    parser_classes = (MultiPartParser,)
+
+    def post(self, request, format=None, **kwargs):
+        data = request.data
+        data.update({'feedback': kwargs.get('pk')})
+        serializer = ImageSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return bad_request(serializer.errors)
