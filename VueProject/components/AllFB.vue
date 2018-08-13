@@ -34,11 +34,11 @@
                 <!--Feedback text-->
                 <div class="uk-comment-body"><p>{{ fb.description }}</p></div>
                 <!--Images-->
-                <div v-if="fb.images" class="uk-position-relative uk-visible-toggle uk-light" uk-slider>
+                <div v-if="fb.images.length" class="uk-position-relative uk-visible-toggle uk-light" uk-slider>
                     <ul class="uk-slider-items uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m">
-                        <!--<li v-for="img in fb.images">-->
-                            <img :src="fb.images" alt="">
-                        <!--</li>-->
+                        <li v-for="img in fb.images">
+                            <img :src="img.image" alt="">
+                        </li>
                     </ul>
                     <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#"
                        uk-slidenav-previous uk-slider-item="previous"

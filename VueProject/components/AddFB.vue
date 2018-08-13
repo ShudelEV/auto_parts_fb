@@ -142,9 +142,13 @@
                 <!--<input type="file" name="image">-->
                 <!--<button class="uk-button uk-button-default" type="button" tabindex="-1">Select Img</button>-->
             <!--</div>-->
-            <div class="img-uploader">
-                <upload-image url="/api/Ashika/feedbacks/1/images/"></upload-image>
-            </div>
+            <upload-image ref="images_form"
+                          :url="imageUploadURL"
+                          name="image"
+                          input_id="image_input"
+                          class="img-uploader"
+                          button_class="button_hidden"
+            ></upload-image>
         </div>
     </form>
     <hr>
@@ -203,6 +207,7 @@ export default {
             },
             description: '',
             stars: 0,
+            imageUploadURL: '',
             engineTypes: {
                 1: 'benzine',
                 2: 'diesel',
@@ -223,6 +228,10 @@ export default {
         this.$http.get('/api/part-types/').then(
             response => this.$store.commit('SET_PART_TYPES', response.data)
         )
+    },
+
+    mounted () {
+        console.log(document.getElementById('upload_image_form--image_input').getElementsByTagName('button')[0])
     },
 
     computed: {
@@ -310,11 +319,20 @@ export default {
             this.$http.post('/api/' + this.brandName + '/feedbacks/create/', form)
                 .then(response => {
                     this.$store.commit('SET_MESSAGE', { message: 'Feedback successful created. ', status: 'success' });
+                    if (Object.keys(this.$refs.images_form.image).length) {
+                        this.imageUploadURL = '/api/' + this.brandName + '/feedbacks/' + response.data.id + '/images/add/';
+                        // timeout is needed for to set the imageUploadURL
+                        setTimeout(this.uploadImages, 50)
+                    }
                     this.$router.push({ name: 'AllFB', params: { name: this.brandName } })
                 })
                 .catch(error => {
                     this.$store.commit('SET_MESSAGE', { message: error.response.data.detail, status: 'danger' })
                 })
+        },
+        uploadImages () {
+            // click the submit button
+            document.getElementById('upload_image_form--image_input').getElementsByTagName('button')[0].click()
         },
         goBack() {
             window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
@@ -373,4 +391,6 @@ export default {
         /*top: 45%;*/
         /*opacity: .25;*/
     /*}*/
+    .upload_image_form__thumbnails { min-height: 100px; }
+    .button_hidden { opacity: 0; }
 </style>

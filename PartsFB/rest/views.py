@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from PartsFB.models import PartBrand, FeedBack, PartType, Part, CarModel, CarBrand, Image
 from .serializers import PartBrandDetailSerializer, PartBrandShortSerializer, FeedBackSerializer, \
     PartTypeSerializer, CreateFeedBackSerializer, CreatePartSerializer, CarModelSerializer, \
-    CreateCarModelSerializer, CreateCarSerializer, ImageSerializer
+    CreateCarModelSerializer, CreateCarSerializer, CreateImageSerializer
 from django.views.decorators.csrf import csrf_protect
 from django.db.models import Prefetch
 from PartsFB.data import PART_CATEGORIES, FIRST_NAMES, LAST_NAMES
@@ -188,14 +188,15 @@ def create_feedback(request, *args, **kwargs):
         return bad_request(part_serializer.errors)
 
 
-class ImageList(APIView):
+class ImageView(APIView):
     permission_classes = (IsAuthenticated, )
     parser_classes = (MultiPartParser,)
 
     def post(self, request, format=None, **kwargs):
         data = request.data
         data.update({'feedback': kwargs.get('pk')})
-        serializer = ImageSerializer(data=data)
+        logging.debug('{}'.format(data))
+        serializer = CreateImageSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

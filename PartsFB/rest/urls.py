@@ -12,7 +12,7 @@ feedbacks_urls = [
     path('', views.FeedbackList.as_view()),
     path('create/', views.create_feedback),
     # path('<int:pk>/'),
-    path('<int:pk>/images/', views.ImageList.as_view()),
+    path('<int:pk>/images/add/', views.ImageView.as_view()),
 ]
 urlpatterns += [
     path('part-brands/<int:pk>/', views.PartBrandDetailViewSet.as_view({'get': 'retrieve'})),

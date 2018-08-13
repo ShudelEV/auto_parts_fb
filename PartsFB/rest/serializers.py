@@ -78,10 +78,23 @@ class CreatePartSerializer(serializers.ModelSerializer):
         fields = ['type', 'brand', 'car']
 
 
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = ['image', 'description']
+
+
+class CreateImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = '__all__'
+
+
 class FeedBackSerializer(serializers.ModelSerializer):
     # represent field using __str__ method of the model (read only)
     owner = StringRelatedField()
     part = PartSerializer()
+    images = ImageSerializer(many=True, read_only=True)
 
     class Meta:
         model = FeedBack
@@ -91,10 +104,5 @@ class FeedBackSerializer(serializers.ModelSerializer):
 class CreateFeedBackSerializer(serializers.ModelSerializer):
     class Meta:
         model = FeedBack
-        fields = ['owner', 'part', 'description', 'stars']
+        fields = ['id', 'owner', 'part', 'description', 'stars']
 
-
-class ImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Image
-        fields = '__all__'

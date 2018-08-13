@@ -116,7 +116,7 @@ class FeedBack(models.Model):
 
 def fb_images_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/Users/<user_name>/feedbacks/<filename>
-    return 'Users/{0}/feedbacks/{1}'.format(instance.feedback.part.car.owner, filename)
+    return 'Users/{0}/feedbacks/{1}'.format(instance.feedback.owner, filename)
 
 
 class Image(models.Model):
