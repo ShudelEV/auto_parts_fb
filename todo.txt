@@ -11,3 +11,5 @@
 9. error handler for the create fb
 10. + vue-router: errors when to press F5
 11. car model field may not be null
+12. add images: text in the add image area
+13. add images: setTimeOut for the prop "url"

@@ -195,7 +195,6 @@ class ImageView(APIView):
     def post(self, request, format=None, **kwargs):
         data = request.data
         data.update({'feedback': kwargs.get('pk')})
-        logging.debug('{}'.format(data))
         serializer = CreateImageSerializer(data=data)
         if serializer.is_valid():
             serializer.save()

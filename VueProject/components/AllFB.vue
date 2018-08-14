@@ -34,19 +34,19 @@
                 <!--Feedback text-->
                 <div class="uk-comment-body"><p>{{ fb.description }}</p></div>
                 <!--Images-->
-                <div v-if="fb.images.length" class="uk-position-relative uk-visible-toggle uk-light" uk-slider>
-                    <ul class="uk-slider-items uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m">
-                        <li v-for="img in fb.images">
-                            <img :src="img.image" alt="">
-                        </li>
-                    </ul>
-                    <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#"
-                       uk-slidenav-previous uk-slider-item="previous"
-                    ></a>
-                    <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#"
-                       uk-slidenav-next uk-slider-item="next"
-                    ></a>
-                </div>
+                <template v-if="fb.images.length">
+                    <div uk-grid uk-lightbox="animation: scale" class="uk-margin-top">
+                        <ul class="uk-thumbnav" uk-margin>
+                            <li v-for="img in fb.images" class="uk-thumbnav" uk-margin>
+                                <a class="uk-inline" :href="img.image"
+                                   :data-caption="img.description ? img.description : ''"
+                                >
+                                    <img :src="img.image" width="100" height="100" alt="">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </template>
                 <div class="uk-comment-meta uk-margin-top">
                     Created by: <b>{{ fb.owner }}</b> {{ (new Date(fb.created)).toLocaleString("ru") }}
                 </div>

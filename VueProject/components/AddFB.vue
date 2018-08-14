@@ -138,16 +138,17 @@
         </div>
         <!--Add images-->
         <div class="uk-width-1-1@s">
-            <!--<div uk-form-custom>-->
-                <!--<input type="file" name="image">-->
-                <!--<button class="uk-button uk-button-default" type="button" tabindex="-1">Select Img</button>-->
-            <!--</div>-->
             <upload-image ref="images_form"
                           :url="imageUploadURL"
                           name="image"
                           input_id="image_input"
                           class="img-uploader"
                           button_class="button_hidden"
+                          @upload-image-success="$router.push({ name: 'AllFB', params: { name: brandName } })"
+                          @upload-image-failure="response => {
+                              $store.commit('SET_MESSAGE', { message: 'Error images upload', status: 'danger' });
+                              $router.push({ name: 'AllFB', params: { name: brandName } })
+                          }"
             ></upload-image>
         </div>
     </form>
@@ -231,7 +232,6 @@ export default {
     },
 
     mounted () {
-        console.log(document.getElementById('upload_image_form--image_input').getElementsByTagName('button')[0])
     },
 
     computed: {
@@ -320,19 +320,21 @@ export default {
                 .then(response => {
                     this.$store.commit('SET_MESSAGE', { message: 'Feedback successful created. ', status: 'success' });
                     if (Object.keys(this.$refs.images_form.image).length) {
-                        this.imageUploadURL = '/api/' + this.brandName + '/feedbacks/' + response.data.id + '/images/add/';
-                        // timeout is needed for to set the imageUploadURL
-                        setTimeout(this.uploadImages, 50)
+                        this.uploadImages(response.data.id)
+                    } else {
+                        this.$router.push({ name: 'AllFB', params: { name: this.brandName } })
                     }
-                    this.$router.push({ name: 'AllFB', params: { name: this.brandName } })
                 })
                 .catch(error => {
                     this.$store.commit('SET_MESSAGE', { message: error.response.data.detail, status: 'danger' })
                 })
         },
-        uploadImages () {
-            // click the submit button
-            document.getElementById('upload_image_form--image_input').getElementsByTagName('button')[0].click()
+        uploadImages (fbId) {
+            this.imageUploadURL = '/api/' + this.brandName + '/feedbacks/' + fbId + '/images/add/';
+            // click the submit button, timeout for waiting when the url prop is changed
+            setTimeout(() => {
+                document.getElementById('upload_image_form--image_input').getElementsByTagName('button')[0].click()
+            }, 50)
         },
         goBack() {
             window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
@@ -373,7 +375,7 @@ export default {
 
     div.img-uploader {
         position: relative;
-        min-height: 200px;
+        /*min-height: 200px;*/
         /*max-height: 490px;*/
         overflow-y: hidden;
         border-radius: 6px;
@@ -381,16 +383,18 @@ export default {
         background-color: #fafafa;
         /*padding: 10px;*/
     }
-    /*.img-uploader:before {*/
-        /*content: "drop images here";*/
-        /*position: absolute;*/
-        /*font-size: 200%;*/
-        /*left: 0;*/
-        /*width: 100%;*/
-        /*text-align: center;*/
-        /*top: 45%;*/
-        /*opacity: .25;*/
-    /*}*/
-    .upload_image_form__thumbnails { min-height: 100px; }
-    .button_hidden { opacity: 0; }
+    .img-uploader:before {
+        content: "drop or choose images here";
+        position: absolute;
+        font-size: 200%;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        top: 30%;
+        opacity: .25;
+        z-index: 1
+    }
+    /*min height for "drop or choose images" field*/
+    .upload_image_form__thumbnails { min-height: 100px; z-index: 2 }
+    .button_hidden { display: none; }
 </style>
