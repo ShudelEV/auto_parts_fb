@@ -140,10 +140,10 @@
                           input_id="image_input"
                           class="img-uploader"
                           button_class="button_hidden"
-                          @upload-image-success="$router.push({ name: 'AllFB', params: { name: brandName } })"
+                          @upload-image-success="$router.push({ name: 'AllFB', params: { brandName: brandName, page_number: 1 } })"
                           @upload-image-failure="response => {
                               $store.commit('SET_MESSAGE', { message: 'Error images upload', status: 'danger' });
-                              $router.push({ name: 'AllFB', params: { name: brandName } })
+                              $router.push({ name: 'AllFB', params: { brandName: brandName, page_number: 1 } })
                           }"
             ></upload-image>
         </div>
@@ -332,7 +332,7 @@ export default {
                     if (Object.keys(this.$refs.images_form.image).length) {
                         this.uploadImages(response.data.id)
                     } else {
-                        this.$router.push({ name: 'AllFB', params: { name: this.brandName } })
+                        this.$router.push({ name: 'AllFB', params: { brandName: this.brandName, page_number: 1 } })
                     }
                 })
                 .catch(error => {

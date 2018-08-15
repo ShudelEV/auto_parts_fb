@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view, permission_classes, authenticati
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
 from django.contrib.auth.models import User
 from PartsFB.models import PartBrand, FeedBack, PartType, Part, CarModel, CarBrand, Car, Image
 from .serializers import PartBrandDetailSerializer, PartBrandShortSerializer, FeedBackSerializer, \
@@ -67,9 +68,14 @@ class PartBrandShortViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = PartBrandShortSerializer
 
 
+class FeedbackListPagination(PageNumberPagination):
+    page_size = 20
+
+
 class FeedbackListView(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = FeedBack.objects.all()
     serializer_class = FeedBackSerializer
+    pagination_class = FeedbackListPagination
 
     def get(self, request, *args, **kwargs):
         self.queryset = self.queryset.filter(part__brand__name=kwargs.get('brand_name'))

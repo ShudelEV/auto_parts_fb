@@ -24,7 +24,7 @@
     <!--Feedbackes-->
     <div class="uk-width-3-4@m uk-margin">
         <!--Add feedback or Show all feedbacks section-->
-        <router-view :brandName="brandName" class="uk-margin-medium-bottom"></router-view>
+        <router-view class="uk-margin-medium-bottom"></router-view>
     </div>
 </vk-grid>
 </template>
@@ -41,15 +41,14 @@ export default {
         return {
             loading: false,
             error: null,
-            brandName: '',
             showBrandInfo: false
         }
     },
 
+    props: ['brandName'],
+
     created () {
         this.fetchData();
-//        // when window is updated (F5)
-        this.brandName = this.$route.params.name;
     },
 
     mounted () {},

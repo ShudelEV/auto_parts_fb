@@ -82,9 +82,9 @@ export default {
         },
         gotoBrandFeedbacks (brand) {
             if (brand.fb_quantity) {
-                this.$router.push({ name: 'AllFB', params: { name: brand.name } })
+                this.$router.push({ name: 'AllFB', params: { brandName: brand.name, page_number: 1 } })
             } else {
-                this.$router.push({ name: 'AddFB', params: { name: brand.name } })
+                this.$router.push({ name: 'AddFB', params: { brandName: brand.name } })
             }
         }
     }

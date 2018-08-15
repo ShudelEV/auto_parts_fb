@@ -22,9 +22,10 @@ const router = new Router({
             ]
         },
         {
-            path: '/brand/:name',
+            path: '/brand/:brandName',
             name: 'Brand',
             component: BrandPage,
+            props: true,
             children: [
                 {
                     path: 'feedbacks/add',
@@ -32,9 +33,10 @@ const router = new Router({
                     component: AddFB
                 },
                 {
-                    path: 'feedbacks',
+                    path: 'feedbacks/:page_number',
                     name: 'AllFB',
-                    component: AllFB
+                    component: AllFB,
+                    props: true
                 }
             ]
         }

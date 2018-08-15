@@ -54,6 +54,12 @@
         </div>
     </li>
 </ul>
+    <!--Pagination-->
+<vk-pagination v-if="total > 1" align="left" :page.sync="page" :perPage="1" :total="total" :range="20">
+    <vk-pagination-page-prev label="Previous"></vk-pagination-page-prev>
+    <vk-pagination-pages></vk-pagination-pages>
+    <vk-pagination-page-next label="Next"></vk-pagination-page-next>
+</vk-pagination>
 </span>
 </template>
 
@@ -67,31 +73,46 @@ export default {
             error: null,
             feedbacks: [],
             showBrandInfo: false,
-            collapse: false
+            collapse: false,
+            // pagination
+            page: 1,
+            total: 1,
+            // number of items on a page
+            page_size: 20
         }
     },
 
-    props: ['brandName'],
+    props: ['brandName', 'page_number'],
 
     created () {
-        this.fetchData();
+        this.fetchData(this.page);
     },
 
     watch: {
-        '$route': 'fetchData'
+        page: function (val) {
+            this.fetchData(val);
+            this.$router.push({ name: 'AllFB', params: { brandName: this.brandName, page_number: val } })
+        }
     },
 
     methods: {
-        fetchData () {
+        fetchData (page) {
             this.error = null;
             this.loading = true;
-            this.$http.get('/api/' + this.brandName + '/feedbacks/')
+            let url = '/api/' + this.brandName + '/feedbacks/';
+            if (this.page != 1) {
+                url += '?page=' + this.page
+            }
+            this.$http.get(url)
                 .then(response => {
                     this.$store.commit('SET_BRAND_FEEDBACKS', {
                         name: this.$route.params.name,
-                        items: response.data
+                        items: response.data.results
                     });
-                    this.feedbacks = response.data;
+                    let pageQty = response.data.count / this.page_size;
+                    let roundPageQty = Math.trunc(pageQty);
+                    this.total = pageQty == roundPageQty ? roundPageQty : roundPageQty + 1;
+                    this.feedbacks = response.data.results;
                     this.loading = false
                 })
                 .catch(error => {
