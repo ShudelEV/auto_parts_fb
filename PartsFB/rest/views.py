@@ -67,7 +67,7 @@ class PartBrandShortViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = PartBrandShortSerializer
 
 
-class FeedbackList(mixins.ListModelMixin, generics.GenericAPIView):
+class FeedbackListView(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = FeedBack.objects.all()
     serializer_class = FeedBackSerializer
 
@@ -76,7 +76,7 @@ class FeedbackList(mixins.ListModelMixin, generics.GenericAPIView):
         return self.list(request, *args, **kwargs)
 
 
-class PartTypeList(mixins.ListModelMixin, generics.GenericAPIView):
+class PartTypeListView(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = PartType.objects.all()
     serializer_class = PartTypeSerializer
 
@@ -88,7 +88,7 @@ class PartTypeList(mixins.ListModelMixin, generics.GenericAPIView):
         return response
 
 
-class CarModelList(mixins.ListModelMixin, generics.GenericAPIView):
+class CarModelListView(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = CarModel.objects.all()
     serializer_class = CarModelSerializer
 
@@ -110,96 +110,96 @@ class UserCarList(mixins.ListModelMixin, generics.GenericAPIView):
         return self.list(request, *args, **kwargs)
 
 
-@csrf_protect
-@api_view(['POST'])
-@permission_classes((IsAuthenticated, ))
-def create_feedback(request, *args, **kwargs):
-    data = request.data
-    new_car_data = data.get('new_car')
-    new_car = None
-    # { Build a part serializer
-    part_data = {
-        'brand': PartBrand.objects.get(name=kwargs.get('brand_name')).id,
-    }
-    if data.get('part'):
-        part_data.update({'type': data.get('part')})
-    elif data.get('new_part_type'):
-        new_part_type_data = data.get('new_part_type')
-        part_type_serializer = PartTypeSerializer(data={
-            'name': new_part_type_data.get('name'),
-            'category': new_part_type_data.get('category')
-        })
-        if part_type_serializer.is_valid():
-            part_type = part_type_serializer.save()
-            part_data.update({'type': part_type.id})
-        else:
-            return bad_request(part_type_serializer.errors)
-    # }
-    user_id = User.objects.get(username=request.user).id
-    #   { Add a car to the part serializer data
-    if data.get('car'):
-        part_data.update({'car': data.get('car')})
-    elif new_car_data:
-        # Create a new car
-        car_model = None
-        car_model_id = None
-        if new_car_data.get('model'):
-            car_model_id = new_car_data.get('model')
-        elif new_car_data.get('brand') and new_car_data.get('model_name'):
-            # Create a car model
-            car_model_serializer = CreateCarModelSerializer(data={
-                'name': new_car_data.get('model_name'),
-                'brand': CarBrand.objects.get(name=new_car_data.get('brand')).id
-            })
-            if car_model_serializer.is_valid():
-                car_model = car_model_serializer.save()
-                car_model_id = car_model.id
-            else:
-                return bad_request(car_model_serializer.errors)
-        car_serializer = CreateCarSerializer(data={
-            'owner': user_id,
-            'model': car_model_id,
-            'manufacture_year': new_car_data.get('year'),
-            'engine_volume': new_car_data.get('engine_volume'),
-            'engine_type': new_car_data.get('engine_type'),
-            'gear': new_car_data.get('gear'),
-            'body_style': new_car_data.get('body_style')
-        })
-        if car_serializer.is_valid():
-            new_car = car_serializer.save()
-            part_data.update({'car': new_car.id})
-        else:
-            if car_model:
-                car_model.delete()
-            return bad_request(car_serializer.errors)
-        # }
-    part_serializer = CreatePartSerializer(data=part_data)
-    # }
-    if part_serializer.is_valid():
-        # Add a part
-        part = part_serializer.save()
-        # { Build a fb serializer
-        fb_data = {
-            'owner': user_id,
-            'part': part.id,
-            'description': data.get('description'),
-            'stars': data.get('stars')
+class CreateFBView(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def post(self, request, format=None, **kwargs):
+        data = request.data
+        new_car_data = data.get('new_car')
+        new_car = None
+        # { Build a part serializer
+        part_data = {
+            'brand': PartBrand.objects.get(name=kwargs.get('brand_name')).id,
         }
-        fb_serializer = CreateFeedBackSerializer(data=fb_data)
+        if data.get('part'):
+            part_data.update({'type': data.get('part')})
+        elif data.get('new_part_type'):
+            new_part_type_data = data.get('new_part_type')
+            part_type_serializer = PartTypeSerializer(data={
+                'name': new_part_type_data.get('name'),
+                'category': new_part_type_data.get('category')
+            })
+            if part_type_serializer.is_valid():
+                part_type = part_type_serializer.save()
+                part_data.update({'type': part_type.id})
+            else:
+                return bad_request(part_type_serializer.errors)
         # }
-        if fb_serializer.is_valid():
-            # Add fb
-            fb_serializer.save()
-            response = Response(fb_serializer.data, status=status.HTTP_201_CREATED)
-            # If a new car is created, dispatch the data
-            if new_car:
-                response.data.update({'new_car': CarSerializer(new_car).data})
-            return response
+        user_id = User.objects.get(username=request.user).id
+        #   { Add a car to the part serializer data
+        if data.get('car'):
+            part_data.update({'car': data.get('car')})
+        elif new_car_data:
+            # Create a new car
+            car_model = None
+            car_model_id = None
+            if new_car_data.get('model'):
+                car_model_id = new_car_data.get('model')
+            elif new_car_data.get('brand') and new_car_data.get('model_name'):
+                # Create a car model
+                car_model_serializer = CreateCarModelSerializer(data={
+                    'name': new_car_data.get('model_name'),
+                    'brand': CarBrand.objects.get(name=new_car_data.get('brand')).id
+                })
+                if car_model_serializer.is_valid():
+                    car_model = car_model_serializer.save()
+                    car_model_id = car_model.id
+                else:
+                    return bad_request(car_model_serializer.errors)
+            car_serializer = CreateCarSerializer(data={
+                'owner': user_id,
+                'model': car_model_id,
+                'manufacture_year': new_car_data.get('year'),
+                'engine_volume': new_car_data.get('engine_volume'),
+                'engine_type': new_car_data.get('engine_type'),
+                'gear': new_car_data.get('gear'),
+                'body_style': new_car_data.get('body_style')
+            })
+            if car_serializer.is_valid():
+                new_car = car_serializer.save()
+                part_data.update({'car': new_car.id})
+            else:
+                if car_model:
+                    car_model.delete()
+                return bad_request(car_serializer.errors)
+            # }
+        part_serializer = CreatePartSerializer(data=part_data)
+        # }
+        if part_serializer.is_valid():
+            # Add a part
+            part = part_serializer.save()
+            # { Build a fb serializer
+            fb_data = {
+                'owner': user_id,
+                'part': part.id,
+                'description': data.get('description'),
+                'stars': data.get('stars')
+            }
+            fb_serializer = CreateFeedBackSerializer(data=fb_data)
+            # }
+            if fb_serializer.is_valid():
+                # Add fb
+                fb_serializer.save()
+                response = Response(fb_serializer.data, status=status.HTTP_201_CREATED)
+                # If a new car is created, dispatch the data
+                if new_car:
+                    response.data.update({'new_car': CarSerializer(new_car).data})
+                return response
+            else:
+                part.delete()
+                return bad_request(fb_serializer.errors)
         else:
-            part.delete()
-            return bad_request(fb_serializer.errors)
-    else:
-        return bad_request(part_serializer.errors)
+            return bad_request(part_serializer.errors)
 
 
 class ImageView(APIView):

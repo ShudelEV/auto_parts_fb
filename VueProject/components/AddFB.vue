@@ -39,7 +39,7 @@
         <template v-if="car == -1">
             <div class="uk-width-1-2@s"></div>
             <div class="uk-width-1-6@s">
-                <label class="uk-form-label" for="car_brand">Car Brand</label>
+                <label class="uk-form-label" for="car_brand">*Car Brand</label>
                 <!--Reset the car model name if the car model is changed-->
                 <select @input="new_car.model_name = ''; new_car.model = null"
                         id="car_brand" v-model="new_car.brand"
@@ -50,7 +50,7 @@
                 </select>
             </div>
             <div class="uk-width-1-6@s">
-                <label class="uk-form-label" for="car_model">Car Model</label>
+                <label class="uk-form-label" for="car_model">*Car Model</label>
                 <input v-if="new_car.model == -1" autofocus
                        :disabled="!new_car.brand"
                        id="car_model" class="uk-input" type="text"
@@ -162,7 +162,10 @@
     </template>
     <template v-else>
         <p>
-            <vk-button class="uk-margin-right" @click="resetForm()">Clear</vk-button>
+            <vk-button class="uk-margin-right"
+                       @click="resetForm()"
+                       title="Clear form"
+            >Clear</vk-button>
             <vk-button type="primary"
                        @click="preSend()"
                        :disabled="!sendPermit"
@@ -230,12 +233,17 @@ export default {
     },
 
     computed: {
+        // activate or deactivate the SEND button
         sendPermit: function () {
             // Check part fields
-            const a = this.part != -1 ? !!this.part : !!this.new_part_type.category && !!this.new_part_type.name;
+            const a = this.part == -1 ? !!this.new_part_type.category && !!this.new_part_type.name : !!this.part;
+            // Check new_car
+                // Check car model
+            const b2 = this.new_car.model == -1 ? !!this.new_car.model_name : !!this.new_car.model;
+            const b = this.car == -1 ? !!this.new_car.brand && b2 : true;
             // Check description
-            const b = !!this.description;
-            return a && b
+            const c = !!this.description;
+            return a && b && c
         },
         ...mapState({
             account: state => state.account,
@@ -328,7 +336,7 @@ export default {
                     }
                 })
                 .catch(error => {
-                    this.$store.commit('SET_MESSAGE', { message: error.response.data.detail, status: 'danger' })
+                    this.$store.commit('SET_MESSAGE', { message: error.response.data, status: 'danger' })
                 })
         },
         uploadImages (fbId) {

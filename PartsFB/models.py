@@ -49,6 +49,9 @@ class CarModel(models.Model):
     def __str__(self):
         return '{0} {1}'.format(self.brand, self.name)
 
+    class Meta:
+        unique_together = ('name', 'brand')
+
 
 class Car(models.Model):
     owner = models.ForeignKey(User, models.PROTECT, related_name='cars')
