@@ -69,20 +69,19 @@ export default {
             } else if (localStorage.getItem('auth_token')) {
                 // set axios default config
                 this.$http.defaults.headers.common['Authorization'] = 'Token ' + localStorage.getItem('auth_token');
-                this.$store.dispatch('getUser');
+                this.$store.dispatch('getUser', { anonymous: false });
             // Anonymous user
             } else if (localStorage.getItem('anonymous_user_auth_token')) {
                 // set axios default config
                 this.$http.defaults.headers.common['Authorization'] = 'Token ' + localStorage.getItem('anonymous_user_auth_token');
-                this.$store.state.account.isAnonymous = true;
-                this.$store.state.account.isAuthenticated = true
+                this.$store.dispatch('getUser', { anonymous: true });
             }
         }
     },
 
     computed: mapState({
         account: state => state.account,
-        all: state => state.all,
+        all: state => state.all
     })
 }
 </script>

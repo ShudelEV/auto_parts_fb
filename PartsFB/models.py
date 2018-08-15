@@ -113,6 +113,9 @@ class FeedBack(models.Model):
     def __str__(self):
         return '{0}'.format(self.part)
 
+    class Meta:
+        ordering = ['-created']
+
 
 def fb_images_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/Users/<user_name>/feedbacks/<filename>

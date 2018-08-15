@@ -2,16 +2,30 @@ import Vue from 'vue'
 
 const state = {
     showLoginWindow: false,
+    // before send fb and user is not authenticated, suggest login
     showSuggestLogin: false,
     id: null,
     name: null,
     email: null,
     isAuthenticated: false,
     isAnonymous: true,
-    message: []
+    message: [],
+    cars: []
 };
 
 const getters = {
+    carList ( state ) {
+        let res = [];
+        if (state.cars) {
+            state.cars.forEach((car, index) => {
+                let model = car.model;
+                model += car.manufacture_year ? ' ' + car.manufacture_year + ' m.y.' : '';
+                model += car.engine_volume ? ' ' + car.engine_volume + ' cm3' : '';
+                res.push({ id: car.id, model})
+            })
+        }
+        return res
+    }
 };
 
 const actions = {
@@ -37,7 +51,7 @@ const actions = {
                 // set axios default config
                 Vue.axios.defaults.headers.common['Authorization'] = 'Token ' + response.data.auth_token;
                 // get a user information
-                dispatch('getUser');
+                dispatch('getUser', { anonymous: false });
                 // close the login window
                 state.showLoginWindow = false;
                 state.showSuggestLogin = false;
@@ -47,12 +61,23 @@ const actions = {
         )
     },
     // get user information
-    getUser ({ commit }) {
+    getUser ({ commit, dispatch }, { anonymous }) {
         Vue.axios.get('/auth/me/').then(
-            response => commit('SET_USER', response.data)
+            response => {
+                commit('SET_USER', { data: response.data, anonymous });
+                // get user cars for the addFB page
+                dispatch('getUserCars')
+            }
         ).catch(
             error => commit('HANDLE_ERROR', error)
-        )
+        );
+    },
+    getUserCars ({ commit, state }) {
+        Vue.axios.get('/api/cars/' + state.name + '/').then(
+            response => { state.cars = response.data; }
+        ).catch(
+            error => commit('HANDLE_ERROR', error)
+        );
     },
     // create anonymous user
     registerAnonymousUser ({ dispatch, commit }, callBack) {
@@ -77,6 +102,8 @@ const actions = {
                 localStorage.setItem('anonymous_user_password', form.password);
                 // set axios default config
                 Vue.axios.defaults.headers.common['Authorization'] = 'Token ' + response.data.auth_token;
+                // get a user information
+                dispatch('getUser', { anonymous: true });
                 // send FB
                 callBack()
             }
@@ -90,6 +117,7 @@ const actions = {
             () => {
                 commit('REMOVE_USER');
                 state.showSuggestLogin = false;
+                sessionStorage.setItem('notSuggestLogin', false);
             }
         ).catch(
             error => commit('HANDLE_ERROR', error)
@@ -99,16 +127,17 @@ const actions = {
 
 const mutations = {
     SET_USER (state, user) {
-        state.id = user.id;
-        state.name = user.username;
-        state.email = user.email;
-        state.isAnonymous = false;
+        state.id = user.data.id;
+        state.name = user.data.username;
+        state.email = user.data.email;
+        state.isAnonymous = user.anonymous;
         state.isAuthenticated = true;
     },
     REMOVE_USER (state) {
         state.id = null;
         state.name = null;
         state.email = null;
+        state.cars = [];
         state.isAnonymous = true;
         state.isAuthenticated = false;
         localStorage.removeItem('expires_at');

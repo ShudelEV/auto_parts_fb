@@ -20,4 +20,5 @@ urlpatterns += [
     path('<str:brand_name>/feedbacks/', include(feedbacks_urls)),
     path('part-types/', views.PartTypeList.as_view()),
     path('car-models/', views.CarModelList.as_view()),
+    path('cars/<str:user>/', views.UserCarList.as_view()),
 ]

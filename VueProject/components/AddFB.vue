@@ -3,8 +3,8 @@
     <div class="uk-width-1-1">
         <h2>Add Your Feedback</h2>
     </div>
-    <vk-button @click="$store.dispatch('registerAnonymousUser')">Anonymous login</vk-button>
-    <vk-button @click="$store.dispatch('destroyToken')">Anonymous logout</vk-button>
+    <!--<vk-button @click="$store.dispatch('registerAnonymousUser')">Anonymous login</vk-button>-->
+    <!--<vk-button @click="$store.dispatch('destroyToken')">Anonymous logout</vk-button>-->
     <form class="uk-grid-small" uk-grid ref="form2">
         <!--Add part-->
         <template v-if="part == -1">
@@ -25,7 +25,6 @@
         <div v-else class="uk-width-1-2@s">
             <label class="uk-form-label" for="part">*Part</label>
             <select v-model="part" id="part" name="part" class="uk-select" autofocus>
-                <!--<option></option>-->
                 <option :value="-1">&emsp;Add..</option>
                 <template v-for="(value, key) in partTypes">
                     <option disabled style="color: darkgray">{{ key }}</option>
@@ -110,16 +109,13 @@
         <div v-else class="uk-width-1-2@s">
             <label class="uk-form-label" for="car">Car</label>
             <select v-model="car" id="car" name="car" class="uk-select" :height="5">
+                <option></option>
+                <option :value="-1">Add..</option>
                 <template v-if="account.isAuthenticated && account.cars">
-                    <option v-for="car in account.cars"
+                    <option v-for="car in cars"
                             :key="car.id"
                             :value="car.id"
-                    >{{ car.name }}</option>
-                    <option :value="-1">Add..</option>
-                </template>
-                <template v-else>
-                    <option></option>
-                    <option :value="-1">Add..</option>
+                    >{{ car.model }}</option>
                 </template>
             </select>
         </div>
@@ -158,7 +154,13 @@
     </article>
     <hr>
     <!--Buttons-->
-    <template v-if="!account.showSuggestLogin">
+    <template v-if="account.showSuggestLogin"> <!--Suggest to log in-->
+        <p>Хотите войти, чтобы в дальнейшем у Вас была возможность редактировать
+            Ваши комментарии и видеть добавленные вами авто?</p>
+        <vk-button class="uk-margin-right" @click="sendFBAnonymous()">No</vk-button>
+        <vk-button type="primary" @click="$store.state.account.showLoginWindow = true">Yes</vk-button>
+    </template>
+    <template v-else>
         <p>
             <vk-button class="uk-margin-right" @click="resetForm()">Clear</vk-button>
             <vk-button type="primary"
@@ -167,13 +169,6 @@
                        :title="sendPermit ? 'Send feedback' : '*Fill required fields.'"
             >Send</vk-button>
         </p>
-    </template>
-    <!--Suggest to log in-->
-    <template v-else>
-        <p>Хотите войти, чтобы в дальнейшем у Вас была возможность редактировать
-            Ваши комментарии и видеть добавленные вами авто?</p>
-        <vk-button class="uk-margin-right" @click="sendFBAnonymous()">No</vk-button>
-        <vk-button type="primary" @click="$store.state.account.showLoginWindow = true">Yes</vk-button>
     </template>
 </div>
 </template>
@@ -251,6 +246,7 @@ export default {
         ...mapGetters({
             partTypes: 'getPartTypes',
             getCarModels: 'getCarModels',
+            cars: 'carList'
         })
     },
 
@@ -289,7 +285,10 @@ export default {
         sendFBAnonymous () {
             sessionStorage.setItem('notSuggestLogin', true);
             // create anonymous user and then to send the FB
-            const callBack = () => { this.sendFB() };
+            const callBack = () => {
+                this.sendFB();
+                this.$store.state.account.showSuggestLogin = false;
+            };
             this.$store.dispatch('registerAnonymousUser', callBack);
         },
         sendFB () {
@@ -319,6 +318,9 @@ export default {
             this.$http.post('/api/' + this.brandName + '/feedbacks/create/', form)
                 .then(response => {
                     this.$store.commit('SET_MESSAGE', { message: 'Feedback successful created. ', status: 'success' });
+                    if (response.data.new_car) {
+                        this.$store.state.account.cars.push(response.data.new_car)
+                    }
                     if (Object.keys(this.$refs.images_form.image).length) {
                         this.uploadImages(response.data.id)
                     } else {

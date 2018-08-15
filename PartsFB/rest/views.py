@@ -6,10 +6,10 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.response import Response
 from django.contrib.auth.models import User
-from PartsFB.models import PartBrand, FeedBack, PartType, Part, CarModel, CarBrand, Image
+from PartsFB.models import PartBrand, FeedBack, PartType, Part, CarModel, CarBrand, Car, Image
 from .serializers import PartBrandDetailSerializer, PartBrandShortSerializer, FeedBackSerializer, \
     PartTypeSerializer, CreateFeedBackSerializer, CreatePartSerializer, CarModelSerializer, \
-    CreateCarModelSerializer, CreateCarSerializer, CreateImageSerializer
+    CreateCarModelSerializer, CreateCarSerializer, CreateImageSerializer, CarSerializer
 from django.views.decorators.csrf import csrf_protect
 from django.db.models import Prefetch
 from PartsFB.data import PART_CATEGORIES, FIRST_NAMES, LAST_NAMES
@@ -72,7 +72,7 @@ class FeedbackList(mixins.ListModelMixin, generics.GenericAPIView):
     serializer_class = FeedBackSerializer
 
     def get(self, request, *args, **kwargs):
-        self.queryset = self.queryset.filter(part__brand__name=kwargs['brand_name'])
+        self.queryset = self.queryset.filter(part__brand__name=kwargs.get('brand_name'))
         return self.list(request, *args, **kwargs)
 
 
@@ -101,11 +101,22 @@ class CarModelList(mixins.ListModelMixin, generics.GenericAPIView):
         return response
 
 
+class UserCarList(mixins.ListModelMixin, generics.GenericAPIView):
+    # queryset = Car.objects.all()
+    serializer_class = CarSerializer
+
+    def get(self, request, *args, **kwargs):
+        self.queryset = Car.objects.filter(owner__username=kwargs.get('user'))
+        return self.list(request, *args, **kwargs)
+
+
 @csrf_protect
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
 def create_feedback(request, *args, **kwargs):
     data = request.data
+    new_car_data = data.get('new_car')
+    new_car = None
     # { Build a part serializer
     part_data = {
         'brand': PartBrand.objects.get(name=kwargs.get('brand_name')).id,
@@ -128,9 +139,8 @@ def create_feedback(request, *args, **kwargs):
     #   { Add a car to the part serializer data
     if data.get('car'):
         part_data.update({'car': data.get('car')})
-    elif data.get('new_car'):
+    elif new_car_data:
         # Create a new car
-        new_car_data = data.get('new_car')
         car_model = None
         car_model_id = None
         if new_car_data.get('model'):
@@ -156,8 +166,8 @@ def create_feedback(request, *args, **kwargs):
             'body_style': new_car_data.get('body_style')
         })
         if car_serializer.is_valid():
-            car = car_serializer.save()
-            part_data.update({'car': car.id})
+            new_car = car_serializer.save()
+            part_data.update({'car': new_car.id})
         else:
             if car_model:
                 car_model.delete()
@@ -180,7 +190,11 @@ def create_feedback(request, *args, **kwargs):
         if fb_serializer.is_valid():
             # Add fb
             fb_serializer.save()
-            return Response(fb_serializer.data, status=status.HTTP_201_CREATED)
+            response = Response(fb_serializer.data, status=status.HTTP_201_CREATED)
+            # If a new car is created, dispatch the data
+            if new_car:
+                response.data.update({'new_car': CarSerializer(new_car).data})
+            return response
         else:
             part.delete()
             return bad_request(fb_serializer.errors)
