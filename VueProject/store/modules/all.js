@@ -1,4 +1,5 @@
 const state = {
+    // partBrands: [{ id: Integr, name: String, feedbacks: { [pageNumber]: [feedbacks] }, ... }, ...]
     partBrands: [],
     partTypes: [],
     partCategories: null,
@@ -43,6 +44,16 @@ const getters = {
     },
     getCarModels: state => brand => {
         return state.carModels ? state.carModels.filter((i => i.brand == brand)) : []
+    },
+    getFB: state => req => {
+        let res = [];
+        let brandIndex = state.partBrands.findIndex(i => i.name == req.brandName);
+        if (brandIndex >=  0) {
+            if (state.partBrands[brandIndex].feedbacks) {
+                res = state.partBrands[brandIndex].feedbacks[req.pageNumber]
+            }
+        }
+        return res
     }
 };
 
@@ -54,12 +65,16 @@ const mutations = {
         state.partBrands = objects
     },
     ADD_PART_BRANDS (state, object) {  },
-    SET_BRAND_FEEDBACKS (state, { name, items }) {
-        let brandIndex = state.partBrands.findIndex(i => i.name == name);
-        if (brandIndex >= 0) {
-            state.partBrands[brandIndex].feedbacks = items
+    SET_BRAND_FEEDBACKS (state, { brandName, items, page_number }) {
+        let brandIndex = state.partBrands.findIndex(i => i.name == brandName);
+        if (brandIndex < 0) {
+            brandIndex = state.partBrands.push({ name: brandName }) - 1; // Array.prototype.push() returns an array length
+            // console.log('store/SET_BRAND_FEEDBACKS: A brand item ' + brandName + ' is not find')
+        }
+        if (state.partBrands[brandIndex].feedbacks) {
+            state.partBrands[brandIndex].feedbacks[page_number] = items
         } else {
-            console.log('store/SET_BRAND_FEEDBACKS: A brand item ' + name + ' is not find')
+            state.partBrands[brandIndex].feedbacks = { [page_number]: items }
         }
     },
     SET_PART_TYPES (state, { category_list, part_types }) {
@@ -72,6 +87,14 @@ const mutations = {
     },
     SET_MESSAGE (state, { message, status }) {
         state.message.push({ message: message, status: status })
+    },
+    // delete all feedbacks
+    DELETE_FB (state) {
+        for (let i = 0; i < state.partBrands.length; i++) {
+            if (state.partBrands[i].feedbacks) {
+                delete state.partBrands[i].feedbacks
+            }
+        }
     }
 };
 

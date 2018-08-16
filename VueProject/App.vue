@@ -1,7 +1,9 @@
 <template>
 <div>
     <!--Load Progress Bar-->
-    <nprogress-container style="height: 3px"></nprogress-container>
+    <vk-sticky>
+        <nprogress-container style="height: 3px"></nprogress-container>
+    </vk-sticky>
     <!--Error notification-->
     <vk-notification :messages.sync="account.message"></vk-notification>
     <vk-notification :messages.sync="all.message"></vk-notification>
@@ -18,11 +20,11 @@
         </template>
         <!--Other page navbar-->
         <template v-else>
-            <vk-card uk-sticky>
-                <div class="uk-container uk-position-top">
+            <div class="uk-card uk-card-default" uk-sticky>
+                <div class="uk-container">
                     <nav-bar-login :logo="logo"></nav-bar-login>
                 </div>
-            </vk-card>
+            </div>
         </template>
     </div>
     <!--Login Window-->

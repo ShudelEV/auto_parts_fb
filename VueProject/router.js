@@ -13,6 +13,10 @@ Vue.use(Router);
 const router = new Router({
     mode: 'history',
     // base: __dirname,
+    // scroll to the top when to route
+    scrollBehavior (to, from, savedPosition) {
+        return savedPosition ? savedPosition : { x: 0, y: 0 }
+    },
     routes: [
         {
             path: '/',
@@ -30,7 +34,8 @@ const router = new Router({
                 {
                     path: 'feedbacks/add',
                     name: 'AddFB',
-                    component: AddFB
+                    component: AddFB,
+                    props: true
                 },
                 {
                     path: 'feedbacks/:page_number',

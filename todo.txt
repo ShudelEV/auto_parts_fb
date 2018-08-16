@@ -19,4 +19,4 @@
 15. edit/update fb
 16. freeze when http error response (try /api/cars/username/, in CarList: .filter(owner__name=...))
 17. add images: can choose only img files
-18. router when use pagination
+18. + router when use pagination

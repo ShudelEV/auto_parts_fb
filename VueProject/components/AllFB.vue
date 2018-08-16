@@ -75,7 +75,7 @@ export default {
             showBrandInfo: false,
             collapse: false,
             // pagination
-            page: 1,
+            page: Number(this.page_number), // load an appropriate page when page is updated
             total: 1,
             // number of items on a page
             page_size: 20
@@ -85,14 +85,34 @@ export default {
     props: ['brandName', 'page_number'],
 
     created () {
+        // update feedbacks in store
+        this.$store.commit('DELETE_FB');
         this.fetchData(this.page);
     },
 
     watch: {
+        // if click Previous or Next
+//        page_number: function (val) {
+//            if (this.page != Number(val)) { this.page = Number(val) }
+//        },
         page: function (val) {
-            this.fetchData(val);
-            this.$router.push({ name: 'AllFB', params: { brandName: this.brandName, page_number: val } })
+            this.$router.push({ name: 'AllFB', params: { brandName: this.brandName, page_number: val } });
+            this.collapse = false;
         }
+    },
+
+    beforeRouteUpdate (to, from, next) {
+        let fb = this.$store.getters.getFB({
+            brandName: this.brandName,
+            pageNumber: to.params.page_number
+        });
+//        console.log(fb, typeof to.params.page_number)
+        if (fb) {
+            this.feedbacks = fb
+        } else {
+            this.fetchData(this.page)
+        }
+        next()
     },
 
     methods: {
@@ -106,8 +126,9 @@ export default {
             this.$http.get(url)
                 .then(response => {
                     this.$store.commit('SET_BRAND_FEEDBACKS', {
-                        name: this.$route.params.name,
-                        items: response.data.results
+                        brandName: this.brandName,
+                        items: response.data.results,
+                        page_number: this.page_number
                     });
                     let pageQty = response.data.count / this.page_size;
                     let roundPageQty = Math.trunc(pageQty);
