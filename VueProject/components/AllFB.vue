@@ -13,13 +13,15 @@
     <li v-for="fb in feedbacks" :key="fb.id">
         <!--Header-->
         <a class="uk-accordion-title" href="#">
+            <!--Part name-->
             <vk-icon icon="cog"></vk-icon> {{ fb.part.type }}
-            <template v-if="fb.part.car" >
+            <!--Car name-->
+            <div v-if="fb.part.car" class="uk-display-inline-block">
                 <vk-icon-image src="/static/images/car.svg" uk-svg class="uk-margin-small-left"></vk-icon-image>
                 {{ fb.part.car.model }}
                 {{ fb.part.car.manufacture_year ? ' ' + fb.part.car.manufacture_year + ' m.y.' : '' }}
                 {{ fb.part.car.engine_volume ? ' ' + fb.part.car.engine_volume + ' cm3' : '' }}
-            </template>
+            </div>
             <!--Stars-->
             <div class="uk-margin-medium-left uk-display-inline-block">
                 <vk-icon v-for="i in [1,2,3,4,5]" :key="i"

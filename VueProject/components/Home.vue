@@ -15,7 +15,7 @@
                 </div>
             </vk-card>
         </div>
-        <div class="uk-width-expand@m">
+        <div class="uk-width-expand@m" style="padding-bottom: 75px">
             <div uk-grid="masonry: true"
                  class="uk-grid-small uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m"
                  uk-scrollspy="cls: uk-animation-slide-bottom; repeat: true"

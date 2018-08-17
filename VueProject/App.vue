@@ -1,40 +1,46 @@
 <template>
 <div>
-    <!--Load Progress Bar-->
-    <vk-sticky>
-        <nprogress-container style="height: 3px"></nprogress-container>
-    </vk-sticky>
     <!--Error notification-->
     <vk-notification :messages.sync="account.message"></vk-notification>
     <vk-notification :messages.sync="all.message"></vk-notification>
-    <!--Navbar-->
-    <div class="uk-section uk-section-default uk-padding-remove-vertical">
-        <!--Home page navbar-->
-        <template v-if="$route.name == 'Home'">
-            <img src="/static/images/header.jpeg" alt="" id="offset">
-            <div class="uk-container uk-position-top">
-                <vk-sticky bottom="#offset">
-                    <nav-bar-login :logo="logo"></nav-bar-login>
-                </vk-sticky>
-            </div>
-        </template>
-        <!--Other page navbar-->
-        <template v-else>
-            <div class="uk-card uk-card-default" uk-sticky>
-                <div class="uk-container">
-                    <nav-bar-login :logo="logo"></nav-bar-login>
+    <div class="content">
+        <!--Load Progress Bar-->
+    <!--<vk-sticky>-->
+        <nprogress-container style="height: 3px"></nprogress-container>
+    <!--</vk-sticky>-->
+        <!--Navbar-->
+        <div class="uk-section uk-section-default uk-padding-remove-vertical">
+            <!--Home page navbar-->
+            <template v-if="$route.name == 'Home'">
+                <img src="/static/images/header.jpeg" alt="" id="offset">
+                <div class="uk-container uk-position-top">
+                    <vk-sticky bottom="#offset">
+                        <nav-bar-login :logo="logo"></nav-bar-login>
+                    </vk-sticky>
                 </div>
+            </template>
+            <!--Other page navbar-->
+            <template v-else>
+                <div class="uk-card uk-card-default" uk-sticky>
+                    <div class="uk-container">
+                        <nav-bar-login :logo="logo"></nav-bar-login>
+                    </div>
+                </div>
+            </template>
+        </div>
+        <!--Login Window-->
+        <login-window :show="account.showLoginWindow"></login-window>
+        <!--Body-->
+        <div class="uk-section uk-section-default uk-section-xsmall">
+            <div class="uk-container">
+                <router-view></router-view>
             </div>
-        </template>
-    </div>
-    <!--Login Window-->
-    <login-window :show="account.showLoginWindow"></login-window>
-    <!--Body-->
-    <div class="uk-section uk-section-default uk-section-xsmall">
-        <div class="uk-container">
-            <router-view></router-view>
         </div>
     </div>
+    <!--Footer-->
+    <footer>
+        Footer
+    </footer>
 </div>
 </template>
 
@@ -87,3 +93,13 @@ export default {
     })
 }
 </script>
+
+<style>
+    .content {
+        min-height: calc(100vh - 50px);
+    }
+    footer {
+        background-color: lightgray;
+        height: 50px;
+    }
+</style>
