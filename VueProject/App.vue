@@ -6,7 +6,7 @@
     <div class="content">
         <!--Load Progress Bar-->
     <!--<vk-sticky>-->
-        <nprogress-container style="height: 3px"></nprogress-container>
+        <nprogress-container></nprogress-container>
     <!--</vk-sticky>-->
         <!--Navbar-->
         <div class="uk-section uk-section-default uk-padding-remove-vertical">
@@ -101,5 +101,13 @@ export default {
     footer {
         background-color: lightgray;
         height: 50px;
+    }
+    /*Show progress bar*/
+    .nprogress-custom-parent {
+        overflow: visible !important;
+    }
+    .nprogress-custom-parent #nprogress .spinner,
+    .nprogress-custom-parent #nprogress .bar {
+        position: fixed !important;
     }
 </style>
