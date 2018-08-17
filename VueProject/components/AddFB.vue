@@ -134,18 +134,21 @@
         </div>
         <!--Add images-->
         <div class="uk-width-1-1@s">
-            <upload-image ref="images_form"
-                          :url="imageUploadURL"
-                          name="image"
-                          input_id="image_input"
-                          class="img-uploader"
-                          button_class="button_hidden"
-                          @upload-image-success="$router.push({ name: 'AllFB', params: { brandName: brandName, page_number: 1 } })"
-                          @upload-image-failure="response => {
-                              $store.commit('SET_MESSAGE', { message: 'Error images upload', status: 'danger' });
-                              $router.push({ name: 'AllFB', params: { brandName: brandName, page_number: 1 } })
-                          }"
-            ></upload-image>
+            <div class="img-uploader">
+                <upload-image
+                    ref="images_form"
+                    :url="imageUploadURL"
+                    name="image"
+                    input_id="image_input"
+                    button_class="button_hidden"
+                    @upload-image-success="$router.push({name: 'AllFB', params: {brandName: brandName, page_number: 1}})"
+                    @upload-image-failure="response => {
+                        $store.commit('SET_MESSAGE', {message: 'Error images upload', status: 'danger'});
+                        $router.push({name: 'AllFB', params: {brandName: brandName, page_number: 1}})
+                    }"
+                ></upload-image>
+                <span class="img-uploader-text" v-if="!filesQty()">drop or click to add images here</span>
+            </div>
         </div>
     </form>
     <hr>
@@ -303,7 +306,6 @@ export default {
             let form = {
                 description: this.description,
                 stars: this.stars,
-//               images: form.image.value
             };
             if ( this.part != -1 ) {
                 form.part = this.part
@@ -346,6 +348,10 @@ export default {
                 document.getElementById('upload_image_form--image_input').getElementsByTagName('button')[0].click()
             }, 50)
         },
+        // files qty in the form?
+        filesQty () {
+            return this.$refs.images_form ? Object.keys(this.$refs.images_form.image).length : 0
+        },
         goBack() {
             window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
         },
@@ -374,6 +380,17 @@ export default {
             };
             this.description = '';
             this.stars = 0;
+            // delete images
+            if (this.filesQty()) {
+                console.log(this.$refs.images_form)
+                const imgUploader = this.$refs.images_form;
+                // convert Observer to Object
+                const files = JSON.parse(JSON.stringify(imgUploader.files));
+                for (let key in files) {
+                    imgUploader.$delete(imgUploader.files, key);
+                    imgUploader.$delete(imgUploader.image, key)
+                }
+            }
         }
     }
 }
@@ -385,26 +402,27 @@ export default {
 
     div.img-uploader {
         position: relative;
-        /*min-height: 200px;*/
-        /*max-height: 490px;*/
         overflow-y: hidden;
         border-radius: 6px;
         border: 1px dashed #ccc;
         background-color: #fafafa;
-        /*padding: 10px;*/
+        opacity: 0.9;
     }
-    .img-uploader:before {
-        content: "drop or choose images here";
+    .img-uploader .img-uploader-text {
         position: absolute;
         font-size: 200%;
         left: 0;
         width: 100%;
         text-align: center;
-        top: 30%;
-        opacity: .25;
-        z-index: 1
+        color: lightgray;
+        top: 25%;
+        z-index: -1;
     }
     /*min height for "drop or choose images" field*/
-    .upload_image_form__thumbnails { min-height: 100px; z-index: 2 }
+    .upload_image_form__thumbnails { min-height: 80px }
+    /*Hide the "Upload images" button*/
+    .vue_component__upload--image .upload_image_form__thumbnails {
+        margin-bottom: 0 !important;
+    }
     .button_hidden { display: none; }
 </style>

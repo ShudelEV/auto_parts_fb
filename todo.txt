@@ -12,8 +12,8 @@
 11. + car model field may not be null;
     + car model must be unique for every car brand;
     validate engine volume (integer in database, "2.4" f.e. in client)
-12. add images: text in the add image area
-13. clear button: clear added images
+12. + add images: text in the add image area
+13. + clear button: clear added images
 14. add images: setTimeOut for the prop "url"
 15. edit/update fb
 16. freeze when http error response (try /api/cars/username/, in CarList: .filter(owner__name=...))
