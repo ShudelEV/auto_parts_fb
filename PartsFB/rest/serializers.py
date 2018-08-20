@@ -16,7 +16,7 @@ class PartBrandShortSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PartBrand
-        fields = ('id', 'name', 'country', 'fb_quantity')
+        fields = ('id', 'name', 'image', 'country', 'specialization', 'site_url', 'fb_quantity')
 
     def get_fb_quantity(self, obj):
         return FeedBack.objects.filter(part__brand=obj).count()

@@ -25,12 +25,25 @@
                         <vk-card-title class="uk-margin-small-left">{{ key }}</vk-card-title>
                         <ul class="uk-list uk-list-bullet">
                             <li v-for="i in getArray(key)">
-                                <a class="uk-link-text" @click="gotoBrandFeedbacks(value[i])">
-                                    {{ value[i].name }}
-                                </a>
-                                <span class="uk-badge uk-margin-small-left">
-                                    {{ value[i].fb_quantity }}
-                                </span>
+                                <div class="uk-inline">
+                                    <a class="uk-link-text" @click="gotoBrandFeedbacks(value[i])">
+                                        {{ value[i].name }}
+                                    </a>
+                                    <!--a part manufacturer information when to hover the link-->
+                                    <vk-drop position="top-center" mode="hover" :delay-hide="300" :delay-show="1000">
+                                        <vk-card class="uk-width-1-1@m">
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
+                                            <div slot="footer">
+                                                <vk-button type="text"
+                                                           @click="gotoBrandInfo(value[i].name)"
+                                                >Read more</vk-button>
+                                            </div>
+                                        </vk-card>
+                                    </vk-drop>
+                                    <span class="uk-badge uk-margin-small-left">
+                                        {{ value[i].fb_quantity }}
+                                    </span>
+                                </div>
                             </li>
                         </ul>
                         <vk-icon-link reset icon="more" class="uk-margin-small-left"
@@ -86,6 +99,9 @@ export default {
             } else {
                 this.$router.push({ name: 'AddFB', params: { brandName: brand.name } })
             }
+        },
+        gotoBrandInfo (brandName) {
+            this.$router.push({ name: 'BrandInfo', params: { brandName } })
         }
     }
 }

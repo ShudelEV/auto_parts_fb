@@ -1,27 +1,78 @@
 <template>
-<vk-grid collapse class="uk-child-width-1-2@s uk-flex-middle">
-    <div class="uk-background-cover" style="background-color: dodgerblue" v-vk-height-viewport></div>
-    <div class="uk-padding-large">
-      <h1>{{name}}</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-          Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </p>
-    </div>
-</vk-grid>
+    <article class="uk-comment">
+        <header class="uk-comment-header uk-grid-medium uk-flex-middle" uk-grid>
+            <div class="uk-width-auto">
+                <img class="uk-comment-avatar" :src="brand.image" width="160" height="160" alt="">
+            </div>
+            <div class="uk-width-expand">
+                <ul class="uk-subnav uk-subnav-divider uk-margin-remove">
+                    <li class="uk-active" style="text-transform:uppercase">Country</li>
+                    <li><a href="#">{{brand.country}}</a></li>
+                </ul>
+                <ul class="uk-subnav uk-subnav-divider uk-margin-remove">
+                    <li class="uk-active" style="text-transform:uppercase">Specialization</li>
+                    <li><a href="#">{{brand.specialization}}</a></li>
+                </ul>
+                <ul class="uk-subnav uk-subnav-divider uk-margin-remove">
+                    <li class="uk-active" style="text-transform:uppercase">Link</li>
+                    <li><a :href="brand.site_url">{{brand.site_url}}</a></li>
+                </ul>
+            </div>
+        </header>
+        <div class="uk-comment-body">
+            <span v-html="brand.description"></span>
+        </div>
+    </article>
 </template>
 
 <script>
 export default {
-    name: 'BrandIfno',
+    name: 'BrandInfo',
 
     data () {
         return {
+            brand: {
+                image: '',
+                country: '',
+                specialization: '',
+                site_url: '',
+                description: ''
+            }
         }
     },
 
-    props: ['name'],
+    props: ['brandName'],
+
+    created () {
+        if (this.brandInfo) {
+            this.fetchData(this.brandInfo.id)
+        }
+    },
+
+    computed: {
+        brandInfo () {
+            return this.$store.getters.getPartBrand(this.brandName)
+        }
+    },
+
+    watch: {
+        // the case when page is reloaded (F5)
+        brandInfo: function (val) {
+            this.fetchData(val.id)
+        }
+    },
+
+    methods: {
+        fetchData (id) {
+            this.$http.get('/api/part-brands/' + id + '/').then(
+                response => {
+                    this.brand.description = response.data.description
+            });
+            this.brand.image = this.brandInfo.image;
+            this.brand.country = this.brandInfo.country;
+            this.brand.specialization = this.brandInfo.specialization;
+            this.brand.site_url = this.brandInfo.site_url
+        }
+    }
 }
 </script>

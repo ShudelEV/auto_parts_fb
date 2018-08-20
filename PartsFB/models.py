@@ -16,6 +16,7 @@ class Manufacturer(models.Model):
     country = models.CharField(max_length=2, choices=COUNTRY_CHOICES)
     image = models.ImageField(blank=True, max_length=255, upload_to=brand_image_path)
     description = models.TextField(blank=True)
+    site_url = models.URLField(blank=True, null=True)
 
     class Meta:
         abstract = True
@@ -23,6 +24,8 @@ class Manufacturer(models.Model):
 
 
 class PartBrand(Manufacturer):
+    specialization = models.CharField(max_length=256, blank=True, null=True)
+
     def __str__(self):
         return '{0} ({1})'.format(self.name, self.country)
 

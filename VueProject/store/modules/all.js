@@ -27,8 +27,8 @@ const getters = {
         }
         return res
     },
-    getFBByBrand: state => name => {
-        return state.partBrands.find((i => i.name == name)).feedbacks
+    getPartBrand: state => name => {
+        return state.partBrands.find((i => i.name == name))
     },
     // part types are divided by categories
     getPartTypes ( state ) {

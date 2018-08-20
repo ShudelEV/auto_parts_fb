@@ -6,6 +6,8 @@ import Home from './components/Home.vue'
 import BrandPage from './components/BrandPage.vue'
 import AddFB from './components/AddFB.vue'
 import AllFB from './components/AllFB.vue'
+import BrandInfo from './components/BrandInfo.vue'
+
 
 // tell Vue to use the vue-router plugin
 Vue.use(Router);
@@ -31,6 +33,12 @@ const router = new Router({
             component: BrandPage,
             props: true,
             children: [
+                {
+                    path: 'info',
+                    name: 'BrandInfo',
+                    component: BrandInfo,
+                    props: true
+                },
                 {
                     path: 'feedbacks/add',
                     name: 'AddFB',
