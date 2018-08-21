@@ -141,10 +141,10 @@
                     name="image"
                     input_id="image_input"
                     button_class="button_hidden"
-                    @upload-image-success="$router.push({name: 'AllFB', params: {brandName: brandName, page_number: 1}})"
+                    @upload-image-success="gotoAllFB()"
                     @upload-image-failure="response => {
                         $store.commit('SET_MESSAGE', {message: 'Error images upload', status: 'danger'});
-                        $router.push({name: 'AllFB', params: {brandName: brandName, page_number: 1}})
+                        gotoAllFB()
                     }"
                 ></upload-image>
                 <span class="img-uploader-text" v-if="!filesQty()">drop or click to add images here</span>
@@ -182,6 +182,7 @@
 <script>
 import { mapGetters, mapState } from 'vuex'
 import UploadImage from 'vue-upload-image'
+import { ENGINE_TYPES, GEAR_TYPES } from '../data'
 
 export default {
     name: 'AddFB',
@@ -210,19 +211,8 @@ export default {
             description: '',
             stars: 0,
             imageUploadURL: '',
-            engineTypes: {
-                1: 'benzine',
-                2: 'diesel',
-                3: 'gas-benzine',
-                4: 'electric',
-                5: 'hybrid'
-            },
-            gearTypes: {
-                1: 'manual',
-                2: 'automatic',
-                3: 'semi-automatic',
-                4: 'CVT'
-            }
+            engineTypes: ENGINE_TYPES,
+            gearTypes: GEAR_TYPES
         }
     },
 
@@ -333,9 +323,8 @@ export default {
                     }
                     if (Object.keys(this.$refs.images_form.image).length) {
                         this.uploadImages(response.data.id)
-                    } else {
-                        this.$router.push({ name: 'AllFB', params: { brandName: this.brandName, page_number: 1 } })
-                    }
+                    } else { this.gotoAllFB() }
+                    this.$store.state.all.newFBId = response.data.id
                 })
                 .catch(error => {
                     this.$store.commit('SET_MESSAGE', { message: error.response.data, status: 'danger' })
@@ -354,6 +343,9 @@ export default {
         },
         goBack() {
             window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
+        },
+        gotoAllFB () {
+            this.$router.push({ name: 'AllFB', params: { brandName: this.brandName, page_number: 1 } })
         },
         yearList (start, end) {
             let res = [];

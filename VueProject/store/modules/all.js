@@ -7,6 +7,7 @@ const state = {
     partCategories: null,
     carBrands: null,
     carModels: null,
+    newFBId: null,
     message: []
 };
 

@@ -100,6 +100,21 @@ const COUNTRIES = {
     "VN": "Viet Nam",
 };
 
+const ENGINE_TYPES = {
+    1: 'benzine',
+    2: 'diesel',
+    3: 'gas-benzine',
+    4: 'electric',
+    5: 'hybrid'
+};
+
+const GEAR_TYPES = {
+    1: 'manual',
+    2: 'automatic',
+    3: 'semi-automatic',
+    4: 'CVT'
+};
+
 export {
-    ALPHABET, COUNTRIES
+    ALPHABET, COUNTRIES, ENGINE_TYPES, GEAR_TYPES
 }

@@ -10,7 +10,7 @@
     <!--Feedbacks section-->
 <ul uk-accordion="multiple: true" id="accordion" class="uk-list uk-list-divider">
     <!--Feedback-->
-    <li v-for="fb in feedbacks" :key="fb.id">
+    <li v-for="fb in feedbacks" :key="fb.id" :id="'fb_' + fb.id">
         <!--Header-->
         <a class="uk-accordion-title" href="#">
             <!--Part name-->
@@ -136,7 +136,8 @@ export default {
                     let roundPageQty = Math.trunc(pageQty);
                     this.total = pageQty == roundPageQty ? roundPageQty : roundPageQty + 1;
                     this.feedbacks = response.data.results;
-                    this.loading = false
+                    this.loading = false;
+                    this.highlightFB()
                 })
                 .catch(error => {
                     this.loading = false;
@@ -153,11 +154,27 @@ export default {
             const acc = UIkit.accordion(accordion);
             for (let item of acc.items) {
                 if (this.collapse && item.className != 'uk-open') {
-                    UIkit.accordion(accordion).toggle(acc.items.indexOf(item))
+                    acc.toggle(acc.items.indexOf(item))
                 }
                 if (!this.collapse && item.className == 'uk-open') {
-                    UIkit.accordion(accordion).toggle(acc.items.indexOf(item))
+                    acc.toggle(acc.items.indexOf(item))
                 }
+            }
+        },
+        // highlight feedback if created
+        highlightFB () {
+            const fb_id = this.$store.state.all.newFBId;
+            if (fb_id) {
+                setTimeout(() => {
+                    const element = document.getElementById('fb_' + fb_id);
+                    const acc = UIkit.accordion(accordion);
+                    acc.toggle(acc.items.indexOf(element));
+                    element.style.backgroundColor = 'honeydew'
+                }, 1000);
+                setTimeout(() => {
+                    document.getElementById('fb_' + fb_id).style.backgroundColor = "";
+                    this.$store.state.all.newFBId = null
+                }, 2500)
             }
         }
     }
