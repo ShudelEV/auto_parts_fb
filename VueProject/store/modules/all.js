@@ -1,3 +1,5 @@
+import { ALPHABET } from '../../data'
+
 const state = {
     // partBrands: [{ id: Integr, name: String, feedbacks: { [pageNumber]: [feedbacks] }, ... }, ...]
     partBrands: [],
@@ -8,16 +10,12 @@ const state = {
     message: []
 };
 
-const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I",
-    "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U",
-    "V", "W", "X", "Y", "Z"];
-
 const getters = {
     // part brands are sorted and divided by alphabet
     sortedPartBrands: state => pattern => {
         let res = {};
         const PATTERN = new RegExp(pattern, 'i');
-        for (let a of alphabet) {
+        for (let a of ALPHABET) {
             let obj_a = state.partBrands
                 .filter(i => PATTERN.test(i.name))
                 .filter(i => i.name.startsWith(a) || i.name.startsWith(a.toLowerCase()));

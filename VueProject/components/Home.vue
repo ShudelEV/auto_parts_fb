@@ -32,18 +32,18 @@
                                     <!--a part manufacturer information when to hover the link-->
                                     <vk-drop position="top-center"
                                              :flip="false" mode="hover"
-                                             :delay-hide="30000000" :delay-show="1000"
+                                             :delay-hide="300" :delay-show="1000"
                                              @show="showElement('info-window' + value[i].id)"
                                     >
                                         <vk-card padding="small" :id="'info-window' + value[i].id">
                                             <div class="uk-flex uk-flex-center">
-                                                <img :src="value[i].image" alt="">
+                                                <img class="uk-border-rounded" :src="value[i].image" alt="">
                                             </div>
                                             <div class="uk-padding-remove-bottom">
                                                 <dl class="uk-description-list uk-margin-remove-bottom">
                                                     <dt></dt>
                                                     <dt>Country:</dt>
-                                                    <dd>{{value[i].country}}</dd>
+                                                    <dd>{{getCountry(value[i].country)}}</dd>
                                                     <dt>Specialization:</dt>
                                                     <dd>{{value[i].specialization}}</dd>
                                                     <!--<dt>Link:</dt>-->
@@ -76,6 +76,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { COUNTRIES } from '../data'
 
 export default {
     name: 'Home',
@@ -128,6 +129,9 @@ export default {
                     element.scrollIntoView({ behavior: 'smooth', block: 'start' })
                 }
             }, 100, id)
+        },
+        getCountry (key) {
+            return COUNTRIES[key]
         }
     }
 }

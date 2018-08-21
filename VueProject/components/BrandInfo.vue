@@ -2,7 +2,9 @@
     <article class="uk-comment">
         <header class="uk-comment-header uk-grid-medium uk-flex-middle" uk-grid>
             <div class="uk-width-auto">
-                <img class="uk-comment-avatar" :src="brand.image" width="160" height="160" alt="">
+                <img class="uk-comment-avatar uk-border-rounded"
+                     :src="brand.image" width="160" height="160" alt=""
+                >
             </div>
             <div class="uk-width-expand">
                 <ul class="uk-subnav uk-subnav-divider uk-margin-remove">
@@ -26,6 +28,8 @@
 </template>
 
 <script>
+import { COUNTRIES } from '../data'
+
 export default {
     name: 'BrandInfo',
 
@@ -69,10 +73,10 @@ export default {
                     this.brand.description = response.data.description
             });
             this.brand.image = this.brandInfo.image;
-            this.brand.country = this.brandInfo.country;
+            this.brand.country = COUNTRIES[this.brandInfo.country];
             this.brand.specialization = this.brandInfo.specialization;
             this.brand.site_url = this.brandInfo.site_url
-        }
+        },
     }
 }
 </script>
