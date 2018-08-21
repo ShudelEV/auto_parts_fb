@@ -30,9 +30,26 @@
                                         {{ value[i].name }}
                                     </a>
                                     <!--a part manufacturer information when to hover the link-->
-                                    <vk-drop position="top-center" mode="hover" :delay-hide="300" :delay-show="1000">
-                                        <vk-card class="uk-width-1-1@m">
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
+                                    <vk-drop position="top-center"
+                                             :flip="false" mode="hover"
+                                             :delay-hide="30000000" :delay-show="1000"
+                                             @show="showElement('info-window' + value[i].id)"
+                                    >
+                                        <vk-card padding="small" :id="'info-window' + value[i].id">
+                                            <div class="uk-flex uk-flex-center">
+                                                <img :src="value[i].image" alt="">
+                                            </div>
+                                            <div class="uk-padding-remove-bottom">
+                                                <dl class="uk-description-list uk-margin-remove-bottom">
+                                                    <dt></dt>
+                                                    <dt>Country:</dt>
+                                                    <dd>{{value[i].country}}</dd>
+                                                    <dt>Specialization:</dt>
+                                                    <dd>{{value[i].specialization}}</dd>
+                                                    <!--<dt>Link:</dt>-->
+                                                    <!--<dd><a :href="value[i].site_url" target="_blank">{{value[i].site_url}}</a></dd>-->
+                                                </dl>
+                                            </div>
                                             <div slot="footer">
                                                 <vk-button type="text"
                                                            @click="gotoBrandInfo(value[i].name)"
@@ -102,6 +119,15 @@ export default {
         },
         gotoBrandInfo (brandName) {
             this.$router.push({ name: 'BrandInfo', params: { brandName } })
+        },
+        // show an info window if it doesn't fit on the screen
+        showElement(id) {
+            setTimeout((id) => {
+                const element = document.getElementById(id);
+                if (element.getBoundingClientRect().top < 0) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                }
+            }, 100, id)
         }
     }
 }

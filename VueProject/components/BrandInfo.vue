@@ -6,16 +6,16 @@
             </div>
             <div class="uk-width-expand">
                 <ul class="uk-subnav uk-subnav-divider uk-margin-remove">
-                    <li class="uk-active" style="text-transform:uppercase">Country</li>
-                    <li><a href="#">{{brand.country}}</a></li>
+                    <li style="text-transform:uppercase">Country</li>
+                    <li>{{brand.country}}</li>
                 </ul>
                 <ul class="uk-subnav uk-subnav-divider uk-margin-remove">
-                    <li class="uk-active" style="text-transform:uppercase">Specialization</li>
-                    <li><a href="#">{{brand.specialization}}</a></li>
+                    <li style="text-transform:uppercase">Specialization</li>
+                    <li>{{brand.specialization}}</li>
                 </ul>
                 <ul class="uk-subnav uk-subnav-divider uk-margin-remove">
-                    <li class="uk-active" style="text-transform:uppercase">Link</li>
-                    <li><a :href="brand.site_url">{{brand.site_url}}</a></li>
+                    <li style="text-transform:uppercase">Link</li>
+                    <li><a :href="brand.site_url" target="_blank">{{brand.site_url}}</a></li>
                 </ul>
             </div>
         </header>
