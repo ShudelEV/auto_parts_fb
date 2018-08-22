@@ -18,5 +18,6 @@
 15. edit/update fb
 16. freeze when http error response (try /api/cars/username/, in CarList: .filter(owner__name=...))
 17. add images: can choose only img files
+    big files error
 18. + router when use pagination
 19. + info window on home page: scroll page if drop element doesn't fit on display

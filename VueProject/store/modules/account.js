@@ -40,6 +40,16 @@ const actions = {
             error => commit('HANDLE_ERROR', error)
         )
     },
+    registerWithGoogle ({state, commit, dispatch}) {
+        Vue.axios.get('/auth/o/google-oauth2/?redirect_uri=/logged-in/').then(
+            response => {
+                console.log(response);
+                window.location.href = response.data.authorization_url
+            }
+        ).catch(
+            error => commit('HANDLE_ERROR', error)
+        )
+    },
     // log in
     getToken ({ state, commit, dispatch }, { form }) {
         Vue.axios.post(

@@ -3,6 +3,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Home from './components/Home.vue'
+import LoggedInCallback from './components/LoggedInCallback.vue'
 import BrandPage from './components/BrandPage.vue'
 import AddFB from './components/AddFB.vue'
 import AllFB from './components/AllFB.vue'
@@ -52,7 +53,13 @@ const router = new Router({
                     props: true
                 }
             ]
-        }
+        },
+        {
+            path: '/logged-in/',
+            name: 'LoggedInCallback',
+            component: LoggedInCallback,
+            // props: true
+        },
     ]
 });
 

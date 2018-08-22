@@ -19,9 +19,10 @@ urlpatterns += [
     path('admin/', admin.site.urls),
     re_path(r'^auth/users/create-anonymous/', create_anonymous_user),
     re_path(r'^auth/', include('djoser.urls')),
-
+    re_path(r'^auth/', include('social_django.urls', namespace='social')),
+    re_path(r'^auth/', include('djoser.social.urls')),
     re_path(r'^auth/', include('djoser.urls.authtoken')),
-    re_path(r'^auth/o/', include('social_django.urls', namespace='social'))
+    # re_path(r'^auth/', include('djoser.urls.jwt')),
 ]
 
 # urlpatterns += staticfiles_urlpatterns()

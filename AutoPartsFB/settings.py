@@ -124,11 +124,6 @@ MEDIA_URL = '/media/'
 # Change path for production
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/public/')
 
-# djoser
-# SOCIAL_AUTH_ALLOWED_REDIRECT_URIS = [
-#     # '/auth/o/google-callback'
-# ]
-
 # python-social-auth
 SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 
@@ -137,7 +132,14 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+# SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+
+# djoser
+DJOSER = {
+    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': [
+        '/', '/logged-in/'
+    ]
+}
 
 # google oauth2
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '475790162750-ler2ioqumfa9qrobql0j6qeh7lfnr61u.apps.googleusercontent.com'
