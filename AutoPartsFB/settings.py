@@ -151,7 +151,7 @@ SOCIAL_AUTH_VK_OAUTH2_SECRET = 'qSX7E2IZhk1LQDYySu6I'
 # djoser
 DJOSER = {
     'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': [
-        '/',
+        '/auth/o/vk-oauth2/',
         '/logged-in/google-oauth2',
         '/logged-in/vk-oauth2',
         '/logged-in/google-oauth2'

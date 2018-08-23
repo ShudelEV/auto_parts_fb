@@ -68,11 +68,18 @@ const actions = {
                 state.showSuggestLogin = false;
             }
         ).catch(
-            error => commit('HANDLE_ERROR', error)
+            error => {
+                commit('REMOVE_USER');
+                commit('HANDLE_ERROR', error)
+            }
         )
     },
     getTokenSocialAuth ({ state, commit, dispatch }, { query, provider }) {
-        const url = '/auth/o/' + provider + '/?state=' + query.state + '&code=' + query.code;
+        let url = '/auth/o/' + provider + '/?';
+        // dispatch all query props to the server
+        for (let q in query) {
+            url += q + '=' + query[q] + '&'
+        }
         Vue.axios.post(url).then(
             response => {
                 if (response.status == '201') {
@@ -86,7 +93,10 @@ const actions = {
                 }
             }
         ).catch(
-            error => commit('HANDLE_ERROR', error)
+            error => {
+                commit('REMOVE_USER');
+                commit('HANDLE_ERROR', error)
+            }
         )
     },
     // get user information
@@ -137,7 +147,10 @@ const actions = {
                 callBack()
             }
         ).catch(
-            error => commit('HANDLE_ERROR', error)
+            error => {
+                commit('REMOVE_USER');
+                commit('HANDLE_ERROR', error)
+            }
         )
     },
     // log out

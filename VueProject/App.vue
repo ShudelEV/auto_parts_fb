@@ -39,7 +39,9 @@
     </div>
     <!--Footer-->
     <footer>
-        Footer
+         <vk-card padding="small" class="uk-background-muted">
+             Footer
+         </vk-card>
     </footer>
 </div>
 </template>
@@ -104,7 +106,7 @@ export default {
         min-height: calc(100vh - 50px);
     }
     footer {
-        background-color: lightgray;
+        /*background-color: lightgray;*/
         height: 50px;
     }
     /*Show progress bar*/
