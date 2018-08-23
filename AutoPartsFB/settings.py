@@ -18,6 +18,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_jwt',
     'djoser',
     'social_django',
     # 'Profile.apps.ProfileConfig',
@@ -87,6 +88,7 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
@@ -129,19 +131,12 @@ SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.vk.VKOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
 
 # SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
 
-# djoser
-DJOSER = {
-    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': [
-        '/', '/logged-in/'
-    ]
-}
-
-# google oauth2
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '475790162750-ler2ioqumfa9qrobql0j6qeh7lfnr61u.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'TDFXKJD4l8FmhTDkd-N8k1TC'
 
@@ -150,3 +145,15 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     'https://www.googleapis.com/auth/userinfo.email',
     'https://www.googleapis.com/auth/userinfo.profile'
 ]
+SOCIAL_AUTH_VK_OAUTH2_KEY = '6670405'
+SOCIAL_AUTH_VK_OAUTH2_SECRET = 'qSX7E2IZhk1LQDYySu6I'
+
+# djoser
+DJOSER = {
+    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': [
+        '/',
+        '/logged-in/google-oauth2',
+        '/logged-in/vk-oauth2',
+        '/logged-in/google-oauth2'
+    ]
+}

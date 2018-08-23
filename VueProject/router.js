@@ -55,10 +55,10 @@ const router = new Router({
             ]
         },
         {
-            path: '/logged-in/',
+            path: '/logged-in/:provider',
             name: 'LoggedInCallback',
             component: LoggedInCallback,
-            // props: true
+            props: true
         },
     ]
 });

@@ -78,6 +78,11 @@ export default {
                 // set axios default config
                 this.$http.defaults.headers.common['Authorization'] = 'Token ' + localStorage.getItem('auth_token');
                 this.$store.dispatch('getUser', { anonymous: false });
+            // With social authorised user
+            } else if (localStorage.getItem('jwt_token')) {
+                // set axios default config
+                this.$http.defaults.headers.common['Authorization'] = 'JWT ' + localStorage.getItem('jwt_token');
+                this.$store.dispatch('getUser', { anonymous: false });
             // Anonymous user
             } else if (localStorage.getItem('anonymous_user_auth_token')) {
                 // set axios default config

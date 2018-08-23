@@ -30,7 +30,7 @@ const getters = {
 
 const actions = {
     // sig up with email (login) and password
-    registerWithEmailAndPassword ({ dispatch, commit }, { form}) {
+    registerWithEmailAndPassword ({ dispatch, commit }, { form }) {
         Vue.axios.post(
             '/auth/users/create/',
             { 'username': form.username, 'password': form.password }
@@ -40,10 +40,9 @@ const actions = {
             error => commit('HANDLE_ERROR', error)
         )
     },
-    registerWithGoogle ({state, commit, dispatch}) {
-        Vue.axios.get('/auth/o/google-oauth2/?redirect_uri=/logged-in/').then(
+    registerWithSocial ({ commit }, provider) {
+        Vue.axios.get('/auth/o/' + provider + '/?redirect_uri=/logged-in/' + provider).then(
             response => {
-                console.log(response);
                 window.location.href = response.data.authorization_url
             }
         ).catch(
@@ -57,6 +56,8 @@ const actions = {
                 { 'username': form.username, 'password': form.password }
         ).then(
             response => {
+                // remove session if register an anonymous user
+                commit('REMOVE_USER');
                 commit('SET_SESSION', response);
                 // set axios default config
                 Vue.axios.defaults.headers.common['Authorization'] = 'Token ' + response.data.auth_token;
@@ -65,6 +66,24 @@ const actions = {
                 // close the login window
                 state.showLoginWindow = false;
                 state.showSuggestLogin = false;
+            }
+        ).catch(
+            error => commit('HANDLE_ERROR', error)
+        )
+    },
+    getTokenSocialAuth ({ state, commit, dispatch }, { query, provider }) {
+        const url = '/auth/o/' + provider + '/?state=' + query.state + '&code=' + query.code;
+        Vue.axios.post(url).then(
+            response => {
+                if (response.status == '201') {
+                    // remove session if register an anonymous user
+                    commit('REMOVE_USER');
+                    commit('SET_SESSION', response);
+                    // set axios default config
+                    Vue.axios.defaults.headers.common['Authorization'] = 'JWT ' + response.data.token;
+                    // get a user information
+                    dispatch('getUser', { anonymous: false });
+                }
             }
         ).catch(
             error => commit('HANDLE_ERROR', error)
@@ -152,6 +171,7 @@ const mutations = {
         state.isAuthenticated = false;
         localStorage.removeItem('expires_at');
         localStorage.removeItem('auth_token');
+        localStorage.removeItem('jwt_token');
         localStorage.removeItem('anonymous_user_auth_token');
         localStorage.removeItem('anonymous_user_name');
         localStorage.removeItem('anonymous_user_password');
@@ -162,7 +182,10 @@ const mutations = {
         // add 30 days
         date.setDate(date.getDate() + 30);
         localStorage.setItem('expires_at', JSON.stringify(date));
-        localStorage.setItem('auth_token', response.data.auth_token)
+        const auth_token = response.data.auth_token;
+        const jwt_token = response.data.token;
+        if (auth_token) { localStorage.setItem('auth_token', auth_token) }
+        if (jwt_token) { localStorage.setItem('jwt_token', jwt_token) }
     },
     SET_SESSION_ANONYMOUS_USER (state, response) {
         let date = new Date(response.headers.date);
@@ -177,10 +200,14 @@ const mutations = {
         if (error.response) {
             // console.log(error.response.data)
             let err_data = error.response.data;
-            for (let i in err_data) {
-                for (let m of err_data[i]) {
-                    const message = i == 'non_field_errors' ? m : (i + ': ' + m);
-                    state.message.push({message: message, status: 'danger' })
+            if (err_data.detail) {
+                state.message.push({message: err_data.detail, status: 'danger' })
+            } else {
+                for (let i in err_data) {
+                    for (let m of err_data[i]) {
+                        const message = i == 'non_field_errors' ? m : (i + ': ' + m);
+                        state.message.push({message: message, status: 'danger' })
+                    }
                 }
             }
         }
