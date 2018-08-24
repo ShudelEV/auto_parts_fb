@@ -79,7 +79,7 @@
         >Cancel</vk-button>
         <vk-button type="primary" size="small"
                    class="uk-float-right" :disabled="isValid"
-                   @click="checkForm"
+                   @click="login"
         >{{!activeTab ? 'Login' : 'Reg' }}</vk-button>
     </div>
 </vk-modal>
@@ -114,8 +114,7 @@ export default {
             if (this.username === '') {
                 this.$store.commit('SET_WARNING', 'Login is REQUIRED');
                 this.highlightInput('login')
-            }
-            if (this.password === '') {
+            } else if (this.password === '') {
                 this.$store.commit('SET_WARNING', 'Password is REQUIRED');
                 this.highlightInput('password')
             } else if (this.password.length < 8) {
@@ -125,8 +124,9 @@ export default {
                 this.$store.commit('SET_WARNING', 'Confirm Password');
                 this.highlightInput('password2')
             } else {
-                this.activeTab ? this.register() : this.login()
+                return true
             }
+            return false
         },
         highlightInput (elName) {
             let element = this.$refs.form[elName];
@@ -142,15 +142,16 @@ export default {
                 }
             })
         },
-        // get token
         login () {
-            const form = this.$refs.form.elements;
-            this.$store.dispatch('getToken', {
-                form: {
-                    'username': form.login.value,
-                    'password': form.password.value
-                }
-            })
+            if (this.checkForm()) {
+                const form = {
+                    'username': this.username,
+                    'password': this.password
+                };
+                this.activeTab ?
+                    this.$store.dispatch('registerWithEmailAndPassword', { form }) : this.$store.dispatch('getToken', { form })
+
+            }
         }
     }
 }
