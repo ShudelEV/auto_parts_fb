@@ -21,3 +21,4 @@
     big files error
 18. + router when use pagination
 19. + info window on home page: scroll page if drop element doesn't fit on display
+20. bug on vk auth: signature has expired

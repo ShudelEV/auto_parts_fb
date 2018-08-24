@@ -4,22 +4,23 @@
     <vk-tabs :activeTab.sync="activeTab" align="justify" active="1">
         <vk-tabs-item title="Sig In" v-vk-margin>
             <vk-grid gutter="small" class="uk-child-width-1-1 uk-flex-center uk-text-center">
-                <div>
-                    <vk-icon-button icon="twitter" class="uk-margin-small-right"
-                                    style="background-color: aliceblue; color: cyan"
-                                    title="Login with Twitter"
-                                    @click="$store.dispatch('registerWithSocial', 'google-oauth2')"
-                    ></vk-icon-button>
-                    <vk-icon-button icon="vimeo" class="uk-margin-small-right"
-                                    style="background-color: aliceblue; color: darkslateblue"
-                                    title="Login with VK"
-                                    @click="$store.dispatch('registerWithSocial', 'vk-oauth2')"
-                    ></vk-icon-button>
-                    <vk-icon-button icon="google"
-                                    style="background-color: aliceblue; color: #34a853"
-                                    title="Login with Google"
-                                    @click="$store.dispatch('registerWithSocial', 'google-oauth2')"
-                    ></vk-icon-button>
+                <div class="uk-margin-small-top">
+                    <a title="VKontakte" @click="$store.dispatch('registerWithSocial', 'vk-oauth2')">
+                        <img src="/static/images/social-icon/vk.svg" alt="" height="36" width="36" uk-svg
+                          class="uk-border-rounded uk-margin-small-right">
+                    </a>
+                    <a title="Facebook" @click="$store.dispatch('registerWithSocial', 'facebook-oauth2')">
+                        <img src="/static/images/social-icon/facebook.svg" alt="" height="36" width="36" uk-svg
+                          class="uk-border-rounded uk-margin-small-right">
+                    </a>
+                    <a title="Twitter" @click="$store.dispatch('registerWithSocial', 'twitter-oauth')">
+                        <img src="/static/images/social-icon/twitter.svg" alt="" height="36" width="36" uk-svg
+                          class="uk-border-rounded uk-margin-small-right">
+                    </a>
+                    <a title="Google+" @click="$store.dispatch('registerWithSocial', 'google-oauth2')">
+                        <img src="/static/images/social-icon/google-plus.svg" alt="" height="36" width="36" uk-svg
+                          class="uk-border-rounded">
+                    </a>
                 </div>
                 <div>OR</div>
                 <div>

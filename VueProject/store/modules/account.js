@@ -46,7 +46,7 @@ const actions = {
                 window.location.href = response.data.authorization_url
             }
         ).catch(
-            error => commit('HANDLE_ERROR', error)
+            error => { commit('HANDLE_ERROR', error) }
         )
     },
     // log in

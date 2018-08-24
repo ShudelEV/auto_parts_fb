@@ -10,7 +10,8 @@
 .idea
 **/migrations/
 .sass-cache
-PartsFB/static/images/
+PartsFB/static/js/
+PartsFB/static/public/
 /static/js/
 /static/public/
 

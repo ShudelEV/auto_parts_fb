@@ -132,6 +132,7 @@ SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.vk.VKOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -154,6 +155,6 @@ DJOSER = {
         '/auth/o/vk-oauth2/',
         '/logged-in/google-oauth2',
         '/logged-in/vk-oauth2',
-        '/logged-in/google-oauth2'
+        '/logged-in/twitter-oauth'
     ]
 }

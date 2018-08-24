@@ -103,11 +103,10 @@ export default {
 
 <style>
     .content {
-        min-height: calc(100vh - 50px);
+        min-height: calc(100vh - 62px);
     }
     footer {
-        /*background-color: lightgray;*/
-        height: 50px;
+        min-height: 50px;
     }
     /*Show progress bar*/
     .nprogress-custom-parent {
