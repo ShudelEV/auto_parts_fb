@@ -225,8 +225,14 @@ const mutations = {
             }
         }
     },
-    SET_ERROR (state, error) {
-        state.message.push({ message: error, status: 'danger' })
+    SET_ERROR (state, message) {
+        state.message.push({ message, status: 'danger' })
+    },
+    SET_WARNING (state, message) {
+        state.message.push({ message, status: 'warning' })
+    },
+    SET_SUCCESS (state, message) {
+        state.message.push({ message, status: 'success' })
     }
 };
 

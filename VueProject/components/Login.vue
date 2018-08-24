@@ -1,5 +1,4 @@
 <template>
-<!--<div>-->
 <vk-modal :show="show" center size="medium">
     <vk-tabs :activeTab.sync="activeTab" align="justify" active="1">
         <vk-tabs-item title="Sig In" v-vk-margin>
@@ -27,11 +26,17 @@
                     <form ref="form">
                         <div class="uk-inline uk-margin-small-bottom">
                             <span class="uk-form-icon" uk-icon="icon: user"></span>
-                            <input class="uk-input uk-form-small" name="login" type="text">
+                            <input class="uk-input uk-form-small" name="login"
+                                   type="text" placeholder="Login"
+                                   v-model="username"
+                            >
                         </div>
                         <div class="uk-inline uk-margin-small-bottom">
                             <span class="uk-form-icon" uk-icon="icon: lock"></span>
-                            <input class="uk-input uk-form-small" name="password" type="password">
+                            <input class="uk-input uk-form-small" name="password"
+                                   type="password" placeholder="Password"
+                                   v-model="password"
+                            >
                         </div>
                     </form>
                 </div>
@@ -39,42 +44,59 @@
         </vk-tabs-item>
         <vk-tabs-item title="Sign Up" v-vk-margin>
             <vk-grid gutter="small" class="uk-child-width-1-1 uk-flex-center uk-text-center">
-                <div>
+                <div class="uk-margin-top">
                     <form ref="form">
                         <div class="uk-inline uk-margin-small-bottom">
                             <span class="uk-form-icon" uk-icon="icon: user"></span>
-                            <input class="uk-input uk-form-small" name="login" type="text">
+                            <input class="uk-input uk-form-small" name="login"
+                                   type="text" placeholder="Login"
+                                   v-model="username"
+                            >
                         </div>
                         <div class="uk-inline uk-margin-small-bottom">
                             <span class="uk-form-icon" uk-icon="icon: lock"></span>
-                            <input class="uk-input uk-form-small" name="password" type="password">
+                            <input class="uk-input uk-form-small" name="password"
+                                   type="password" placeholder="Password"
+                                   v-model="password"
+                            >
                         </div>
                         <div class="uk-inline uk-margin-small-bottom">
                             <span class="uk-form-icon" uk-icon="icon: lock"></span>
-                            <input class="uk-input uk-form-small" name="password2" type="password">
+                            <input class="uk-input uk-form-small" name="password2"
+                                   type="password" placeholder="Confirm password"
+                                   v-model="password2"
+                            >
                         </div>
                     </form>
                 </div>
+                <div class="uk-margin-top uk-text-meta uk-text-left">*Password must be at list 8 characters</div>
             </vk-grid>
         </vk-tabs-item>
     </vk-tabs>
     <div slot="footer" class="uk-clearfix">
-        <vk-button @click="account.showLoginWindow = false" size="small" class="uk-float-left">Cancel</vk-button>
-        <vk-button v-if="activeTab == 0" @click="login()" type="primary" size="small" class="uk-float-right">Login</vk-button>
-        <vk-button v-else @click="register()" type="primary" size="small" class="uk-float-right">Reg</vk-button>
+        <vk-button size="small" class="uk-float-left"
+                   @click="account.showLoginWindow = false"
+        >Cancel</vk-button>
+        <vk-button type="primary" size="small"
+                   class="uk-float-right" :disabled="isValid"
+                   @click="checkForm"
+        >{{!activeTab ? 'Login' : 'Reg' }}</vk-button>
     </div>
 </vk-modal>
-<!--</div>-->
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
     name: 'LoginWindow',
 
     data () {
         return {
+            username: '',
+            password: '',
+            password2: '',
+            isValid: false,
             activeTab: 0
         }
     },
@@ -88,6 +110,29 @@ export default {
     },
 
     methods: {
+        checkForm () {
+            if (this.username === '') {
+                this.$store.commit('SET_WARNING', 'Login is REQUIRED');
+                this.highlightInput('login')
+            }
+            if (this.password === '') {
+                this.$store.commit('SET_WARNING', 'Password is REQUIRED');
+                this.highlightInput('password')
+            } else if (this.password.length < 8) {
+                this.$store.commit('SET_WARNING', 'Password less then 8 characters');
+                this.highlightInput('password')
+            } else if (this.activeTab && this.password2 !== this.password) {
+                this.$store.commit('SET_WARNING', 'Confirm Password');
+                this.highlightInput('password2')
+            } else {
+                this.activeTab ? this.register() : this.login()
+            }
+        },
+        highlightInput (elName) {
+            let element = this.$refs.form[elName];
+            element.classList.toggle("uk-form-danger");
+            setTimeout(() => { element.classList.toggle("uk-form-danger") }, 2000)
+        },
         register () {
             const form = this.$refs.form.elements;
             this.$store.dispatch('registerWithEmailAndPassword', {
