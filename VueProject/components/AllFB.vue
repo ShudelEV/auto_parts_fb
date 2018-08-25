@@ -37,9 +37,9 @@
                 <div class="uk-comment-body"><p>{{ fb.description }}</p></div>
                 <!--Images-->
                 <template v-if="fb.images.length">
-                    <div uk-grid uk-lightbox="animation: scale" class="uk-margin-top">
+                    <div uk-grid uk-lightbox="animation: scale" class="uk-margin-top" tt>
                         <ul class="uk-thumbnav" uk-margin>
-                            <li v-for="img in fb.images" class="uk-thumbnav" uk-margin>
+                            <li v-for="img in fb.images" class="uk-active" uk-margin>
                                 <a class="uk-inline" :href="img.image"
                                    :data-caption="img.description ? img.description : ''"
                                 >

@@ -3,8 +3,6 @@
     <div class="uk-width-1-1">
         <h2>Add Your Feedback</h2>
     </div>
-    <!--<vk-button @click="$store.dispatch('registerAnonymousUser')">Anonymous login</vk-button>-->
-    <!--<vk-button @click="$store.dispatch('destroyToken')">Anonymous logout</vk-button>-->
     <form class="uk-grid-small" uk-grid ref="form2">
         <!--Add part-->
         <template v-if="part == -1">
@@ -139,15 +137,16 @@
                     ref="images_form"
                     :url="imageUploadURL"
                     name="image"
+                    :resize_enabled="true"
                     input_id="image_input"
                     button_class="button_hidden"
-                    @upload-image-success="gotoAllFB()"
-                    @upload-image-failure="response => {
-                        $store.commit('SET_MESSAGE', {message: 'Error images upload', status: 'danger'});
+                    @upload-image-success="uploadImageSuccess()"
+                    @upload-image-failure="() => {
+                        $store.commit('SET_MESSAGE', {message: 'Error image upload', status: 'danger'});
                         gotoAllFB()
                     }"
                 ></upload-image>
-                <span class="img-uploader-text" v-if="!filesQty()">drop or click to add images here</span>
+                <span class="img-uploader-text" v-if="!imagesQty()">drop or click to add images here</span>
             </div>
         </div>
     </form>
@@ -211,6 +210,7 @@ export default {
             description: '',
             stars: 0,
             imageUploadURL: '',
+            uploadedImagesQty: 0,
             engineTypes: ENGINE_TYPES,
             gearTypes: GEAR_TYPES
         }
@@ -220,9 +220,6 @@ export default {
         this.$http.get('/api/part-types/').then(
             response => this.$store.commit('SET_PART_TYPES', response.data)
         )
-    },
-
-    mounted () {
     },
 
     computed: {
@@ -332,13 +329,20 @@ export default {
         },
         uploadImages (fbId) {
             this.imageUploadURL = '/api/' + this.brandName + '/feedbacks/' + fbId + '/images/add/';
-            // click the submit button, timeout for waiting when the url prop is changed
-            setTimeout(() => {
+            // click the submit button, $nextTick for waiting when the url prop is changed
+            this.$refs.images_form.$nextTick(() => {
                 document.getElementById('upload_image_form--image_input').getElementsByTagName('button')[0].click()
-            }, 50)
+            })
         },
-        // files qty in the form?
-        filesQty () {
+        // go to the feedback list if all images are uploaded
+        uploadImageSuccess () {
+            this.uploadedImagesQty += 1;
+            if (this.imagesQty() == this.uploadedImagesQty) {
+                this.gotoAllFB()
+            }
+        },
+        // images qty in the form?
+        imagesQty () {
             return this.$refs.images_form ? Object.keys(this.$refs.images_form.image).length : 0
         },
         goBack() {
@@ -373,7 +377,7 @@ export default {
             this.description = '';
             this.stars = 0;
             // delete images
-            if (this.filesQty()) {
+            if (this.imagesQty()) {
                 console.log(this.$refs.images_form)
                 const imgUploader = this.$refs.images_form;
                 // convert Observer to Object

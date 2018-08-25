@@ -69,7 +69,6 @@ const actions = {
             }
         ).catch(
             error => {
-                commit('REMOVE_USER');
                 commit('HANDLE_ERROR', error)
             }
         )
@@ -94,7 +93,6 @@ const actions = {
             }
         ).catch(
             error => {
-                commit('REMOVE_USER');
                 commit('HANDLE_ERROR', error)
             }
         )
@@ -108,7 +106,14 @@ const actions = {
                 dispatch('getUserCars')
             }
         ).catch(
-            error => commit('HANDLE_ERROR', error)
+            error => {
+                // Unauthorized user
+                if (error.response.status === 401) {
+                    commit('REMOVE_USER');
+                } else {
+                    commit('HANDLE_ERROR', error)
+                }
+            }
         );
     },
     getUserCars ({ commit, state }) {

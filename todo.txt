@@ -14,11 +14,12 @@
     validate engine volume (integer in database, "2.4" f.e. in client)
 12. + add images: text in the add image area
 13. + clear button: clear added images
-14. add images: setTimeOut for the prop "url"
+14. + add images: setTimeOut for the prop "url"
 15. edit/update fb
-16. freeze when http error response (try /api/cars/username/, in CarList: .filter(owner__name=...))
+16. + freeze when http error response (try /api/cars/username/, in CarList: .filter(owner__name=...)):
+    500 Internal server error
 17. add images: can choose only img files
-    big files error
+    + big files error
 18. + router when use pagination
 19. + info window on home page: scroll page if drop element doesn't fit on display
-20. bug on vk auth: signature has expired
+20. + bug on vk auth: signature has expired
