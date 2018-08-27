@@ -125,10 +125,7 @@
         </div>
         <!--Stars-->
         <div class="uk-width-1-1@s">
-            <vue-stars v-model="stars" name="stars">
-                <vk-icon icon="star" class="fill-star" slot-scope="props" slot="activeLabel"></vk-icon>
-                <vk-icon icon="star" slot-scope="props" slot="inactiveLabel"></vk-icon>
-            </vue-stars>
+            <vue-stars v-model="stars" name="stars"></vue-stars>
         </div>
         <!--Add images-->
         <div class="uk-width-1-1@s">
@@ -378,7 +375,7 @@ export default {
             this.stars = 0;
             // delete images
             if (this.imagesQty()) {
-                console.log(this.$refs.images_form)
+//                console.log(this.$refs.images_form)
                 const imgUploader = this.$refs.images_form;
                 // convert Observer to Object
                 const files = JSON.parse(JSON.stringify(imgUploader.files));
@@ -394,7 +391,9 @@ export default {
 
 <style>
     .uk-icon svg[meta='vk-icons-star'] { color: gold; }
-    .uk-icon.fill-star svg[meta='vk-icons-star'] polygon { fill: #fdff00; }
+    .uk-icon.fill-star-red svg[meta='vk-icons-star'] polygon { fill: red; }
+    .uk-icon.fill-star-yellow svg[meta='vk-icons-star'] polygon { fill: #fdff00; }
+    .uk-icon.fill-star-green svg[meta='vk-icons-star'] polygon { fill: green; }
 
     div.img-uploader {
         position: relative;

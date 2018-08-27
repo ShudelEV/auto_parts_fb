@@ -5,8 +5,7 @@ from .data import COUNTRIES, PART_CATEGORIES
 
 
 def brand_image_path(instance, filename):
-    # file will be uploaded to MEDIA_ROOT/<PartBrandImages> or <CarBrandImages>/<brand_name>
-    return '{0}Images/{1}'.format(instance.name, filename)
+    return 'manufacturer_images/{1}'.format(instance.name, filename)
 
 
 # Abstract class Manufacturer

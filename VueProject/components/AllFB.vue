@@ -24,10 +24,10 @@
             </div>
             <!--Stars-->
             <div class="uk-margin-medium-left uk-display-inline-block">
-                <vk-icon v-for="i in [1,2,3,4,5]" :key="i"
-                     :class="i <= fb.stars ? 'fill-star' : ''"
-                     icon="star"
-                ></vk-icon>
+                <span v-for="i in [1,2,3,4,5]" :key="i"
+                     :class="getStarClass(i, fb.stars)"
+                      style="font-size: 125%"
+                >★</span>
             </div>
         </a>
         <!--Content-->
@@ -161,6 +161,33 @@ export default {
                 }
             }
         },
+        getStarClass (i, stars) {
+            let classShadow = '';
+            let classAct = '';
+            switch (stars) {
+                case 1:
+                    classShadow = "red-star-shadow";
+                    classAct = "fill-red-star";
+                    break;
+                case 2:
+                case 3:
+                    classShadow = "yellow-star-shadow";
+                    classAct = "fill-yellow-star";
+                    break;
+                case 4:
+                case 5:
+                    classShadow = "green-star-shadow";
+                    classAct = "fill-green-star";
+                    break;
+                default:
+                    break;
+            }
+            return {
+                [classShadow]: true,
+                [classAct]: i <= stars,
+                inactive: i > stars
+            }
+        },
         // highlight feedback if created
         highlightFB () {
             const fb_id = this.$store.state.all.newFBId;
@@ -182,6 +209,11 @@ export default {
 </script>
 
 <style>
-    .uk-icon svg[meta='vk-icons-star'] { color: gold; }
-    .uk-icon.fill-star svg[meta='vk-icons-star'] polygon { fill: #fdff00; }
+    .inactive { color: #fafafa; }
+    .red-star-shadow { text-shadow: 0 0 0.3em #ff0023; }
+    .fill-red-star { color: #ff0023; }
+    .yellow-star-shadow { text-shadow: 0 0 0.3em #ece514; }
+    .fill-yellow-star { color: #ffdd00; }
+    .green-star-shadow { text-shadow: 0 0 0.3em #91E500; }
+    .fill-green-star { color: #1fe500; }
 </style>

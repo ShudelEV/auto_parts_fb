@@ -6,9 +6,11 @@
 		>
 		<input type="radio" :id="name+'0'" :checked="value===0" :name="name" value="0">
 		<template v-for="x in max">
-			<label :for="name+x" :key="'l'+x">
-				<span class="active"><slot name="activeLabel">{{ getActiveLabel(x) }}</slot></span>
-				<span class="inactive"><slot name="inactiveLabel">{{ getInactiveLabel(x) }}</slot></span>
+			<label :for="name+x" :key="'l'+x"
+                   @mouseover.prevent.stop="readonly ? '' : setColor(x)"
+                   @mouseout.prevent.stop="readonly ? '' : setColor(0)">
+				<span class="active" style="font-size: 175%"><slot name="activeLabel">{{ getActiveLabel(x) }}</slot></span>
+				<span class="inactive" style="font-size: 175%"><slot name="inactiveLabel">{{ getInactiveLabel(x) }}</slot></span>
 			</label><input
 				:key="'i'+x"
 				type="radio"
@@ -31,11 +33,26 @@ export default {
 		char: { type: String, required: false, default: "★" },
 		inactiveChar: { type: String, required: false, default: null },
 		readonly: { type: Boolean, required: false, default: false },
-		activeColor: { type: String, required: false, default: "#FD0" },
+//		activeColor: { type: String, required: false, default: "#FD0" },
 		inactiveColor: { type: String, required: false, default: "#999" },
-		shadowColor: { type: String, required: false, default: "#FF0" },
-		hoverColor: { type: String, required: false, default: "#DD0" },
+//		shadowColor: { type: String, required: false, default: "#FF0" },
+//		hoverColor: { type: String, required: false, default: "#DD0" },
 	},
+    data () {
+        return {
+            shadowColor: "",
+            activeColor: "",
+            hoverColor: ""
+        }
+    },
+    mounted () {
+        this.setColor(this.value)
+    },
+    watch: {
+        value: function (val) {
+            this.setColor(val)
+        }
+    },
 	computed: {
 		ratingChars() {
 			return Array.from(this.char)
@@ -60,6 +77,34 @@ export default {
 		},
 	},
 	methods: {
+        setColor(x) {
+            switch (x) {
+                case 1:
+                    this.shadowColor = "#ff334f";
+                    this.activeColor = "#ff0023";
+                    this.hoverColor = "#ff334f";
+                    break;
+                case 2:
+                case 3:
+                    this.shadowColor = "#f0ea43";
+                    this.activeColor = "#ece514";
+                    this.hoverColor = "#f0ea43";
+                    break;
+                case 4:
+                case 5:
+                    this.shadowColor = "#38ff19";
+                    this.activeColor = "#1fe500";
+                    this.hoverColor = "#38ff19";
+                    break;
+                default:
+                    let val = this.$refs.ratingEl.querySelector("input:checked").value;
+                    val = parseInt(val,10);
+                    if (val > 0 && val <= 5) {
+                        this.setColor(val);
+                    }
+                    break;
+            }
+        },
 		updateInput(v) {
 			this.$emit("input", parseInt(v, 10))
 		},
