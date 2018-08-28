@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -157,4 +158,10 @@ DJOSER = {
         '/logged-in/vk-oauth2',
         '/logged-in/twitter-oauth'
     ]
+}
+
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': timedelta(days=1),  # default - 300 seconds
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),  # default
+    'JWT_ALLOW_REFRESH': True,
 }

@@ -34,19 +34,20 @@ export default {
 		inactiveChar: { type: String, required: false, default: null },
 		readonly: { type: Boolean, required: false, default: false },
 //		activeColor: { type: String, required: false, default: "#FD0" },
-		inactiveColor: { type: String, required: false, default: "#999" },
+//		inactiveColor: { type: String, required: false, default: "#999" },
 //		shadowColor: { type: String, required: false, default: "#FF0" },
 //		hoverColor: { type: String, required: false, default: "#DD0" },
 	},
     data () {
         return {
-            shadowColor: "",
-            activeColor: "",
-            hoverColor: ""
+            shadowColor: "#FF0",
+            activeColor: "#FD0",
+            hoverColor: "#DD0",
+            inactiveColor: "#999"
         }
     },
     mounted () {
-        this.setColor(this.value)
+        if (this.value) { this.setColor(this.value) }
     },
     watch: {
         value: function (val) {

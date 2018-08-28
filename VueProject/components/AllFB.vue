@@ -50,7 +50,16 @@
                     </div>
                 </template>
                 <div class="uk-comment-meta uk-margin-top">
-                    Created by: <b>{{ fb.owner }}</b> {{ (new Date(fb.created)).toLocaleString("ru") }}
+                    <ul class="uk-iconnav uk-padding-remove-left">
+                        <li class="uk-padding-remove-left">
+                            <span>Created by: <b>{{ fb.owner }}</b> {{ (new Date(fb.created)).toLocaleString("ru") }}</span>
+                        </li>
+                        <!--<template v-if="fb.owner === $store.state.account.name">-->
+                            <!--<li class="uk-margin-left"><a @click="" uk-icon="icon: plus"></a></li>-->
+                            <!--<li><a href="#" uk-icon="icon: file-edit"></a></li>-->
+                            <!--<li><a href="#" uk-icon="icon: trash"></a></li>-->
+                        <!--</template>-->
+                    </ul>
                 </div>
             </article>
         </div>
@@ -108,7 +117,6 @@ export default {
             brandName: this.brandName,
             pageNumber: to.params.page_number
         });
-//        console.log(fb, typeof to.params.page_number)
         if (fb) {
             this.feedbacks = fb
         } else {

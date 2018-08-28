@@ -23,3 +23,6 @@
 18. + router when use pagination
 19. + info window on home page: scroll page if drop element doesn't fit on display
 20. + bug on vk auth: signature has expired
+21. addFB: stars are not seeing, only when to restart the page
+22. if login throw social defore to add fb - page restarted and clear fb data
+23. refresh jwt token before each request

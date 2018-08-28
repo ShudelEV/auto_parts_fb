@@ -22,7 +22,7 @@ const axios_conf = {
         return status >= 200 && status < 300 || status === 500;
     },
 };
-let Axios = axios.create(axios_conf)
+let Axios = axios.create(axios_conf);
 // Add a response interceptor
 const Catch500Interceptor = Axios.interceptors.response.use(
     function (response) {

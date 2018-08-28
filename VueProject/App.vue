@@ -66,31 +66,48 @@ export default {
     created () {
         this.$http.get('/api/part-brands/').then(
             response => this.$store.commit('SET_PART_BRANDS', response.data)
-        )
-    },
-
-    mounted () {
-        if (localStorage.getItem('expires_at')) {
-            let expires_at = JSON.parse(localStorage.getItem('expires_at'));
+        );
+        // verify the session
+        const expires_at = JSON.parse(localStorage.getItem('expires_at'));
+        const auth_token = localStorage.getItem('auth_token');
+        const jwt_token = localStorage.getItem('jwt_token');
+        const anonymous_user_auth_token = localStorage.getItem('anonymous_user_auth_token');
+        if (expires_at) {
             // Session is expired
             if (new Date(expires_at) < new Date(Date.now())) {
-                this.$emit('destroyToken');
+                // If JWT token is expired
+                if (jwt_token) {
+                    const refresh_token_expires_at = JSON.parse(localStorage.getItem('refresh_token_expires_at'));
+                    if (new Date(refresh_token_expires_at) < new Date(Date.now())) {
+                        // Close session
+                        this.$store.commit('REMOVE_USER')
+                    } else {
+                        // Refresh token
+                        this.$store.dispatch('refreshJWTToken', {
+                            jwt_token,
+                            callback: () => { this.$store.dispatch('getUser', { anonymous: false }); }
+                        })
+                    }
+                //  If token is expired
+                } else {
+                    // Close session
+                    this.$emit('destroyToken');
+                }
             // Authorised user
-            } else if (localStorage.getItem('auth_token')) {
+            } else if (auth_token) {
                 // set axios default config
-                this.$http.defaults.headers.common['Authorization'] = 'Token ' + localStorage.getItem('auth_token');
+                this.$http.defaults.headers.common['Authorization'] = 'Token ' + auth_token;
                 this.$store.dispatch('getUser', { anonymous: false });
-            // With social authorised user
-            } else if (localStorage.getItem('jwt_token')) {
-                // set axios default config
-                this.$http.defaults.headers.common['Authorization'] = 'JWT ' + localStorage.getItem('jwt_token');
+            // Social authorised user
+            } else if (jwt_token) {
+                this.$http.defaults.headers.common['Authorization'] = 'JWT ' + jwt_token;
                 this.$store.dispatch('getUser', { anonymous: false });
             // Anonymous user
-            } else if (localStorage.getItem('anonymous_user_auth_token')) {
-                // set axios default config
-                this.$http.defaults.headers.common['Authorization'] = 'Token ' + localStorage.getItem('anonymous_user_auth_token');
+            } else if (anonymous_user_auth_token) {
+                this.$http.defaults.headers.common['Authorization'] = 'Token ' + anonymous_user_auth_token;
                 this.$store.dispatch('getUser', { anonymous: true });
             }
+
         }
     },
 

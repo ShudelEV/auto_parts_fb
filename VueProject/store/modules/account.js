@@ -43,7 +43,7 @@ const actions = {
     registerWithSocial ({ commit }, provider) {
         Vue.axios.get('/auth/o/' + provider + '/?redirect_uri=/logged-in/' + provider).then(
             response => {
-                window.location.href = response.data.authorization_url
+                window.location.href = response.data.authorization_url;
             }
         ).catch(
             error => { commit('HANDLE_ERROR', error) }
@@ -158,6 +158,22 @@ const actions = {
             }
         )
     },
+    // refresh JWT Token
+    refreshJWTToken ({ commit }, { jwt_token, callback }) {
+        const data = { 'token': jwt_token };
+        Vue.axios.post('/auth/jwt/refresh/', data).then(
+            response => {
+                localStorage.setItem('jwt_token', response.data.token);
+                Vue.axios.defaults.headers.common['Authorization'] = 'JWT ' + response.data.token;
+                let date = new Date(response.headers.date);
+                date.setDate(date.getDate() + 1);
+                localStorage.setItem('expires_at', JSON.stringify(date));
+                callback()
+            }
+        ).catch(
+            error => commit('HANDLE_ERROR', error)
+        )
+    },
     // log out
     destroyToken ({ state, commit }) {
         Vue.axios.post('/auth/token/destroy/').then(
@@ -190,25 +206,32 @@ const mutations = {
         localStorage.removeItem('expires_at');
         localStorage.removeItem('auth_token');
         localStorage.removeItem('jwt_token');
+        localStorage.removeItem('refresh_token_expires_at');
         localStorage.removeItem('anonymous_user_auth_token');
         localStorage.removeItem('anonymous_user_name');
         localStorage.removeItem('anonymous_user_password');
         delete Vue.axios.defaults.headers.common['Authorization'];
     },
     SET_SESSION (state, response) {
-        let date = new Date(response.headers.date);
-        // add 30 days
-        date.setDate(date.getDate() + 30);
-        localStorage.setItem('expires_at', JSON.stringify(date));
         const auth_token = response.data.auth_token;
         const jwt_token = response.data.token;
-        if (auth_token) { localStorage.setItem('auth_token', auth_token) }
-        if (jwt_token) { localStorage.setItem('jwt_token', jwt_token) }
+        let date = new Date(response.headers.date);
+        if (auth_token) {
+            localStorage.setItem('auth_token', auth_token);
+            date.setDate(date.getDate() + 7);
+            localStorage.setItem('expires_at', JSON.stringify(date));
+        } else if (jwt_token) {
+            localStorage.setItem('jwt_token', jwt_token);
+            date.setDate(date.getDate() + 1);
+            localStorage.setItem('expires_at', JSON.stringify(date));
+            date.setDate(date.getDate() + 6);
+            localStorage.setItem('refresh_token_expires_at', JSON.stringify(date));
+        }
     },
     SET_SESSION_ANONYMOUS_USER (state, response) {
         let date = new Date(response.headers.date);
-        // add 1 year
-        date.setDate(date.getDate() + 365);
+        // add 90 days
+        date.setDate(date.getDate() + 90);
         localStorage.setItem('expires_at', JSON.stringify(date));
         localStorage.setItem('anonymous_user_auth_token', response.data.auth_token);
         state.isAnonymous = true;
