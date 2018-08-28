@@ -32,70 +32,39 @@ const actions = {
     // sig up with email (login) and password
     registerWithEmailAndPassword ({ dispatch, commit }, { form }) {
         Vue.axios.post(
-            '/auth/users/create/',
-            { 'username': form.username, 'password': form.password }
-        ).then(
-            response => { dispatch('getToken', { form: form }) }
-        ).catch(
-            error => commit('HANDLE_ERROR', error)
-        )
-    },
-    registerWithSocial ({ commit }, provider) {
-        Vue.axios.get('/auth/o/' + provider + '/?redirect_uri=/logged-in/' + provider).then(
+                '/auth/users/create/',
+                { 'username': form.username, 'password': form.password }
+            ).then(
             response => {
-                window.location.href = response.data.authorization_url;
-            }
-        ).catch(
-            error => { commit('HANDLE_ERROR', error) }
-        )
+                    if (response.status === 201) { dispatch('getToken', { form }); }
+                }
+            ).catch(
+                error => { commit('HANDLE_ERROR', error); }
+            )
     },
     // log in
     getToken ({ state, commit, dispatch }, { form }) {
         Vue.axios.post(
-                '/auth/token/create/',
+                '/auth/jwt/create/',
                 { 'username': form.username, 'password': form.password }
-        ).then(
-            response => {
-                // remove session if register an anonymous user
-                commit('REMOVE_USER');
-                commit('SET_SESSION', response);
-                // set axios default config
-                Vue.axios.defaults.headers.common['Authorization'] = 'Token ' + response.data.auth_token;
-                // get a user information
-                dispatch('getUser', { anonymous: false });
-                // close the login window
-                state.showLoginWindow = false;
-                state.showSuggestLogin = false;
-            }
-        ).catch(
-            error => {
-                commit('HANDLE_ERROR', error)
-            }
-        )
-    },
-    getTokenSocialAuth ({ state, commit, dispatch }, { query, provider }) {
-        let url = '/auth/o/' + provider + '/?';
-        // dispatch all query props to the server
-        for (let q in query) {
-            url += q + '=' + query[q] + '&'
-        }
-        Vue.axios.post(url).then(
-            response => {
-                if (response.status == '201') {
-                    // remove session if register an anonymous user
-                    commit('REMOVE_USER');
-                    commit('SET_SESSION', response);
-                    // set axios default config
-                    Vue.axios.defaults.headers.common['Authorization'] = 'JWT ' + response.data.token;
-                    // get a user information
-                    dispatch('getUser', { anonymous: false });
+            ).then(
+                response => {
+                    if (response.status === 200) {
+                        // remove session if register an anonymous user
+                        commit('REMOVE_USER');
+                        commit('SET_SESSION', response);
+                        // get a user information
+                        dispatch('getUser', { anonymous: false });
+                        // close the login window
+                        state.showLoginWindow = false;
+                        state.showSuggestLogin = false;
+                    }
                 }
-            }
-        ).catch(
-            error => {
-                commit('HANDLE_ERROR', error)
-            }
-        )
+            ).catch(
+                error => {
+                    commit('HANDLE_ERROR', error)
+                }
+            )
     },
     // get user information
     getUser ({ commit, dispatch }, { anonymous }) {
@@ -123,7 +92,63 @@ const actions = {
             error => commit('HANDLE_ERROR', error)
         );
     },
-    // create anonymous user
+    // refresh JWT Token
+    refreshToken ({ commit }, { token, callback }) {
+        Vue.axios.post('/auth/jwt/refresh/', { token })
+            .then(
+                response => {
+                    if (response.status === 200) {
+                        commit('SET_SESSION', response);
+                        callback()
+                    }
+                }
+            ).catch(
+                error => { commit('HANDLE_ERROR', error); }
+            )
+    },
+
+    // Social registration:
+
+    registerWithSocial ({ commit }, provider) {
+        Vue.axios.get('/auth/o/' + provider + '/?redirect_uri=/logged-in/' + provider)
+            .then(
+                response => {
+                    if (response.status === 200) {
+                        // catch response from a provider on /logged-in/ page (LoggedInCallback component)
+                        window.location.href = response.data.authorization_url;
+                    }
+                }
+            ).catch(
+                error => { commit('HANDLE_ERROR', error); }
+            )
+    },
+    getTokenSocialAuth ({ commit, dispatch }, { query, provider }) {
+        let url = '/auth/o/' + provider + '/?';
+        // dispatch all query props to the server
+        for (let q in query) {
+            url += q + '=' + query[q] + '&'
+        }
+        url.slice(-1);
+        Vue.axios.post(url)
+            .then(
+                response => {
+                    if (response.status === 201) {
+                        // remove session if register an anonymous user
+                        commit('REMOVE_USER');
+                        commit('SET_SESSION', response);
+                        // get a user information
+                        dispatch('getUser', { anonymous: false });
+                    }
+                }
+            ).catch(
+                error => {
+                    commit('HANDLE_ERROR', error)
+                }
+            )
+    },
+
+    // Create anonymous user
+
     registerAnonymousUser ({ dispatch, commit }, callBack) {
         Vue.axios.get('/auth/users/create-anonymous/')
             .then(
@@ -131,59 +156,25 @@ const actions = {
                     dispatch('getTokenAnonymousUser', { form: response.data, callBack: callBack });
                 })
             .catch(
-                error => commit('HANDLE_ERROR', error)
+                error => { commit('HANDLE_ERROR', error); }
             )
     },
-    // log in
-    getTokenAnonymousUser ({ state, commit, dispatch }, { form, callBack }) {
+    getTokenAnonymousUser ({ commit, dispatch }, { form, callBack }) {
         Vue.axios.post(
-                '/auth/token/create/',
+                '/auth/jwt/create/',
                 { 'username': form.username, 'password': form.password }
         ).then(
             response => {
-                commit('SET_SESSION_ANONYMOUS_USER', response);
                 localStorage.setItem('anonymous_user_name', form.username);
                 localStorage.setItem('anonymous_user_password', form.password);
-                // set axios default config
-                Vue.axios.defaults.headers.common['Authorization'] = 'Token ' + response.data.auth_token;
+                commit('SET_SESSION', response);
                 // get a user information
                 dispatch('getUser', { anonymous: true });
                 // send FB
                 callBack()
             }
         ).catch(
-            error => {
-                commit('REMOVE_USER');
-                commit('HANDLE_ERROR', error)
-            }
-        )
-    },
-    // refresh JWT Token
-    refreshJWTToken ({ commit }, { jwt_token, callback }) {
-        const data = { 'token': jwt_token };
-        Vue.axios.post('/auth/jwt/refresh/', data).then(
-            response => {
-                localStorage.setItem('jwt_token', response.data.token);
-                Vue.axios.defaults.headers.common['Authorization'] = 'JWT ' + response.data.token;
-                let date = new Date(response.headers.date);
-                date.setDate(date.getDate() + 1);
-                localStorage.setItem('expires_at', JSON.stringify(date));
-                callback()
-            }
-        ).catch(
-            error => commit('HANDLE_ERROR', error)
-        )
-    },
-    // log out
-    destroyToken ({ state, commit }) {
-        Vue.axios.post('/auth/token/destroy/').then(
-            () => {
-                commit('REMOVE_USER');
-                state.showSuggestLogin = false;
-                sessionStorage.setItem('notSuggestLogin', false);
-            }
-        ).catch(
-            error => commit('HANDLE_ERROR', error)
+            error => { commit('HANDLE_ERROR', error); }
         )
     }
 };
@@ -204,38 +195,19 @@ const mutations = {
         state.isAnonymous = true;
         state.isAuthenticated = false;
         localStorage.removeItem('expires_at');
-        localStorage.removeItem('auth_token');
-        localStorage.removeItem('jwt_token');
-        localStorage.removeItem('refresh_token_expires_at');
-        localStorage.removeItem('anonymous_user_auth_token');
+        localStorage.removeItem('token');
         localStorage.removeItem('anonymous_user_name');
         localStorage.removeItem('anonymous_user_password');
         delete Vue.axios.defaults.headers.common['Authorization'];
     },
     SET_SESSION (state, response) {
-        const auth_token = response.data.auth_token;
-        const jwt_token = response.data.token;
+        // set axios default config
+        Vue.axios.defaults.headers.common['Authorization'] = 'JWT ' + response.data.token;
+        localStorage.setItem('token', response.data.token);
+        // set expiration
         let date = new Date(response.headers.date);
-        if (auth_token) {
-            localStorage.setItem('auth_token', auth_token);
-            date.setDate(date.getDate() + 7);
-            localStorage.setItem('expires_at', JSON.stringify(date));
-        } else if (jwt_token) {
-            localStorage.setItem('jwt_token', jwt_token);
-            date.setDate(date.getDate() + 1);
-            localStorage.setItem('expires_at', JSON.stringify(date));
-            date.setDate(date.getDate() + 6);
-            localStorage.setItem('refresh_token_expires_at', JSON.stringify(date));
-        }
-    },
-    SET_SESSION_ANONYMOUS_USER (state, response) {
-        let date = new Date(response.headers.date);
-        // add 90 days
-        date.setDate(date.getDate() + 90);
+        date.setDate(date.getDate() + 7);
         localStorage.setItem('expires_at', JSON.stringify(date));
-        localStorage.setItem('anonymous_user_auth_token', response.data.auth_token);
-        state.isAnonymous = true;
-        state.isAuthenticated = true;
     },
     HANDLE_ERROR (state, error) {
         if (error.response) {

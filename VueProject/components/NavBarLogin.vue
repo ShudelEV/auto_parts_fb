@@ -44,7 +44,7 @@ export default {
 
     methods: {
         logout () {
-            this.$store.dispatch('destroyToken')
+            this.$store.commit('REMOVE_USER')
         }
     }
 }

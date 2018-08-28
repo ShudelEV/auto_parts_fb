@@ -65,7 +65,7 @@ export default {
 
     created () {
         this.$http.get('/api/part-brands/').then(
-            response => this.$store.commit('SET_PART_BRANDS', response.data)
+            response => { this.$store.commit('SET_PART_BRANDS', response.data) }
         );
         // verify the session
         const expires_at = JSON.parse(localStorage.getItem('expires_at'));
@@ -83,7 +83,7 @@ export default {
                         this.$store.commit('REMOVE_USER')
                     } else {
                         // Refresh token
-                        this.$store.dispatch('refreshJWTToken', {
+                        this.$store.dispatch('refreshToken', {
                             jwt_token,
                             callback: () => { this.$store.dispatch('getUser', { anonymous: false }); }
                         })

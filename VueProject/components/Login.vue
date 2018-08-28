@@ -133,15 +133,6 @@ export default {
             element.classList.toggle("uk-form-danger");
             setTimeout(() => { element.classList.toggle("uk-form-danger") }, 2000)
         },
-        register () {
-            const form = this.$refs.form.elements;
-            this.$store.dispatch('registerWithEmailAndPassword', {
-                form: {
-                    'username': form.login.value,
-                    'password': form.password.value
-                }
-            })
-        },
         login () {
             if (this.checkForm()) {
                 const form = {
