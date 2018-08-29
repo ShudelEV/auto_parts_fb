@@ -1,5 +1,9 @@
 import Vue from 'vue'
 
+
+const JWT_EXPIRATION_DELTA = 12;  // in hours
+const JWT_REFRESH_EXPIRATION_DELTA = 168;  // in hours
+
 const state = {
     showLoginWindow: false,
     // before send fb and user is not authenticated, suggest login
@@ -51,10 +55,10 @@ const actions = {
                 response => {
                     if (response.status === 200) {
                         // remove session if register an anonymous user
-                        commit('REMOVE_USER');
+                        commit('REMOVE_SESSION');
                         commit('SET_SESSION', response);
                         // get a user information
-                        dispatch('getUser', { anonymous: false });
+                        dispatch('getUser');
                         // close the login window
                         state.showLoginWindow = false;
                         state.showSuggestLogin = false;
@@ -67,23 +71,27 @@ const actions = {
             )
     },
     // get user information
-    getUser ({ commit, dispatch }, { anonymous }) {
-        Vue.axios.get('/auth/me/').then(
-            response => {
-                commit('SET_USER', { data: response.data, anonymous });
-                // get user cars for the addFB page
-                dispatch('getUserCars')
+    getUser ({ commit, dispatch }) {
+        dispatch('verifySession', (ver) => {
+            if (ver) {
+                Vue.axios.get('/auth/me/').then(
+                    response => {
+                        commit('SET_USER', { data: response.data });
+                        // get user cars for the addFB page
+                        dispatch('getUserCars')
+                    }
+                ).catch(
+                    error => {
+                        // Unauthorized user
+                        if (error.response.status === 401) {
+                            commit('REMOVE_SESSION');
+                        } else {
+                            commit('HANDLE_ERROR', error)
+                        }
+                    }
+                );
             }
-        ).catch(
-            error => {
-                // Unauthorized user
-                if (error.response.status === 401) {
-                    commit('REMOVE_USER');
-                } else {
-                    commit('HANDLE_ERROR', error)
-                }
-            }
-        );
+        })
     },
     getUserCars ({ commit, state }) {
         Vue.axios.get('/api/cars/' + state.name + '/').then(
@@ -92,28 +100,77 @@ const actions = {
             error => commit('HANDLE_ERROR', error)
         );
     },
-    // refresh JWT Token
+    // verify the session
+    verifySession ({ commit, dispatch }, callback) {
+        console.log('verifySession')
+        const now = Date.now();
+        const expiresAt = new Date(JSON.parse(localStorage.getItem('expires_at')));
+        const refreshTokenExpiresAt = new Date(JSON.parse(localStorage.getItem('refresh_token_expires_at')));
+        const token = localStorage.getItem('token');
+        const anonUserName = localStorage.getItem('anonymous_user_name');
+        const anonUserPass = localStorage.getItem('anonymous_user_password');
+        if (expiresAt && token && refreshTokenExpiresAt) {
+            // Sesion is expired
+            if (expiresAt < new Date(now) || refreshTokenExpiresAt < new Date(now)) {
+                console.log('Sesion is expired')
+                console.log(expiresAt, refreshTokenExpiresAt)
+                if (anonUserName && anonUserPass) {
+                    // Open anonymous session
+                    dispatch('getTokenAnonymousUser', {
+                        form: { 'username': anonUserName, 'password': anonUserPass },
+                        callback: () => { callback(true) }
+                    })
+                } else {
+                    // Close session
+                    commit('REMOVE_SESSION');
+                    callback(false);
+                }
+            // Token is expired in 5 minutes
+            } else if (expiresAt > new Date(now - 5*60*1000) && expiresAt < new Date(now)) {
+                console.log('Token is expired in 5 minutes')
+                // Refresh token
+                dispatch('refreshToken', { token, callback });
+            // Sesion is not expired
+            } else {
+                console.log('Sesion is not expired')
+                Vue.axios.defaults.headers.common['Authorization'] = 'JWT ' + token;
+                callback(true);
+            }
+        } else {
+            commit('REMOVE_SESSION');
+            callback(false);
+        }
+    },
+    // refresh Token
     refreshToken ({ commit }, { token, callback }) {
         Vue.axios.post('/auth/jwt/refresh/', { token })
             .then(
                 response => {
                     if (response.status === 200) {
-                        commit('SET_SESSION', response);
-                        callback()
+                        Vue.axios.defaults.headers.common['Authorization'] = 'JWT ' + response.data.token;
+                        localStorage.setItem('token', response.data.token);
+                        let date = new Date(response.headers.date);
+                        date.setHours(date.getHours() + JWT_EXPIRATION_DELTA);
+                        localStorage.setItem('expires_at', JSON.stringify(date));
+                        callback(true)
                     }
                 }
             ).catch(
-                error => { commit('HANDLE_ERROR', error); }
+                error => {
+                    commit('REMOVE_SESSION');
+                    callback(false);
+                    commit('HANDLE_ERROR', error);
+                }
             )
     },
 
     // Social registration:
 
     registerWithSocial ({ commit }, provider) {
+        console.log('registerWithSocial')
         Vue.axios.get('/auth/o/' + provider + '/?redirect_uri=/logged-in/' + provider)
-            .then(
-                response => {
-                    if (response.status === 200) {
+            .then(response => {
+                if (response.status === 200) {
                         // catch response from a provider on /logged-in/ page (LoggedInCallback component)
                         window.location.href = response.data.authorization_url;
                     }
@@ -132,12 +189,13 @@ const actions = {
         Vue.axios.post(url)
             .then(
                 response => {
+                    console.log(typeof response.status)
                     if (response.status === 201) {
                         // remove session if register an anonymous user
-                        commit('REMOVE_USER');
+                        commit('REMOVE_SESSION');
                         commit('SET_SESSION', response);
                         // get a user information
-                        dispatch('getUser', { anonymous: false });
+                        dispatch('getUser');
                     }
                 }
             ).catch(
@@ -169,7 +227,7 @@ const actions = {
                 localStorage.setItem('anonymous_user_password', form.password);
                 commit('SET_SESSION', response);
                 // get a user information
-                dispatch('getUser', { anonymous: true });
+                dispatch('getUser');
                 // send FB
                 callBack()
             }
@@ -184,10 +242,23 @@ const mutations = {
         state.id = user.data.id;
         state.name = user.data.username;
         state.email = user.data.email;
-        state.isAnonymous = user.anonymous;
+        state.isAnonymous = localStorage.getItem('anonymous_user_name') && localStorage.getItem('anonymous_user_password');
         state.isAuthenticated = true;
     },
-    REMOVE_USER (state) {
+    SET_SESSION (state, response) {
+        console.log('SET_SESSION')
+        // set axios default config
+        Vue.axios.defaults.headers.common['Authorization'] = 'JWT ' + response.data.token;
+        localStorage.setItem('token', response.data.token);
+        // set expiration
+        let date = new Date(response.headers.date);
+        date.setHours(date.getHours() + JWT_EXPIRATION_DELTA);
+        localStorage.setItem('expires_at', JSON.stringify(date));
+        date.setHours(date.getHours() + (JWT_REFRESH_EXPIRATION_DELTA - JWT_EXPIRATION_DELTA));
+        localStorage.setItem('refresh_token_expires_at', JSON.stringify(date));
+    },
+    REMOVE_SESSION (state) {
+        console.log('REMOVE_SESSION')
         state.id = null;
         state.name = null;
         state.email = null;
@@ -195,19 +266,11 @@ const mutations = {
         state.isAnonymous = true;
         state.isAuthenticated = false;
         localStorage.removeItem('expires_at');
+        localStorage.removeItem('refresh_token_expires_at');
         localStorage.removeItem('token');
         localStorage.removeItem('anonymous_user_name');
         localStorage.removeItem('anonymous_user_password');
         delete Vue.axios.defaults.headers.common['Authorization'];
-    },
-    SET_SESSION (state, response) {
-        // set axios default config
-        Vue.axios.defaults.headers.common['Authorization'] = 'JWT ' + response.data.token;
-        localStorage.setItem('token', response.data.token);
-        // set expiration
-        let date = new Date(response.headers.date);
-        date.setDate(date.getDate() + 7);
-        localStorage.setItem('expires_at', JSON.stringify(date));
     },
     HANDLE_ERROR (state, error) {
         if (error.response) {

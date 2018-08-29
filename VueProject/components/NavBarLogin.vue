@@ -44,7 +44,7 @@ export default {
 
     methods: {
         logout () {
-            this.$store.commit('REMOVE_USER')
+            this.$store.commit('REMOVE_SESSION')
         }
     }
 }

@@ -22,9 +22,9 @@ const axios_conf = {
         return status >= 200 && status < 300 || status === 500;
     },
 };
-let Axios = axios.create(axios_conf);
+const Axios = axios.create(axios_conf);
 // Add a response interceptor
-const Catch500Interceptor = Axios.interceptors.response.use(
+const responseInterceptor = Axios.interceptors.response.use(
     function (response) {
         if (response.status === 500) {
             alert(response.statusText);
@@ -36,11 +36,9 @@ const Catch500Interceptor = Axios.interceptors.response.use(
     function (error) {
         return Promise.reject(error);
     });
-
 // Wrapper for integrating axios to Vuejs
 // usage: this.axios.get() or this.$http.get()
 Vue.use(VueAxios, Axios);
-
 // Tell Vue whether or not to show tips and warnings in the developer console of browser
 Vue.config.productionTip = true;
 
