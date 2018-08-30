@@ -26,6 +26,12 @@ const router = new Router({
             name: 'Home',
             component: Home,
             children: [
+                {
+                    path: 'feedbacks/:pageNumber',
+                    name: 'AllFBHome',
+                    component: AllFB,
+                    props: true
+                }
             ]
         },
         {
@@ -47,7 +53,7 @@ const router = new Router({
                     props: true
                 },
                 {
-                    path: 'feedbacks/:page_number',
+                    path: 'feedbacks/:pageNumber',
                     name: 'AllFB',
                     component: AllFB,
                     props: true

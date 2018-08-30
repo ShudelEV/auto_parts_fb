@@ -2,7 +2,7 @@
     <vk-navbar transparent>
         <vk-navbar-nav>
             <vk-navbar-logo>
-                <a class="uk-link-reset" @click="$router.push('/')">{{ logo }}</a>
+                <a class="uk-link-reset" @click="$router.push({ name: 'Home' })">{{ logo }}</a>
             </vk-navbar-logo>
         </vk-navbar-nav>
         <vk-navbar-nav slot="right">

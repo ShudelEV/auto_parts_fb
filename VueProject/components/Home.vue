@@ -1,22 +1,27 @@
 <template>
     <vk-grid gutter="large">
         <div class="uk-width-1-4@m">
-            <vk-card>
-                Search Menu
-                <div class="uk-margin">
-                    <div class="uk-inline">
-                        <vk-icon-link v-if="search_pattern"
-                                      class="uk-form-icon uk-form-icon-flip"
-                                      icon="close"
-                                      @click="search_pattern = ''"
-                        ></vk-icon-link>
-                        <input class="uk-input uk-form-small" type="text" v-model="search_pattern">
+            <vk-card padding="small">
+                <template v-if="$route.name==='Home'">
+                    <vk-card-title>Brand Filter</vk-card-title>
+                    <div class="uk-margin">
+                        <div class="uk-inline">
+                            <vk-icon-link v-if="search_pattern"
+                                          class="uk-form-icon uk-form-icon-flip"
+                                          icon="close"
+                                          @click="search_pattern = ''"
+                            ></vk-icon-link>
+                            <input class="uk-input uk-form-small" type="text" v-model="search_pattern">
+                        </div>
                     </div>
-                </div>
+                </template>
+                <search></search>
             </vk-card>
         </div>
         <div class="uk-width-expand@m" style="padding-bottom: 75px">
-            <div uk-grid="masonry: true"
+            <router-view></router-view>
+            <div v-show="$route.name==='Home'"
+                 uk-grid="masonry: true"
                  class="uk-grid-small uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m"
                  uk-scrollspy="cls: uk-animation-slide-bottom; repeat: true"
             >
@@ -78,8 +83,12 @@
 import { mapGetters } from 'vuex'
 import { COUNTRIES } from '../data'
 
+import Search from './Search.vue'
+
 export default {
     name: 'Home',
+
+    components: { Search, },
 
     data () {
         return {
@@ -113,7 +122,7 @@ export default {
         },
         gotoBrandFeedbacks (brand) {
             if (brand.fb_quantity) {
-                this.$router.push({ name: 'AllFB', params: { brandName: brand.name, page_number: 1 } })
+                this.$router.push({ name: 'AllFB', params: { brandName: brand.name, pageNumber: 1 } })
             } else {
                 this.$router.push({ name: 'AddFB', params: { brandName: brand.name } })
             }

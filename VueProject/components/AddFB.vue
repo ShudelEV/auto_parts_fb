@@ -214,9 +214,6 @@ export default {
     },
 
     created () {
-        this.$http.get('/api/part-types/').then(
-            response => this.$store.commit('SET_PART_TYPES', response.data)
-        );
         this.$store.dispatch('verifySession', () => {})
     },
 
@@ -310,7 +307,7 @@ export default {
                     delete form.new_car.model_name;
                 }
             }
-            this.$http.post('/api/' + this.brandName + '/feedbacks/create/', form)
+            this.$http.post('/api/feedbacks/' + this.brandName + '/create/', form)
                 .then(response => {
                     this.$store.commit('SET_MESSAGE', { message: 'Feedback successful created. ', status: 'success' });
                     if (response.data.new_car) {
@@ -326,7 +323,7 @@ export default {
                 })
         },
         uploadImages (fbId) {
-            this.imageUploadURL = '/api/' + this.brandName + '/feedbacks/' + fbId + '/images/add/';
+            this.imageUploadURL = '/api/feedbacks/' + fbId + '/images/add/';
             // click the submit button, $nextTick for waiting when the url prop is changed
             this.$refs.images_form.$nextTick(() => {
                 document.getElementById('upload_image_form--image_input').getElementsByTagName('button')[0].click()
@@ -347,7 +344,7 @@ export default {
             window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
         },
         gotoAllFB () {
-            this.$router.push({ name: 'AllFB', params: { brandName: this.brandName, page_number: 1 } })
+            this.$router.push({ name: 'AllFB', params: { brandName: this.brandName, pageNumber: 1 } })
         },
         yearList (start, end) {
             let res = [];

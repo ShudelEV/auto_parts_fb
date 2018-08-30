@@ -78,7 +78,20 @@ class FeedbackListView(mixins.ListModelMixin, generics.GenericAPIView):
     pagination_class = FeedbackListPagination
 
     def get(self, request, *args, **kwargs):
-        self.queryset = self.queryset.filter(part__brand__name=kwargs.get('brand_name'))
+        brand_name = kwargs.get('brand_name')
+        if brand_name:
+            self.queryset = self.queryset.filter(part__brand__name=brand_name)
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        brand_name = kwargs.get('brand_name')
+        data = request.data
+        if brand_name:
+            self.queryset = self.queryset.filter(part__brand__name=brand_name)
+        if data.get('part_type'):
+            self.queryset = self.queryset.filter(part__type=data.get('part_type'))
+        elif data.get('part_category'):
+            self.queryset = self.queryset.filter(part__type__category=data.get('part_category'))
         return self.list(request, *args, **kwargs)
 
 

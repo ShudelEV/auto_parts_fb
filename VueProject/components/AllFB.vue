@@ -1,5 +1,5 @@
 <template>
-<span>
+<div :class="{ disabled: $store.state.all.loading }">
 <!--Collapse button-->
 <span class="uk-clearfix" v-if="!!feedbacks.length">
     <vk-icon-link title="Collapse" class="uk-float-right"
@@ -71,10 +71,12 @@
     <vk-pagination-pages></vk-pagination-pages>
     <vk-pagination-page-next label="Next"></vk-pagination-page-next>
 </vk-pagination>
-</span>
+</div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
     name: 'AllFB',
 
@@ -82,80 +84,48 @@ export default {
         return {
             loading: false,
             error: null,
-            feedbacks: [],
             showBrandInfo: false,
             collapse: false,
             // pagination
-            page: Number(this.page_number), // load an appropriate page when page is updated
+            page: Number(this.pageNumber), // load an appropriate page when page is updated
             total: 1,
             // number of items on a page
             page_size: 20
         }
     },
 
-    props: ['brandName', 'page_number'],
+    props: ['brandName', 'pageNumber', 'partCategory', 'partType'],
 
     created () {
-        // update feedbacks in store
-        this.$store.commit('DELETE_FB');
-        this.fetchData(this.page);
+        this.fetchData();
     },
 
-    watch: {
-        // if click Previous or Next
-//        page_number: function (val) {
-//            if (this.page != Number(val)) { this.page = Number(val) }
-//        },
-        page: function (val) {
-            this.$router.push({ name: 'AllFB', params: { brandName: this.brandName, page_number: val } });
-            this.collapse = false;
-        }
+    computed: {
+        ...mapGetters(['feedbacks'])
     },
 
-    beforeRouteUpdate (to, from, next) {
-        let fb = this.$store.getters.getFB({
-            brandName: this.brandName,
-            pageNumber: to.params.page_number
-        });
-        if (fb) {
-            this.feedbacks = fb
-        } else {
-            this.fetchData(this.page)
-        }
-        next()
-    },
+//    watch: {
+//        page: function (val) {
+//            this.$router.push({ name: 'AllFB', params: { brandName: this.brandName, pageNumber: val } });
+//            this.collapse = false;
+//        }
+//    },
+
+//    beforeRouteUpdate (to, from, next) {
+//        let fb = this.$store.getters.getFB({
+//            brandName: this.brandName,
+//            pageNumber: to.params.pageNumber
+//        });
+//        if (fb) {
+//            this.feedbacks = fb
+//        } else {
+//            this.fetchData()
+//        }
+//        next()
+//    },
 
     methods: {
-        fetchData (page) {
-            this.error = null;
-            this.loading = true;
-            let url = '/api/' + this.brandName + '/feedbacks/';
-            if (this.page != 1) {
-                url += '?page=' + this.page
-            }
-            this.$http.get(url)
-                .then(response => {
-                    this.$store.commit('SET_BRAND_FEEDBACKS', {
-                        brandName: this.brandName,
-                        items: response.data.results,
-                        page_number: this.page_number
-                    });
-                    let pageQty = response.data.count / this.page_size;
-                    let roundPageQty = Math.trunc(pageQty);
-                    this.total = pageQty == roundPageQty ? roundPageQty : roundPageQty + 1;
-                    this.feedbacks = response.data.results;
-                    this.loading = false;
-                    this.highlightFB()
-                })
-                .catch(error => {
-                    this.loading = false;
-                    if (error.response) {
-                        this.error = error.response.data
-                    } else {
-                        this.error = error
-                    }
-
-                })
+        fetchData () {
         },
         toggleAccordion () {
             this.collapse = !this.collapse;
@@ -224,4 +194,9 @@ export default {
     .fill-yellow-star { color: #ffdd00; }
     .green-star-shadow { text-shadow: 0 0 0.3em #91E500; }
     .fill-green-star { color: #1fe500; }
+
+    .disabled {
+        opacity: .5;
+        pointer-events: none;
+    }
 </style>

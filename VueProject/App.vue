@@ -67,6 +67,9 @@ export default {
         this.$http.get('/api/part-brands/').then(
             response => { this.$store.commit('SET_PART_BRANDS', response.data) }
         );
+        this.$http.get('/api/part-types/').then(
+            response => this.$store.commit('SET_PART_TYPES', response.data)
+        );
         this.$store.dispatch('getUser')
     },
 
