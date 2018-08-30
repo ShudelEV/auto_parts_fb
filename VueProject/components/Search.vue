@@ -63,7 +63,7 @@ export default {
             this.$store.dispatch('getFB', {
                 filter,
                 brandName: this.brandName,
-                pageNumber: 1
+                page: 1
             });
             this.$router.push({ name, params: { pageNumber: 1 }})
         }

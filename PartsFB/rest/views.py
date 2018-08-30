@@ -73,6 +73,7 @@ class FeedbackListPagination(PageNumberPagination):
 
 
 class FeedbackListView(mixins.ListModelMixin, generics.GenericAPIView):
+    permission_classes = (AllowAny, )
     queryset = FeedBack.objects.all()
     serializer_class = FeedBackSerializer
     pagination_class = FeedbackListPagination

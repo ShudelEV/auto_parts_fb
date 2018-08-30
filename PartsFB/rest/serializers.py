@@ -69,7 +69,7 @@ class PartSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Part
-        fields = ['id', 'type', 'car']
+        fields = ['id', 'type', 'brand', 'car']
 
 
 class CreatePartSerializer(serializers.ModelSerializer):

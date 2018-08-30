@@ -1,70 +1,73 @@
 <template>
 <div :class="{ disabled: $store.state.all.loading }">
 <!--Collapse button-->
-<span class="uk-clearfix" v-if="!!feedbacks.length">
+<span class="uk-clearfix" v-if="Object.keys(feedbacks(page)).length">
     <vk-icon-link title="Collapse" class="uk-float-right"
                   :icon="collapse ? 'chevron-up' : 'chevron-down'"
                   @click="toggleAccordion()"
     ></vk-icon-link>
 </span>
     <!--Feedbacks section-->
-<ul uk-accordion="multiple: true" id="accordion" class="uk-list uk-list-divider">
-    <!--Feedback-->
-    <li v-for="fb in feedbacks" :key="fb.id" :id="'fb_' + fb.id">
-        <!--Header-->
-        <a class="uk-accordion-title" href="#">
-            <!--Part name-->
-            <vk-icon icon="cog"></vk-icon> {{ fb.part.type }}
-            <!--Car name-->
-            <div v-if="fb.part.car" class="uk-display-inline-block">
-                <vk-icon-image src="/static/images/car.svg" uk-svg class="uk-margin-small-left"></vk-icon-image>
-                {{ fb.part.car.model }}
-                {{ fb.part.car.manufacture_year ? ' ' + fb.part.car.manufacture_year + ' m.y.' : '' }}
-                {{ fb.part.car.engine_volume ? ' ' + fb.part.car.engine_volume + ' cm3' : '' }}
-            </div>
-            <!--Stars-->
-            <div class="uk-margin-medium-left uk-display-inline-block">
-                <span v-for="i in [1,2,3,4,5]" :key="i"
-                     :class="getStarClass(i, fb.stars)"
-                      style="font-size: 125%"
-                >★</span>
-            </div>
-        </a>
-        <!--Content-->
-        <div class="uk-accordion-content">
-            <article class="uk-comment">
-                <!--Feedback text-->
-                <div class="uk-comment-body"><p>{{ fb.description }}</p></div>
-                <!--Images-->
-                <template v-if="fb.images.length">
-                    <div uk-grid uk-lightbox="animation: scale" class="uk-margin-top" tt>
-                        <ul class="uk-thumbnav" uk-margin>
-                            <li v-for="img in fb.images" class="uk-active" uk-margin>
-                                <a class="uk-inline" :href="img.image"
-                                   :data-caption="img.description ? img.description : ''"
-                                >
-                                    <img :src="img.image" width="100" height="100" alt="">
-                                </a>
+<div v-for="(value, key) in feedbacks(page)">
+    <h2 v-if="!brandName" class="uk-heading-divider">{{ key }}</h2>
+    <ul uk-accordion="multiple: true" id="accordion" class="uk-list uk-list-divider">
+        <!--Feedback-->
+        <li v-for="fb in value" :key="fb.id" :id="'fb_' + fb.id">
+            <!--Header-->
+            <a class="uk-accordion-title" href="#">
+                <!--Part name-->
+                <vk-icon icon="cog"></vk-icon> {{ fb.part.type }}
+                <!--Car name-->
+                <div v-if="fb.part.car" class="uk-display-inline-block">
+                    <vk-icon-image src="/static/images/car.svg" uk-svg class="uk-margin-small-left"></vk-icon-image>
+                    {{ fb.part.car.model }}
+                    {{ fb.part.car.manufacture_year ? ' ' + fb.part.car.manufacture_year + ' m.y.' : '' }}
+                    {{ fb.part.car.engine_volume ? ' ' + fb.part.car.engine_volume + ' cm3' : '' }}
+                </div>
+                <!--Stars-->
+                <div class="uk-margin-medium-left uk-display-inline-block">
+                    <span v-for="i in [1,2,3,4,5]" :key="i"
+                         :class="getStarClass(i, fb.stars)"
+                          style="font-size: 125%"
+                    >★</span>
+                </div>
+            </a>
+            <!--Content-->
+            <div class="uk-accordion-content">
+                <article class="uk-comment">
+                    <!--Feedback text-->
+                    <div class="uk-comment-body"><p>{{ fb.description }}</p></div>
+                    <!--Images-->
+                    <template v-if="fb.images.length">
+                        <div uk-grid uk-lightbox="animation: scale" class="uk-margin-top" tt>
+                            <ul class="uk-thumbnav" uk-margin>
+                                <li v-for="img in fb.images" class="uk-active" uk-margin>
+                                    <a class="uk-inline" :href="img.image"
+                                       :data-caption="img.description ? img.description : ''"
+                                    >
+                                        <img :src="img.image" width="100" height="100" alt="">
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </template>
+                    <div class="uk-comment-meta uk-margin-top">
+                        <ul class="uk-iconnav uk-padding-remove-left">
+                            <li class="uk-padding-remove-left">
+                                <span>Created by: <b>{{ fb.owner }}</b> {{ (new Date(fb.created)).toLocaleString("ru") }}</span>
                             </li>
+                            <!--<template v-if="fb.owner === $store.state.account.name">-->
+                                <!--<li class="uk-margin-left"><a @click="" uk-icon="icon: plus"></a></li>-->
+                                <!--<li><a href="#" uk-icon="icon: file-edit"></a></li>-->
+                                <!--<li><a href="#" uk-icon="icon: trash"></a></li>-->
+                            <!--</template>-->
                         </ul>
                     </div>
-                </template>
-                <div class="uk-comment-meta uk-margin-top">
-                    <ul class="uk-iconnav uk-padding-remove-left">
-                        <li class="uk-padding-remove-left">
-                            <span>Created by: <b>{{ fb.owner }}</b> {{ (new Date(fb.created)).toLocaleString("ru") }}</span>
-                        </li>
-                        <!--<template v-if="fb.owner === $store.state.account.name">-->
-                            <!--<li class="uk-margin-left"><a @click="" uk-icon="icon: plus"></a></li>-->
-                            <!--<li><a href="#" uk-icon="icon: file-edit"></a></li>-->
-                            <!--<li><a href="#" uk-icon="icon: trash"></a></li>-->
-                        <!--</template>-->
-                    </ul>
-                </div>
-            </article>
-        </div>
-    </li>
-</ul>
+                </article>
+            </div>
+        </li>
+    </ul>
+</div>
     <!--Pagination-->
 <vk-pagination v-if="total > 1" align="left" :page.sync="page" :perPage="1" :total="total" :range="20">
     <vk-pagination-page-prev label="Previous"></vk-pagination-page-prev>
@@ -89,12 +92,10 @@ export default {
             // pagination
             page: Number(this.pageNumber), // load an appropriate page when page is updated
             total: 1,
-            // number of items on a page
-            page_size: 20
         }
     },
 
-    props: ['brandName', 'pageNumber', 'partCategory', 'partType'],
+    props: ['brandName', 'pageNumber'],
 
     created () {
         this.fetchData();

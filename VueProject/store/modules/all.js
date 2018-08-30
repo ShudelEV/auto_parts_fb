@@ -10,6 +10,7 @@ const state = {
     carModels: null,
     newFBId: null,
     feedbacks: {},
+    pageQty: 0,
     loading: false,
     message: []
 };
@@ -47,45 +48,39 @@ const getters = {
     getCarModels: state => brand => {
         return state.carModels ? state.carModels.filter(i => i.brand === brand) : []
     },
-    feedbacks: state => req => {
-        // let brandIndex = state.partBrands.findIndex(i => i.name === brandName);
-        // if (brandIndex >=  0) {
-        //     if (state.partBrands[brandIndex].feedbacks) {
-        //         res = state.partBrands[brandIndex].feedbacks[req.pageNumber]
-        //     }
-        // }
-        if (req.brandName) {
-            return state.feedbacks[req.pageNumber].filter(i => i.brand.name === req.brandName)
+    feedbacks: state => page => {
+        if (!Object.keys(state.feedbacks).length) { return {} }
+        let res = {};
+        for (let brand of state.partBrands) {
+            let items = state.feedbacks[page].filter(i => i.part.brand === brand.id);
+            if (items.length) { res[brand.name] = items }
         }
+        return res
     }
 };
 
 const actions = {
-    getFB ({ state, commit }, { brandName, filter, pageNumber }) {
+    getFB ({ state, commit }, { filter, page, brandName }) {
         let url = '/api/feedbacks/';
         let method = 'get';
-        if (brandName) { url += this.brandName + '/'; }
-        if (pageNumber != 1) { url += '?page=' + pageNumber }
-        if (filter.partCategory || filter.partType) { method = 'post' }
+        if (brandName) { url += brandName + '/'; }
+        if (page != 1) { url += '?page=' + page }
+        if (filter.part_category || filter.part_type) { method = 'post' }
         const conf = method === 'get' ? { url } : { url, method, data: filter };
         state.loading = true;
         Vue.axios.request(conf)
             .then(response => {
-                console.log(response);
                 commit('SET_FEEDBACKS', {
                     items: response.data.results,
-                    pageNumber
+                    page
                 });
                 state.loading = false;
-//                   let pageQty = response.data.count / this.page_size;
-//                   let roundPageQty = Math.trunc(pageQty);
-//                   this.total = pageQty == roundPageQty ? roundPageQty : roundPageQty + 1;
-//                   this.feedbacks = response.data.results;
-//                   this.loading = false;
-//                   this.highlightFB()
+                let pageQty = response.data.count / 20;
+                let roundPageQty = Math.trunc(pageQty);
+                state.pageQty = pageQty === roundPageQty ? roundPageQty : roundPageQty + 1
             })
             .catch(error => {
-                this.loading = false;
+                state.loading = false;
                 const message = error.response ? error.response.data : error.data;
                 commit('SET_MESSAGE', { message, status: 'warning' });
             })
@@ -97,8 +92,8 @@ const mutations = {
         state.partBrands = objects
     },
     ADD_PART_BRANDS (state, object) {  },
-    SET_FEEDBACKS (state, { items, pageNumber }) {
-        state.feedbacks[pageNumber] = items;
+    SET_FEEDBACKS (state, { items, page }) {
+        state.feedbacks[page] = items;
     },
     SET_PART_TYPES (state, { category_list, part_types }) {
         state.partTypes = part_types;
@@ -111,13 +106,8 @@ const mutations = {
     SET_MESSAGE (state, { message, status }) {
         state.message.push({ message, status })
     },
-    // delete all feedbacks
     DELETE_FB (state) {
-        for (let i = 0; i < state.partBrands.length; i++) {
-            if (state.partBrands[i].feedbacks) {
-                delete state.partBrands[i].feedbacks
-            }
-        }
+        state.feedbacks = {}
     }
 };
 
