@@ -27,7 +27,7 @@ const getters = {
         return res
     },
     getPartBrand: state => name => {
-        return state.partBrands.find((i => i.name == name))
+        return state.partBrands.find((i => i.name === name))
     },
     // part types are divided by categories
     getPartTypes ( state ) {
@@ -42,11 +42,11 @@ const getters = {
         return res
     },
     getCarModels: state => brand => {
-        return state.carModels ? state.carModels.filter((i => i.brand == brand)) : []
+        return state.carModels ? state.carModels.filter((i => i.brand === brand)) : []
     },
     getFB: state => req => {
         let res = [];
-        let brandIndex = state.partBrands.findIndex(i => i.name == req.brandName);
+        let brandIndex = state.partBrands.findIndex(i => i.name === req.brandName);
         if (brandIndex >=  0) {
             if (state.partBrands[brandIndex].feedbacks) {
                 res = state.partBrands[brandIndex].feedbacks[req.pageNumber]
@@ -65,7 +65,7 @@ const mutations = {
     },
     ADD_PART_BRANDS (state, object) {  },
     SET_BRAND_FEEDBACKS (state, { brandName, items, page_number }) {
-        let brandIndex = state.partBrands.findIndex(i => i.name == brandName);
+        let brandIndex = state.partBrands.findIndex(i => i.name === brandName);
         if (brandIndex < 0) {
             brandIndex = state.partBrands.push({ name: brandName }) - 1; // Array.prototype.push() returns an array length
             // console.log('store/SET_BRAND_FEEDBACKS: A brand item ' + brandName + ' is not find')

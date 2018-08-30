@@ -3,6 +3,7 @@ import Vue from 'vue'
 
 const JWT_EXPIRATION_DELTA = 12;  // in hours
 const JWT_REFRESH_EXPIRATION_DELTA = 168;  // in hours
+const JWT_REFRESH_BEFORE_EXPIRATION_DELTA = 1;  // in hours
 
 const state = {
     showLoginWindow: false,
@@ -102,18 +103,15 @@ const actions = {
     },
     // verify the session
     verifySession ({ commit, dispatch }, callback) {
-        console.log('verifySession')
-        const now = Date.now();
+        const now = new Date(Date.now());
         const expiresAt = new Date(JSON.parse(localStorage.getItem('expires_at')));
         const refreshTokenExpiresAt = new Date(JSON.parse(localStorage.getItem('refresh_token_expires_at')));
         const token = localStorage.getItem('token');
         const anonUserName = localStorage.getItem('anonymous_user_name');
         const anonUserPass = localStorage.getItem('anonymous_user_password');
         if (expiresAt && token && refreshTokenExpiresAt) {
-            // Sesion is expired
-            if (expiresAt < new Date(now) || refreshTokenExpiresAt < new Date(now)) {
-                console.log('Sesion is expired')
-                console.log(expiresAt, refreshTokenExpiresAt)
+            // Session is expired
+            if (expiresAt < now || refreshTokenExpiresAt < now) {
                 if (anonUserName && anonUserPass) {
                     // Open anonymous session
                     dispatch('getTokenAnonymousUser', {
@@ -125,19 +123,17 @@ const actions = {
                     commit('REMOVE_SESSION');
                     callback(false);
                 }
-            // Token is expired in 5 minutes
-            } else if (expiresAt > new Date(now - 5*60*1000) && expiresAt < new Date(now)) {
-                console.log('Token is expired in 5 minutes')
+            // Token is expired in JWT_REFRESH_BEFORE_EXPIRATION_DELTA
+            } else if (now < expiresAt && now > expiresAt.setHours(expiresAt.getHours() - JWT_REFRESH_BEFORE_EXPIRATION_DELTA)) {
                 // Refresh token
                 dispatch('refreshToken', { token, callback });
-            // Sesion is not expired
+            // Session is not expired
             } else {
-                console.log('Sesion is not expired')
                 Vue.axios.defaults.headers.common['Authorization'] = 'JWT ' + token;
                 callback(true);
             }
         } else {
-            commit('REMOVE_SESSION');
+            // commit('REMOVE_SESSION');
             callback(false);
         }
     },
@@ -158,8 +154,8 @@ const actions = {
             ).catch(
                 error => {
                     commit('REMOVE_SESSION');
-                    callback(false);
                     commit('HANDLE_ERROR', error);
+                    callback(false);
                 }
             )
     },
@@ -167,7 +163,6 @@ const actions = {
     // Social registration:
 
     registerWithSocial ({ commit }, provider) {
-        console.log('registerWithSocial')
         Vue.axios.get('/auth/o/' + provider + '/?redirect_uri=/logged-in/' + provider)
             .then(response => {
                 if (response.status === 200) {
@@ -189,7 +184,6 @@ const actions = {
         Vue.axios.post(url)
             .then(
                 response => {
-                    console.log(typeof response.status)
                     if (response.status === 201) {
                         // remove session if register an anonymous user
                         commit('REMOVE_SESSION');
@@ -246,7 +240,6 @@ const mutations = {
         state.isAuthenticated = true;
     },
     SET_SESSION (state, response) {
-        console.log('SET_SESSION')
         // set axios default config
         Vue.axios.defaults.headers.common['Authorization'] = 'JWT ' + response.data.token;
         localStorage.setItem('token', response.data.token);
@@ -258,7 +251,6 @@ const mutations = {
         localStorage.setItem('refresh_token_expires_at', JSON.stringify(date));
     },
     REMOVE_SESSION (state) {
-        console.log('REMOVE_SESSION')
         state.id = null;
         state.name = null;
         state.email = null;

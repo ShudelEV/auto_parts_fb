@@ -216,7 +216,8 @@ export default {
     created () {
         this.$http.get('/api/part-types/').then(
             response => this.$store.commit('SET_PART_TYPES', response.data)
-        )
+        );
+        this.$store.dispatch('verifySession', () => {})
     },
 
     computed: {
@@ -334,7 +335,7 @@ export default {
         // go to the feedback list if all images are uploaded
         uploadImageSuccess () {
             this.uploadedImagesQty += 1;
-            if (this.imagesQty() == this.uploadedImagesQty) {
+            if (this.imagesQty() === this.uploadedImagesQty) {
                 this.gotoAllFB()
             }
         },
