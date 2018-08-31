@@ -13,6 +13,16 @@ import BrandInfo from './components/BrandInfo.vue'
 // tell Vue to use the vue-router plugin
 Vue.use(Router);
 
+function getProps (route) {
+    return {
+        default: true,
+        page: route.query.page ? Number(route.query.page) : 1,
+        part_category: route.query.part_category ? route.query.part_category : '',
+        part_type: route.query.part_type ? Number(route.query.part_type) : null,
+        stars: route.query.stars ? JSON.parse(route.query.stars) : null
+    }
+}
+
 const router = new Router({
     mode: 'history',
     // base: __dirname,
@@ -27,10 +37,10 @@ const router = new Router({
             component: Home,
             children: [
                 {
-                    path: 'feedbacks/:pageNumber',
+                    path: 'feedbacks/',
                     name: 'AllFBHome',
                     component: AllFB,
-                    props: true
+                    props: getProps
                 }
             ]
         },
@@ -53,10 +63,10 @@ const router = new Router({
                     props: true
                 },
                 {
-                    path: 'feedbacks/:pageNumber',
+                    path: 'feedbacks/',
                     name: 'AllFB',
                     component: AllFB,
-                    props: true
+                    props: getProps
                 }
             ]
         },

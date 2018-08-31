@@ -1,14 +1,14 @@
 <template>
 <div :class="{ disabled: $store.state.all.loading }">
 <!--Collapse button-->
-<span class="uk-clearfix" v-if="Object.keys(feedbacks(page)).length">
+<span class="uk-clearfix">
     <vk-icon-link title="Collapse" class="uk-float-right"
                   :icon="collapse ? 'chevron-up' : 'chevron-down'"
                   @click="toggleAccordion()"
     ></vk-icon-link>
 </span>
     <!--Feedbacks section-->
-<div v-for="(value, key) in feedbacks(page)">
+<div v-for="(value, key) in feedbacks($store.state.all.page)">
     <h2 v-if="!brandName" class="uk-heading-divider">{{ key }}</h2>
     <ul uk-accordion="multiple: true" id="accordion" class="uk-list uk-list-divider">
         <!--Feedback-->
@@ -69,7 +69,10 @@
     </ul>
 </div>
     <!--Pagination-->
-<vk-pagination v-if="total > 1" align="left" :page.sync="page" :perPage="1" :total="total" :range="20">
+<vk-pagination v-if="$store.state.all.pageQty > 1" align="left" class="uk-margin-medium-top"
+               :page.sync="pageNumber" :perPage="1"
+               :total="$store.state.all.pageQty" :range="20"
+>
     <vk-pagination-page-prev label="Previous"></vk-pagination-page-prev>
     <vk-pagination-pages></vk-pagination-pages>
     <vk-pagination-page-next label="Next"></vk-pagination-page-next>
@@ -78,56 +81,89 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
     name: 'AllFB',
 
     data () {
         return {
+            brandName: this.$route.params.brandName,
             loading: false,
             error: null,
             showBrandInfo: false,
             collapse: false,
             // pagination
-            page: Number(this.pageNumber), // load an appropriate page when page is updated
-            total: 1,
+            pageNumber: this.page, // load an appropriate page when page is updated
         }
     },
 
-    props: ['brandName', 'pageNumber'],
+    props: {
+        page: { type: Number },
+        part_category: { type: String, default: '' },
+        part_type: { type: Number },
+        stars: { type: Array }
+    },
 
     created () {
-        this.fetchData();
+        this.$store.commit('DELETE_FB');
+        const filter = {
+            part_category: this.part_category,
+            part_type: this.part_type,
+            stars: this.stars
+        };
+        this.$store.dispatch('getFB', { filter, page: this.page, brandName: this.brandName });
     },
 
     computed: {
+        ...mapState({
+            pageInStore: state => state.all.page,
+        }),
         ...mapGetters(['feedbacks'])
     },
 
-//    watch: {
-//        page: function (val) {
-//            this.$router.push({ name: 'AllFB', params: { brandName: this.brandName, pageNumber: val } });
-//            this.collapse = false;
-//        }
-//    },
+    watch: {
+        pageInStore: function (val) {
+            this.pageNumber = val
+        },
+        pageNumber: function (val) {
+            const name = this.brandName ? 'AllFB' : 'AllFBHome';
+            const query = { page: val, };
+            if (this.part_category) {
+                query.part_category = this.part_category;
+            }
+            if (this.part_type) {
+                query.part_type = this.part_type;
+            }
+            if (this.stars) {
+                query.stars = JSON.stringify(this.stars);
+            }
+            this.$router.push({ name, params: { brandName: this.brandName }, query });
+            this.collapse = false;
+        }
+    },
 
-//    beforeRouteUpdate (to, from, next) {
-//        let fb = this.$store.getters.getFB({
-//            brandName: this.brandName,
-//            pageNumber: to.params.pageNumber
-//        });
-//        if (fb) {
-//            this.feedbacks = fb
-//        } else {
-//            this.fetchData()
-//        }
-//        next()
-//    },
+    beforeRouteUpdate (to, from, next) {
+        let qFrom = Object.assign({}, from.query);
+        let qTo = Object.assign({}, to.query);
+        const page = qTo.page ? Number(qTo.page) : 1;
+        const fbs = this.feedbacks(page);
+        delete qFrom.page;
+        delete qTo.page;
+        if (JSON.stringify(qFrom) === JSON.stringify(qTo) && Object.keys(fbs).length) {
+            this.$store.state.all.page = page;
+        } else {
+            const filter = {
+                part_category: qTo.part_category ? qTo.part_category : null,
+                part_type: qTo.part_type ? qTo.part_type : null,
+                stars: qTo.stars ? JSON.parse(qTo.stars) : null
+            };
+            this.$store.dispatch('getFB', { filter, page, brandName: this.brandName });
+        }
+        next()
+    },
 
     methods: {
-        fetchData () {
-        },
         toggleAccordion () {
             this.collapse = !this.collapse;
             const acc = UIkit.accordion(accordion);

@@ -119,7 +119,7 @@ class FeedBack(models.Model):
         return '{0}'.format(self.part)
 
     class Meta:
-        ordering = ['-created']
+        ordering = ['part__brand', '-created']
 
 
 def fb_images_path(instance, filename):

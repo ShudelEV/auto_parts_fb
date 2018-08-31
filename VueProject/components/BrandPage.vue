@@ -14,7 +14,7 @@
             </li>
             <li v-if="$route.name != 'AllFB'">
                 <vk-icon-link icon="comments"
-                              @click="$router.push({ name: 'AllFB', params: { pageNumber: 1 }})"
+                              @click="$router.push({ name: 'AllFB', params: { brandName: brandName, page: 1 }})"
                               title="Feedbacks"
                 ></vk-icon-link>
             </li>

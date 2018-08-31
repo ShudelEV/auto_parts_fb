@@ -10,8 +10,10 @@ const state = {
     carModels: null,
     newFBId: null,
     feedbacks: {},
-    pageQty: 0,
+    page: 1,
+    pageQty: 1,
     loading: false,
+    prevRequest: null,
     message: []
 };
 
@@ -49,10 +51,11 @@ const getters = {
         return state.carModels ? state.carModels.filter(i => i.brand === brand) : []
     },
     feedbacks: state => page => {
-        if (!Object.keys(state.feedbacks).length) { return {} }
+        const fbs = state.feedbacks[page];
+        if (!fbs) { return {} }
         let res = {};
         for (let brand of state.partBrands) {
-            let items = state.feedbacks[page].filter(i => i.part.brand === brand.id);
+            let items = fbs.filter(i => i.part.brand === brand.id);
             if (items.length) { res[brand.name] = items }
         }
         return res
@@ -61,20 +64,28 @@ const getters = {
 
 const actions = {
     getFB ({ state, commit }, { filter, page, brandName }) {
+        let pageNumber = page;
         let url = '/api/feedbacks/';
-        let method = 'get';
         if (brandName) { url += brandName + '/'; }
-        if (page != 1) { url += '?page=' + page }
-        if (filter.part_category || filter.part_type) { method = 'post' }
+        if (pageNumber) {
+            url += '?page=' + pageNumber
+        } else {
+            pageNumber = 1;
+        }
+        const method = Object.keys(filter).length ? 'post' : 'get';
         const conf = method === 'get' ? { url } : { url, method, data: filter };
         state.loading = true;
         Vue.axios.request(conf)
             .then(response => {
-                commit('SET_FEEDBACKS', {
-                    items: response.data.results,
-                    page
-                });
+                // update fbs when query is changed, but save the transition effect
+                if (!(JSON.stringify(state.prevRequest) === JSON.stringify(filter))) { commit('DELETE_FB') }
                 state.loading = false;
+                state.prevRequest = filter;
+                commit('SET_FEEDBACKS', {
+                    page: pageNumber,
+                    items: response.data.results
+                });
+                state.page = pageNumber;
                 let pageQty = response.data.count / 20;
                 let roundPageQty = Math.trunc(pageQty);
                 state.pageQty = pageQty === roundPageQty ? roundPageQty : roundPageQty + 1
@@ -92,7 +103,7 @@ const mutations = {
         state.partBrands = objects
     },
     ADD_PART_BRANDS (state, object) {  },
-    SET_FEEDBACKS (state, { items, page }) {
+    SET_FEEDBACKS (state, { page, items }) {
         state.feedbacks[page] = items;
     },
     SET_PART_TYPES (state, { category_list, part_types }) {
@@ -107,7 +118,9 @@ const mutations = {
         state.message.push({ message, status })
     },
     DELETE_FB (state) {
-        state.feedbacks = {}
+        state.feedbacks = {};
+        state.pageQty = 1;
+        state.page = 1
     }
 };
 

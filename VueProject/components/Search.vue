@@ -30,6 +30,12 @@
                 <!--&gt; {{ partType.name }} </option>-->
             <!--</select>-->
         <!--</div>-->
+        <!--Stars-->
+        <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+            <label for="bad"><input class="uk-radio" id="bad" value="bad" type="radio" v-model="stars"> bad</label>
+            <label for="nbad"><input class="uk-radio" id="nbad" value="nbad" type="radio" v-model="stars"> not bad</label>
+            <label for="good"><input class="uk-radio" id="good" value="good" type="radio" v-model="stars"> good</label>
+        </div>
     </fieldset>
 </form>
 </template>
@@ -46,27 +52,19 @@ export default {
         return {
             brand: this.brandName,
             part: '',
+            stars: null
+        }
+    },
+
+    created () {
+        if (!this.brandName) {
+
         }
     },
 
     watch: {
-        part: function (val) {
-            const name = this.brandName ? 'AllFB' : 'AllFBHome';
-            let filter = {};
-            if (this.part) {
-                if (this.partCategories[this.part]) {
-                    filter.part_category = this.part
-                } else {
-                    filter.part_type = this.part
-                }
-            }
-            this.$store.dispatch('getFB', {
-                filter,
-                brandName: this.brandName,
-                page: 1
-            });
-            this.$router.push({ name, params: { pageNumber: 1 }})
-        }
+        part: function (val) { this.fetchData() },
+        stars: function (val) { this.fetchData() },
     },
 
     computed: {
@@ -80,5 +78,24 @@ export default {
 //            getCarModels: 'getCarModels',
         })
     },
+
+    methods: {
+        fetchData () {
+            const name = this.brandName ? 'AllFB' : 'AllFBHome';
+            const query = { page: 1 };
+            if (this.part) {
+                if (this.partCategories[this.part]) {
+                    query.part_category = this.part
+                } else {
+                    query.part_type = this.part
+                }
+            }
+            if (this.stars) {
+                const stars = this.stars === 'bad' ? [1] : (this.stars === 'nbad' ? [2, 3] : [4, 5]);
+                query.stars = JSON.stringify(stars)
+            }
+            this.$router.push({ name, params: { brandName: this.brandName }, query })
+        }
+    }
 }
 </script>

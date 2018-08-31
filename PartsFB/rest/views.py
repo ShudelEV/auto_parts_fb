@@ -93,6 +93,8 @@ class FeedbackListView(mixins.ListModelMixin, generics.GenericAPIView):
             self.queryset = self.queryset.filter(part__type=data.get('part_type'))
         elif data.get('part_category'):
             self.queryset = self.queryset.filter(part__type__category=data.get('part_category'))
+        if data.get('stars'):
+            self.queryset = self.queryset.filter(stars__in=data.get('stars'))
         return self.list(request, *args, **kwargs)
 
 

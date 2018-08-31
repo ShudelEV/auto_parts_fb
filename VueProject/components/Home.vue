@@ -2,8 +2,9 @@
     <vk-grid gutter="large">
         <div class="uk-width-1-4@m">
             <vk-card padding="small">
-                <template v-if="$route.name==='Home'">
-                    <vk-card-title>Brand Filter</vk-card-title>
+                <search v-if="expandSearch"></search>
+                <template v-if="$route.name==='Home' && !expandSearch">
+                    <span class="uk-legend">Quick search by Brand</span>
                     <div class="uk-margin">
                         <div class="uk-inline">
                             <vk-icon-link v-if="search_pattern"
@@ -14,8 +15,8 @@
                             <input class="uk-input uk-form-small" type="text" v-model="search_pattern">
                         </div>
                     </div>
+                    <vk-icon-button icon="search" @click="expandSearch=true"></vk-icon-button>
                 </template>
-                <search></search>
             </vk-card>
         </div>
         <div class="uk-width-expand@m" style="padding-bottom: 75px">
@@ -98,14 +99,13 @@ export default {
             itemsShow: 5,
             // search box
             // by brand
-            search_pattern: ''
+            search_pattern: '',
+            expandSearch: false
         }
     },
 
     computed: {
-        ...mapGetters({
-            sortedPartBrands: 'sortedPartBrands'
-        }),
+        ...mapGetters(['sortedPartBrands']),
     },
 
     methods: {
@@ -122,7 +122,7 @@ export default {
         },
         gotoBrandFeedbacks (brand) {
             if (brand.fb_quantity) {
-                this.$router.push({ name: 'AllFB', params: { brandName: brand.name, pageNumber: 1 } })
+                this.$router.push({ name: 'AllFB', params: { brandName: brand.name }, query: { page: 1 }})
             } else {
                 this.$router.push({ name: 'AddFB', params: { brandName: brand.name } })
             }
