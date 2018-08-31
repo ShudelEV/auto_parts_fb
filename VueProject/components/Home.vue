@@ -2,8 +2,7 @@
     <vk-grid gutter="large">
         <div class="uk-width-1-4@m">
             <vk-card padding="small">
-                <search v-if="expandSearch"></search>
-                <template v-if="$route.name==='Home' && !expandSearch">
+                <template v-if="$route.name==='Home'">
                     <span class="uk-legend">Quick search by Brand</span>
                     <div class="uk-margin">
                         <div class="uk-inline">
@@ -15,8 +14,11 @@
                             <input class="uk-input uk-form-small" type="text" v-model="search_pattern">
                         </div>
                     </div>
-                    <vk-icon-button icon="search" @click="expandSearch=true"></vk-icon-button>
+                    <vk-icon-button icon="search"
+                                    @click="$router.push({name: 'AllFBHome', query: {page: 1}})"
+                    ></vk-icon-button>
                 </template>
+                <search v-if="$route.name!=='Home'"></search>
             </vk-card>
         </div>
         <div class="uk-width-expand@m" style="padding-bottom: 75px">
@@ -100,7 +102,6 @@ export default {
             // search box
             // by brand
             search_pattern: '',
-            expandSearch: false
         }
     },
 

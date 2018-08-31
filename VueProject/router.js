@@ -17,7 +17,7 @@ function getProps (route) {
     return {
         default: true,
         page: route.query.page ? Number(route.query.page) : 1,
-        part_category: route.query.part_category ? route.query.part_category : '',
+        part_category: route.query.part_category ? route.query.part_category : null,
         part_type: route.query.part_type ? Number(route.query.part_type) : null,
         stars: route.query.stars ? JSON.parse(route.query.stars) : null
     }

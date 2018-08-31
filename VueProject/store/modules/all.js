@@ -63,7 +63,7 @@ const getters = {
 };
 
 const actions = {
-    getFB ({ state, commit }, { filter, page, brandName }) {
+    getFB ({ state, commit }, { filter, page, brandName, callback }) {
         let pageNumber = page;
         let url = '/api/feedbacks/';
         if (brandName) { url += brandName + '/'; }
@@ -88,12 +88,12 @@ const actions = {
                 state.page = pageNumber;
                 let pageQty = response.data.count / 20;
                 let roundPageQty = Math.trunc(pageQty);
-                state.pageQty = pageQty === roundPageQty ? roundPageQty : roundPageQty + 1
+                state.pageQty = pageQty === roundPageQty ? roundPageQty : roundPageQty + 1;
+                callback()
             })
             .catch(error => {
                 state.loading = false;
-                const message = error.response ? error.response.data : error.data;
-                commit('SET_MESSAGE', { message, status: 'warning' });
+                commit('HANDLE_ERROR', error);
             })
     }
 };
@@ -121,7 +121,36 @@ const mutations = {
         state.feedbacks = {};
         state.pageQty = 1;
         state.page = 1
-    }
+    },
+    HANDLE_ERROR (state, error) {
+        if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+            console.log('error.response', error.response);
+            // console.log(error.response.status);
+            // console.log(error.response.headers);
+            let err_data = error.response.data;
+            if (err_data.detail) {
+                state.message.push({message: err_data.detail, status: 'danger' })
+            } else {
+                for (let i in err_data) {
+                    for (let m of err_data[i]) {
+                        const message = i == 'non_field_errors' ? m : (i + ': ' + m);
+                        state.message.push({message: message, status: 'danger' })
+                    }
+                }
+            }
+        } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+            console.log('error.request', error.request);
+        } else {
+        // Something happened in setting up the request that triggered an Error
+            console.log('else Error', error.message);
+        }
+        console.log('err', error.config);
+    },
 };
 
 export default {

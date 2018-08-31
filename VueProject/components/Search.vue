@@ -49,18 +49,16 @@ export default {
     props: ['brandName'],
 
     data () {
+        // if page is updated, get values from query
+        const q = this.$route.query;
         return {
             brand: this.brandName,
-            part: '',
-            stars: null
+            part: q.part_category ? q.part_category : (Number(q.part_type) ? Number(q.part_type) : ''),
+            stars: q.stars ? (q.stars === JSON.stringify([1]) ? 'bad' : (q.stars === JSON.stringify([2, 3]) ? 'nbad' : 'good')) : null,
         }
     },
 
-    created () {
-        if (!this.brandName) {
-
-        }
-    },
+    created () { },
 
     watch: {
         part: function (val) { this.fetchData() },

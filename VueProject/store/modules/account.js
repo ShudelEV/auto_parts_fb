@@ -266,7 +266,11 @@ const mutations = {
     },
     HANDLE_ERROR (state, error) {
         if (error.response) {
-            // console.log(error.response.data)
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
             let err_data = error.response.data;
             if (err_data.detail) {
                 state.message.push({message: err_data.detail, status: 'danger' })
@@ -278,7 +282,16 @@ const mutations = {
                     }
                 }
             }
+        } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+            console.log(error.request);
+        } else {
+        // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
         }
+        console.log(error.config);
     },
     SET_ERROR (state, message) {
         state.message.push({ message, status: 'danger' })

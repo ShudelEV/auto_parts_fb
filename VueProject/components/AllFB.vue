@@ -1,16 +1,39 @@
 <template>
 <div :class="{ disabled: $store.state.all.loading }">
-<!--Collapse button-->
-<span class="uk-clearfix">
-    <vk-icon-link title="Collapse" class="uk-float-right"
-                  :icon="collapse ? 'chevron-up' : 'chevron-down'"
-                  @click="toggleAccordion()"
-    ></vk-icon-link>
-</span>
     <!--Feedbacks section-->
 <div v-for="(value, key) in feedbacks($store.state.all.page)">
-    <h2 v-if="!brandName" class="uk-heading-divider">{{ key }}</h2>
-    <ul uk-accordion="multiple: true" id="accordion" class="uk-list uk-list-divider">
+
+    <h2 class="uk-heading-divider uk-visible-toggle">
+        <template v-if="!brandName">
+            <a class="uk-logo"
+               @click="$router.push({name: 'AllFB', params: {brandName: key}, query: {page: 1}})"
+            >{{ key }}</a>
+            <!--<ul class="uk-invisible-hover uk-iconnav">-->
+            <span class="uk-invisible-hover uk-margin-left">
+                <vk-icon-link reset icon="info"
+                              @click="$router.push({ name: 'BrandInfo', params: {brandName: key}})"
+                              title="Info"
+                ></vk-icon-link>
+                <vk-icon-link reset icon="comments"
+                              @click="$router.push({name: 'AllFB', params: {brandName: key}, query: {page: 1}})"
+                              title="Feedbacks"
+                ></vk-icon-link>
+                <vk-icon-link reset icon="plus-circle"
+                              @click="$router.push({ name: 'AddFB', params: {brandName: key}})"
+                              title="Add feedback"
+                ></vk-icon-link>
+            </span>
+            <!--</ul>-->
+        </template>
+        <!--Collapse button-->
+        <span class="uk-clearfix">
+            <vk-icon-link title="Collapse" class="uk-float-right"
+                          :icon="collapse.includes(key) ? 'chevron-up' : 'chevron-down'"
+                          @click="toggleAccordion(key)"
+            ></vk-icon-link>
+        </span>
+    </h2>
+    <ul uk-accordion="multiple: true" :id="accordionId(key)" class="uk-list uk-list-divider">
         <!--Feedback-->
         <li v-for="fb in value" :key="fb.id" :id="'fb_' + fb.id">
             <!--Header-->
@@ -92,7 +115,7 @@ export default {
             loading: false,
             error: null,
             showBrandInfo: false,
-            collapse: false,
+            collapse: [],
             // pagination
             pageNumber: this.page, // load an appropriate page when page is updated
         }
@@ -100,7 +123,7 @@ export default {
 
     props: {
         page: { type: Number },
-        part_category: { type: String, default: '' },
+        part_category: { type: String, default: null },
         part_type: { type: Number },
         stars: { type: Array }
     },
@@ -112,7 +135,7 @@ export default {
             part_type: this.part_type,
             stars: this.stars
         };
-        this.$store.dispatch('getFB', { filter, page: this.page, brandName: this.brandName });
+        this.$store.dispatch('getFB', { filter, page: this.page, brandName: this.brandName, callback: this.highlightFB });
     },
 
     computed: {
@@ -139,8 +162,8 @@ export default {
                 query.stars = JSON.stringify(this.stars);
             }
             this.$router.push({ name, params: { brandName: this.brandName }, query });
-            this.collapse = false;
-        }
+            this.collapse = [];
+        },
     },
 
     beforeRouteUpdate (to, from, next) {
@@ -158,20 +181,20 @@ export default {
                 part_type: qTo.part_type ? qTo.part_type : null,
                 stars: qTo.stars ? JSON.parse(qTo.stars) : null
             };
-            this.$store.dispatch('getFB', { filter, page, brandName: this.brandName });
+            this.$store.dispatch('getFB', { filter, page, brandName: this.brandName, callback: () => {} });
         }
         next()
     },
 
     methods: {
-        toggleAccordion () {
-            this.collapse = !this.collapse;
-            const acc = UIkit.accordion(accordion);
+        toggleAccordion (key) {
+            this.collapse.includes(key) ? this.collapse.pop(key) : this.collapse.push(key);
+            const acc = UIkit.accordion(eval(this.accordionId(key)));
             for (let item of acc.items) {
-                if (this.collapse && item.className != 'uk-open') {
+                if (this.collapse.includes(key) && item.className != 'uk-open') {
                     acc.toggle(acc.items.indexOf(item))
                 }
-                if (!this.collapse && item.className == 'uk-open') {
+                if (!this.collapse.includes(key) && item.className == 'uk-open') {
                     acc.toggle(acc.items.indexOf(item))
                 }
             }
@@ -209,7 +232,7 @@ export default {
             if (fb_id) {
                 setTimeout(() => {
                     const element = document.getElementById('fb_' + fb_id);
-                    const acc = UIkit.accordion(accordion);
+                    const acc = UIkit.accordion(eval(this.accordionId(this.brandName)));
                     acc.toggle(acc.items.indexOf(element));
                     element.style.backgroundColor = 'honeydew'
                 }, 1000);
@@ -218,7 +241,9 @@ export default {
                     this.$store.state.all.newFBId = null
                 }, 2500)
             }
-        }
+        },
+        // remove white spaces from string
+        accordionId (key) { return key.replace(/\s/g, "") }
     }
 }
 </script>
@@ -236,4 +261,5 @@ export default {
         opacity: .5;
         pointer-events: none;
     }
+    /*span.uk-invisible-hover*/
 </style>

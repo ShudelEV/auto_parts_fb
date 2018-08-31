@@ -14,7 +14,7 @@
             </li>
             <li v-if="$route.name != 'AllFB'">
                 <vk-icon-link icon="comments"
-                              @click="$router.push({ name: 'AllFB', params: { brandName: brandName, page: 1 }})"
+                              @click="$router.push({name: 'AllFB', params: {brandName: brandName}, query: {page: 1}})"
                               title="Feedbacks"
                 ></vk-icon-link>
             </li>
@@ -25,6 +25,7 @@
                 ></vk-icon-link>
             </li>
         </ul>
+        <search v-if="$route.name==='AllFB'" class="uk-margin-top" :brandName="brandName"></search>
     </div>
     <!--</vk-sticky>-->
     <!--Feedbackes-->
@@ -36,8 +37,12 @@
 </template>
 
 <script>
+import Search from './Search.vue'
+
 export default {
     name: 'BrandPage',
+
+    components: { Search, },
 
     data () {
         return {
