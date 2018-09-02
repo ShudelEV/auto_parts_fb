@@ -47,10 +47,12 @@ export default {
         }
     },
     mounted () {
+	    console.log('mounted', this.inactiveColor)
         if (this.value) { this.setColor(this.value) }
     },
     watch: {
         value: function (val) {
+            console.log('wathc', val)
             this.setColor(val)
         }
     },

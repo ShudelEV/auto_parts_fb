@@ -14,7 +14,7 @@ const state = {
     email: null,
     isAuthenticated: false,
     isAnonymous: true,
-    message: [],
+    message: null,
     cars: []
 };
 
@@ -193,10 +193,8 @@ const actions = {
                     }
                 }
             ).catch(
-                error => {
-                    commit('HANDLE_ERROR', error)
-                }
-            )
+                error => { commit('HANDLE_ERROR', error) }
+        )
     },
 
     // Create anonymous user
@@ -268,17 +266,17 @@ const mutations = {
         if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
+        //     console.log(error.response.data);
+        //     console.log(error.response.status);
+        //     console.log(error.response.headers);
             let err_data = error.response.data;
             if (err_data.detail) {
-                state.message.push({message: err_data.detail, status: 'danger' })
+                state.message = { message: err_data.detail, status: 'danger' }
             } else {
                 for (let i in err_data) {
                     for (let m of err_data[i]) {
                         const message = i == 'non_field_errors' ? m : (i + ': ' + m);
-                        state.message.push({message: message, status: 'danger' })
+                        state.message = { message: message, status: 'danger' }
                     }
                 }
             }
@@ -286,21 +284,21 @@ const mutations = {
         // The request was made but no response was received
         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
         // http.ClientRequest in node.js
-            console.log(error.request);
+        //     console.log(error.request);
         } else {
         // Something happened in setting up the request that triggered an Error
-            console.log('Error', error.message);
+        //     console.log('Else Error', error.message);
         }
-        console.log(error.config);
+        // console.log('error.config', error.config);
     },
     SET_ERROR (state, message) {
-        state.message.push({ message, status: 'danger' })
+        state.message = { message, status: 'danger' }
     },
     SET_WARNING (state, message) {
-        state.message.push({ message, status: 'warning' })
+        state.message = { message, status: 'warning' }
     },
     SET_SUCCESS (state, message) {
-        state.message.push({ message, status: 'success' })
+        state.message = { message, status: 'success' }
     }
 };
 

@@ -125,11 +125,11 @@ export default {
             if (brand.fb_quantity) {
                 this.$router.push({ name: 'AllFB', params: { brandName: brand.name }, query: { page: 1 }})
             } else {
-                this.$router.push({ name: 'AddFB', params: { brandName: brand.name } })
+                this.$router.push({ name: 'AddFB', params: { brandName: brand.name }})
             }
         },
         gotoBrandInfo (brandName) {
-            this.$router.push({ name: 'BrandInfo', params: { brandName } })
+            this.$router.push({ name: 'BrandInfo', params: { brandName }})
         },
         // show an info window if it doesn't fit on the screen
         showElement(id) {

@@ -14,7 +14,7 @@ const state = {
     pageQty: 1,
     loading: false,
     prevRequest: null,
-    message: []
+    message: null
 };
 
 const getters = {
@@ -115,7 +115,7 @@ const mutations = {
         state.carModels = car_models;
     },
     SET_MESSAGE (state, { message, status }) {
-        state.message.push({ message, status })
+        state.message = { message, status }
     },
     DELETE_FB (state) {
         state.feedbacks = {};
@@ -126,30 +126,17 @@ const mutations = {
         if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-            console.log('error.response', error.response);
-            // console.log(error.response.status);
-            // console.log(error.response.headers);
-            let err_data = error.response.data;
-            if (err_data.detail) {
-                state.message.push({message: err_data.detail, status: 'danger' })
-            } else {
-                for (let i in err_data) {
-                    for (let m of err_data[i]) {
-                        const message = i == 'non_field_errors' ? m : (i + ': ' + m);
-                        state.message.push({message: message, status: 'danger' })
-                    }
-                }
-            }
+        //     console.log('error.response', error.response);
         } else if (error.request) {
         // The request was made but no response was received
         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
         // http.ClientRequest in node.js
-            console.log('error.request', error.request);
+        //     console.log('error.request', error.request);
         } else {
         // Something happened in setting up the request that triggered an Error
-            console.log('else Error', error.message);
+        //     console.log('else Error', error.message);
         }
-        console.log('err', error.config);
+        // console.log('error.config', error.config);
     },
 };
 

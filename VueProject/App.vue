@@ -1,8 +1,8 @@
 <template>
 <div>
     <!--Error notification-->
-    <vk-notification :messages.sync="account.message"></vk-notification>
-    <vk-notification :messages.sync="all.message"></vk-notification>
+    <vk-notification :messages.sync="messages"></vk-notification>
+    <!--<vk-notification :messages.sync="all.message"></vk-notification>-->
     <div class="content">
         <!--Load Progress Bar-->
     <!--<vk-sticky>-->
@@ -29,7 +29,7 @@
             </template>
         </div>
         <!--Login Window-->
-        <login-window :show="account.showLoginWindow"></login-window>
+        <login-window :show="$store.state.account.showLoginWindow"></login-window>
         <!--Body-->
         <div class="uk-section uk-section-default uk-section-xsmall">
             <div class="uk-container">
@@ -59,7 +59,8 @@ export default {
 
     data () {
         return {
-            logo: 'PartsOK'
+            logo: 'PartsOK',
+            messages: []
         }
     },
 
@@ -74,9 +75,18 @@ export default {
     },
 
     computed: mapState({
-        account: state => state.account,
-        all: state => state.all
-    })
+        accountMessage: state => state.account.message,
+        allMessage: state => state.all.message
+    }),
+
+    watch: {
+        accountMessage: function (val) {
+            if (val) { this.messages.push(val) }
+        },
+        allMessage: function (val) {
+            if (val) { this.messages.push(val) }
+        }
+    }
 }
 </script>
 

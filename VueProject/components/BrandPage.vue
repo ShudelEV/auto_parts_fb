@@ -20,7 +20,7 @@
             </li>
             <li v-if="$route.name != 'AddFB'">
                 <vk-icon-link icon="plus-circle"
-                              @click="$router.push({ name: 'AddFB' })"
+                              @click="$router.push({name: 'AddFB', params: {brandName: brandName}})"
                               title="Add feedback"
                 ></vk-icon-link>
             </li>

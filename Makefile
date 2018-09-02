@@ -19,14 +19,14 @@ run:
 
 # This step depends on `make shell`, however dependency is excluded to speed up dev server startup.
 shell:
-	python ./manage.py shell --settings=AutoPartsFB.settings_dev	
-	
+	python ./manage.py shell --settings=AutoPartsFB.settings_dev
+
 # Creates migrations and migrates database.
 # This step depends on `make dev`, however dependency is excluded to speed up dev server startup.
 migrate:
 	python ./manage.py makemigrations
 	python ./manage.py migrate
-	
+
 devmigrate:
 	python ./manage.py makemigrations --settings=AutoPartsFB.settings_dev
 	python ./manage.py migrate --settings=AutoPartsFB.settings_dev

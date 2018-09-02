@@ -223,7 +223,7 @@ export default {
             return {
                 [classShadow]: true,
                 [classAct]: i <= stars,
-                inactive: i > stars
+                inactivestar: i > stars
             }
         },
         // highlight feedback if created
@@ -249,7 +249,7 @@ export default {
 </script>
 
 <style>
-    .inactive { color: #fafafa; }
+    .inactivestar { color: #fafafa; }
     .red-star-shadow { text-shadow: 0 0 0.3em #ff0023; }
     .fill-red-star { color: #ff0023; }
     .yellow-star-shadow { text-shadow: 0 0 0.3em #ece514; }

@@ -388,10 +388,10 @@ export default {
 </script>
 
 <style>
-    .uk-icon svg[meta='vk-icons-star'] { color: gold; }
-    .uk-icon.fill-star-red svg[meta='vk-icons-star'] polygon { fill: red; }
-    .uk-icon.fill-star-yellow svg[meta='vk-icons-star'] polygon { fill: #fdff00; }
-    .uk-icon.fill-star-green svg[meta='vk-icons-star'] polygon { fill: green; }
+    /*.uk-icon svg[meta='vk-icons-star'] { color: gold; }*/
+    /*.uk-icon.fill-star-red svg[meta='vk-icons-star'] polygon { fill: red; }*/
+    /*.uk-icon.fill-star-yellow svg[meta='vk-icons-star'] polygon { fill: #fdff00; }*/
+    /*.uk-icon.fill-star-green svg[meta='vk-icons-star'] polygon { fill: green; }*/
 
     div.img-uploader {
         position: relative;
