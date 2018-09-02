@@ -105,4 +105,8 @@ export default {
     .nprogress-custom-parent #nprogress .bar {
         position: fixed !important;
     }
+    .disabled-content {
+        opacity: .5;
+        pointer-events: none;
+    }
 </style>

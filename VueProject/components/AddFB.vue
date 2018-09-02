@@ -3,7 +3,13 @@
     <div class="uk-width-1-1">
         <h2>Add Your Feedback</h2>
     </div>
-    <form class="uk-grid-small" uk-grid ref="form2">
+    <div v-if="account.showSuggestLogin" class="uk-alert-success" uk-alert>
+        <p>Хотите войти, чтобы в дальнейшем у Вас была возможность редактировать
+            Ваши отзывы и видеть добавленные Вами авто?</p>
+        <vk-button size="small" class="uk-margin-right" @click="setAnswer(false)">No</vk-button>
+        <vk-button size="small" type="primary" @click="setAnswer(true)">Yes</vk-button>
+    </div>
+    <form v-else class="uk-grid-small" uk-grid ref="form2">
         <!--Add part-->
         <template v-if="part == -1">
             <div class="uk-width-1-4@s">
@@ -147,19 +153,13 @@
             </div>
         </div>
     </form>
-    <hr>
-    <article class="uk-comment">
-        <div class="uk-comment-meta uk-margin-top"> * - Required fields</div>
-    </article>
-    <hr>
-    <!--Buttons-->
-    <template v-if="account.showSuggestLogin"> <!--Suggest to log in-->
-        <p>Хотите войти, чтобы в дальнейшем у Вас была возможность редактировать
-            Ваши комментарии и видеть добавленные вами авто?</p>
-        <vk-button class="uk-margin-right" @click="sendFBAnonymous()">No</vk-button>
-        <vk-button type="primary" @click="$store.state.account.showLoginWindow = true">Yes</vk-button>
-    </template>
-    <template v-else>
+    <template v-if="!account.showSuggestLogin">
+        <hr>
+        <article class="uk-comment">
+            <div class="uk-comment-meta uk-margin-top"> * - Required fields</div>
+        </article>
+        <hr>
+        <!--Buttons-->
         <p>
             <vk-button class="uk-margin-right"
                        @click="resetForm()"
@@ -214,7 +214,8 @@ export default {
     },
 
     created () {
-        this.$store.dispatch('verifySession', () => {})
+        this.$store.dispatch('verifySession', () => {});
+        this.$store.state.account.showSuggestLogin = !sessionStorage.getItem('notSuggestLogin')
     },
 
     computed: {
@@ -255,9 +256,17 @@ export default {
     },
 
     methods: {
+        setAnswer (answer) {
+            if (answer) {
+                 this.$store.state.account.showLoginWindow = true
+            } else {
+                sessionStorage.setItem('notSuggestLogin', true);
+                this.$store.state.account.showSuggestLogin = false
+            }
+        },
         preSend () {
-            if (isNaN(this.new_car.engine_volume)) {
-                // Validate engine volume field
+            if (isNaN(this.new_car.engine_volume) || (!this.parseEngineVolume() && this.new_car.engine_volume !== '')) {
+                this.highlightInput('engine_volume');
                 this.$store.commit('SET_MESSAGE', { message: 'Incorrect engine volume.', status: 'danger' })
             } else if (!this.stars) {
                 // star animation
@@ -265,25 +274,14 @@ export default {
                 setTimeout(this.setStar, 1250, 0);
                 // Push message
                 this.$store.commit('SET_MESSAGE', { message: 'Please, note the part.', status: 'danger' })
-            } else if (
-                // Show the suggest only once for a session
-                !this.account.isAuthenticated && !this.account.showSuggestLogin && !sessionStorage.getItem('notSuggestLogin')
-            ) {
-                this.account.showSuggestLogin = true
+            } else if (this.account.isAnonymous && !this.account.isAuthenticated) {
+                // create anonymous user and then to send the FB
+                 this.$store.dispatch('registerAnonymousUser', () => { this.sendFB(); })
             } else {
-                this.account.isAnonymous && !this.account.isAuthenticated ? this.sendFBAnonymous() : this.sendFB()
+                this.sendFB()
             }
         },
         setStar (a) { this.stars = a },
-        sendFBAnonymous () {
-            sessionStorage.setItem('notSuggestLogin', true);
-            // create anonymous user and then to send the FB
-            const callBack = () => {
-                this.sendFB();
-                this.$store.state.account.showSuggestLogin = false;
-            };
-            this.$store.dispatch('registerAnonymousUser', callBack);
-        },
         sendFB () {
             let form = {
                 description: this.description,
@@ -300,7 +298,7 @@ export default {
             } else {
                 // Create a new car
                 form.new_car = this.new_car;
-                form.new_car.engine_volume = Number(this.new_car.engine_volume);
+                form.new_car.engine_volume = this.parseEngineVolume();
                 if (this.new_car.model == -1) {
                     delete form.new_car.model
                 } else {
@@ -346,6 +344,18 @@ export default {
         gotoAllFB () {
             this.$router.push({ name: 'AllFB', params: { brandName: this.brandName }, query: { page: 1 } })
         },
+        parseEngineVolume () {
+            let engineVolume = Math.abs(Number(this.new_car.engine_volume));
+            if (engineVolume > 0 && engineVolume < 10) {
+                engineVolume = engineVolume.toFixed(1) * 1000
+            } else if (engineVolume > 500 && engineVolume < 10000) {
+                engineVolume = engineVolume.toFixed(0)
+            }
+            else {
+                engineVolume = 0
+            }
+            return engineVolume
+        },
         yearList (start, end) {
             let res = [];
             for (let i = end; i >= start; i--) {
@@ -382,7 +392,12 @@ export default {
                     imgUploader.$delete(imgUploader.image, key)
                 }
             }
-        }
+        },
+        highlightInput (elName) {
+            let element = this.$refs.form2[elName];
+            element.classList.toggle("uk-form-danger");
+            setTimeout(() => { element.classList.toggle("uk-form-danger") }, 2000)
+        },
     }
 }
 </script>

@@ -60,9 +60,6 @@ const actions = {
                         commit('SET_SESSION', response);
                         // get a user information
                         dispatch('getUser');
-                        // close the login window
-                        state.showLoginWindow = false;
-                        state.showSuggestLogin = false;
                     }
                 }
             ).catch(
@@ -234,10 +231,13 @@ const mutations = {
         state.id = user.data.id;
         state.name = user.data.username;
         state.email = user.data.email;
-        state.isAnonymous = localStorage.getItem('anonymous_user_name') && localStorage.getItem('anonymous_user_password');
+        state.isAnonymous = !!localStorage.getItem('anonymous_user_name') && !!localStorage.getItem('anonymous_user_password');
         state.isAuthenticated = true;
     },
     SET_SESSION (state, response) {
+        // close the login window
+        state.showLoginWindow = false;
+        state.showSuggestLogin = false;
         // set axios default config
         Vue.axios.defaults.headers.common['Authorization'] = 'JWT ' + response.data.token;
         localStorage.setItem('token', response.data.token);
@@ -269,14 +269,18 @@ const mutations = {
         //     console.log(error.response.data);
         //     console.log(error.response.status);
         //     console.log(error.response.headers);
-            let err_data = error.response.data;
-            if (err_data.detail) {
-                state.message = { message: err_data.detail, status: 'danger' }
+            if (error.response.status === 401) {
+                state.message = { message: 'Unauthorized', status: 'danger' }
             } else {
-                for (let i in err_data) {
-                    for (let m of err_data[i]) {
-                        const message = i == 'non_field_errors' ? m : (i + ': ' + m);
-                        state.message = { message: message, status: 'danger' }
+                let err_data = error.response.data;
+                if (err_data.detail) {
+                    state.message = { message: err_data.detail, status: 'danger' }
+                } else {
+                    for (let i in err_data) {
+                        for (let m of err_data[i]) {
+                            const message = i == 'non_field_errors' ? m : (i + ': ' + m);
+                            state.message = { message: message, status: 'danger' }
+                        }
                     }
                 }
             }

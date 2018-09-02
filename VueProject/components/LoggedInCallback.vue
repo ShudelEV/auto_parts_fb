@@ -9,7 +9,8 @@ export default {
 
     mounted() {
         this.$store.dispatch('getTokenSocialAuth', { query: this.$route.query, provider: this.provider });
-        this.$router.push('/');
+        const redirectUrl = sessionStorage.getItem('social_redirect_url');
+        redirectUrl ? this.$router.push(redirectUrl) : this.$router.push('/')
     },
 };
 </script>

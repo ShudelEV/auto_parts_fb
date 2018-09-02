@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from .data import COUNTRIES, PART_CATEGORIES
+from .data import COUNTRIES, PART_CATEGORIES, ENGINE_TYPE, GEAR_TYPE, BODY_STYLE
 
 
 def brand_image_path(instance, filename):
@@ -60,31 +60,8 @@ class Car(models.Model):
     model = models.ForeignKey(CarModel, models.PROTECT, related_name='cars')
     manufacture_year = models.IntegerField(null=True, blank=True)
     engine_volume = models.IntegerField(null=True, blank=True)
-    ENGINE_TYPE = (
-        (1, 'benzine'),
-        (2, 'diesel'),
-        (3, 'gas-benzine'),
-        (4, 'electric'),
-        (5, 'hybrid')
-    )
     engine_type = models.IntegerField(choices=ENGINE_TYPE, null=True, blank=True)
-    GEAR_TYPE = (
-        (1, 'manual'),
-        (2, 'automatic'),
-        (3, 'semi-automatic'),
-        (4, 'CVT')
-    )
     gear = models.IntegerField(choices=GEAR_TYPE, null=True, blank=True)
-    BODY_STYLE = (
-        (1, 'Sedan'),
-        (2, 'Coupe'),
-        (3, 'Wagon'),
-        (4, 'Minivan'),
-        (5, 'SUV/Crossover'),
-        (6, 'Convertible'),
-        (7, 'Hatchback'),
-        (8, 'Van')
-    )
     body_style = models.IntegerField(choices=BODY_STYLE, null=True, blank=True)
 
     def __str__(self):

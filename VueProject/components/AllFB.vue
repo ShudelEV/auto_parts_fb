@@ -1,5 +1,5 @@
 <template>
-<div :class="{ disabled: $store.state.all.loading }">
+<div :class="{ 'disabled-content': $store.state.all.loading }">
     <!--Feedbacks section-->
 <div v-for="(value, key) in feedbacks($store.state.all.page)">
 
@@ -256,10 +256,5 @@ export default {
     .fill-yellow-star { color: #ffdd00; }
     .green-star-shadow { text-shadow: 0 0 0.3em #91E500; }
     .fill-green-star { color: #1fe500; }
-
-    .disabled {
-        opacity: .5;
-        pointer-events: none;
-    }
     /*span.uk-invisible-hover*/
 </style>

@@ -31,7 +31,7 @@ def bad_request(err_massage):
 
 def generate_random_username(**kwargs):
     if kwargs.get('username'):
-        username = kwargs.get('username') + str(random.randint(1, 999))
+        username = kwargs.get('username') + str(random.randint(1, 9999))
     else:
         first = random.sample(FIRST_NAMES, 1)[0]
         last = random.sample(LAST_NAMES - {first}, 1)[0]

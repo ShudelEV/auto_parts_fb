@@ -2,8 +2,6 @@
 from django.utils.translation import ugettext_lazy as _
 
 
-# Nicely titled and translatable names.
-
 COUNTRIES = {
     "AR": _("Argentina"),
     "AM": _("Armenia"),
@@ -102,6 +100,32 @@ COUNTRIES = {
     "VN": _("Viet Nam"),
 }
 
+ENGINE_TYPE = (
+    (1, 'benzine'),
+    (2, 'diesel'),
+    (3, 'gas-benzine'),
+    (4, 'electric'),
+    (5, 'hybrid')
+)
+
+GEAR_TYPE = (
+    (1, 'manual'),
+    (2, 'automatic'),
+    (3, 'semi-automatic'),
+    (4, 'CVT')
+)
+
+BODY_STYLE = (
+    (1, 'Sedan'),
+    (2, 'Coupe'),
+    (3, 'Wagon'),
+    (4, 'Minivan'),
+    (5, 'SUV/Crossover'),
+    (6, 'Convertible'),
+    (7, 'Hatchback'),
+    (8, 'Van')
+)
+
 PART_CATEGORIES = {
     "EN": _("Engine"),
     "EL": _("Electrical system"),
@@ -113,7 +137,7 @@ PART_CATEGORIES = {
 }
 
 # For generating an anonymous user
-FIRST_NAMES = {"Speedy", "Black", "White", "Major", "Kardan", "Carbon"}
+FIRST_NAMES = {"Anonymous"}
 
-LAST_NAMES = {"Mladshyi", "Starshyi", "Speedy", "Allroad", "AWD"}
+LAST_NAMES = {"User"}
 
