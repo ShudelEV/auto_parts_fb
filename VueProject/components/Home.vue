@@ -1,31 +1,33 @@
 <template>
     <vk-grid gutter="large">
         <div class="uk-width-1-4@m">
-            <vk-card padding="small">
-                <template v-if="$route.name==='Home'">
-                    <span class="uk-legend">Quick search by Brand</span>
-                    <div class="uk-margin">
-                        <div class="uk-inline">
-                            <vk-icon-link v-if="search_pattern"
-                                          class="uk-form-icon uk-form-icon-flip"
-                                          icon="close"
-                                          @click="search_pattern = ''"
-                            ></vk-icon-link>
-                            <input class="uk-input uk-form-small" type="text" v-model="search_pattern">
+            <vk-sticky :top="$route.name!='Home' ? '#navbar' : '#offset'" :offset="$route.name!='Home' ? 100 : 0" media="@m">
+                <vk-card padding="small" class="uk-margin-top">
+                    <template v-if="$route.name==='Home'">
+                        <span class="uk-legend">Quick search by Brand</span>
+                        <div class="uk-margin">
+                            <div class="uk-inline">
+                                <vk-icon-link v-if="search_pattern"
+                                              class="uk-form-icon uk-form-icon-flip"
+                                              icon="close"
+                                              @click="search_pattern = ''"
+                                ></vk-icon-link>
+                                <input class="uk-input uk-form-small" type="text" v-model="search_pattern">
+                            </div>
                         </div>
-                    </div>
-                    <vk-icon-button icon="search"
-                                    @click="$router.push({name: 'AllFBHome', query: {page: 1}})"
-                    ></vk-icon-button>
-                </template>
-                <search v-if="$route.name!=='Home'"></search>
-            </vk-card>
+                        <vk-icon-button icon="search"
+                                        @click="$router.push({name: 'AllFBHome', query: {page: 1}})"
+                        ></vk-icon-button>
+                    </template>
+                    <search v-if="$route.name!=='Home'"></search>
+                </vk-card>
+            </vk-sticky>
         </div>
         <div class="uk-width-expand@m" style="padding-bottom: 75px">
             <router-view></router-view>
             <div v-show="$route.name==='Home'"
                  uk-grid="masonry: true"
-                 class="uk-grid-small uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m"
+                 class="uk-grid-small uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m uk-margin-top"
                  uk-scrollspy="cls: uk-animation-slide-bottom; repeat: true"
             >
                 <div v-for="(value, key) in sortedPartBrands(search_pattern)" class="uk-margin-bottom">

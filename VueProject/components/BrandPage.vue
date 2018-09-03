@@ -1,33 +1,36 @@
 <template>
 <vk-grid gutter="large">
     <!--Menu-->
-    <!--<vk-sticky>-->
     <div class="uk-width-1-4@m">
-        <h2>{{brandName}}</h2>
-        <ul class="uk-iconnav">
-            <li><vk-icon-link icon="arrow-left" @click="goBack()" title="Go back"></vk-icon-link></li>
-            <li v-if="$route.name != 'BrandInfo'">
-                <vk-icon-link icon="info"
-                              @click="$router.push({ name:'BrandInfo' })"
-                              title="Info"
-                ></vk-icon-link>
-            </li>
-            <li v-if="$route.name != 'AllFB'">
-                <vk-icon-link icon="comments"
-                              @click="$router.push({name: 'AllFB', params: {brandName: brandName}, query: {page: 1}})"
-                              title="Feedbacks"
-                ></vk-icon-link>
-            </li>
-            <li v-if="$route.name != 'AddFB'">
-                <vk-icon-link icon="plus-circle"
-                              @click="$router.push({name: 'AddFB', params: {brandName: brandName}})"
-                              title="Add feedback"
-                ></vk-icon-link>
-            </li>
-        </ul>
-        <search v-if="$route.name==='AllFB'" class="uk-margin-top" :brandName="brandName"></search>
+        <vk-sticky top="#navbar" :offset="100" media="@m">
+            <vk-card padding="small">
+                <h2>{{brandName}}</h2>
+                <ul class="uk-iconnav">
+                    <li><vk-icon-link icon="arrow-left" @click="goBack()" title="Go back"></vk-icon-link></li>
+                    <li v-if="$route.name != 'BrandInfo'">
+                        <vk-icon-link icon="info"
+                                      @click="$router.push({ name:'BrandInfo' })"
+                                      title="Info"
+                        ></vk-icon-link>
+                    </li>
+                    <li v-if="$route.name != 'AllFB'">
+                        <vk-icon-link icon="comments"
+                                      @click="$router.push({name: 'AllFB', params: {brandName: brandName}, query: {page: 1}})"
+                                      title="Feedbacks"
+                        ></vk-icon-link>
+                    </li>
+                    <li v-if="$route.name != 'AddFB'">
+                        <vk-icon-link icon="plus-circle"
+                                      @click="$router.push({name: 'AddFB', params: {brandName: brandName}})"
+                                      title="Add feedback"
+                        ></vk-icon-link>
+                    </li>
+                </ul>
+                <search v-if="$route.name==='AllFB'" class="uk-margin-top" :brandName="brandName"></search>
+            </vk-card>
+        </vk-sticky>
     </div>
-    <!--</vk-sticky>-->
+
     <!--Feedbackes-->
     <div class="uk-width-3-4@m">
         <!--Add feedback or Show all feedbacks section-->

@@ -2,26 +2,23 @@
 <div>
     <!--Error notification-->
     <vk-notification :messages.sync="messages"></vk-notification>
-    <!--<vk-notification :messages.sync="all.message"></vk-notification>-->
     <div class="content">
         <!--Load Progress Bar-->
-    <!--<vk-sticky>-->
         <nprogress-container></nprogress-container>
-    <!--</vk-sticky>-->
         <!--Navbar-->
         <div class="uk-section uk-section-default uk-padding-remove-vertical">
             <!--Home page navbar-->
             <template v-if="$route.name == 'Home'">
-                <img src="/static/images/header.jpeg" alt="" id="offset">
+                <img id="offset" src="/static/images/header.jpeg" alt="" class="uk-align-center">
                 <div class="uk-container uk-position-top">
-                    <vk-sticky bottom="#offset">
+                    <vk-sticky bottom="#offset" animation="slide-top" @active="">
                         <nav-bar-login :logo="logo"></nav-bar-login>
                     </vk-sticky>
                 </div>
             </template>
             <!--Other page navbar-->
             <template v-else>
-                <div class="uk-card uk-card-default" uk-sticky>
+                <div id="navbar" class="uk-card uk-card-default" uk-sticky>
                     <div class="uk-container">
                         <nav-bar-login :logo="logo"></nav-bar-login>
                     </div>
@@ -31,16 +28,14 @@
         <!--Login Window-->
         <login-window :show="$store.state.account.showLoginWindow"></login-window>
         <!--Body-->
-        <div class="uk-section uk-section-default uk-section-xsmall">
-            <div class="uk-container">
-                <router-view></router-view>
-            </div>
+        <div class="uk-container">
+            <router-view></router-view>
         </div>
     </div>
     <!--Footer-->
     <footer>
          <vk-card padding="small" class="uk-background-muted">
-             Footer
+             <div class="uk-container">Footer</div>
          </vk-card>
     </footer>
 </div>
@@ -85,6 +80,13 @@ export default {
         },
         allMessage: function (val) {
             if (val) { this.messages.push(val) }
+        }
+    },
+
+    methods: {
+        showOnUp () {
+            console.log(window.innerWidth <= 800 && window.innerHeight <= 600)
+            return (window.innerWidth <= 800 && window.innerHeight <= 600)
         }
     }
 }

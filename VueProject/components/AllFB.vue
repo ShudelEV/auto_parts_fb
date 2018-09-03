@@ -1,14 +1,12 @@
 <template>
-<div :class="{ 'disabled-content': $store.state.all.loading }">
+<div :class="{ 'disabled-content': $store.state.all.loading }" class="uk-margin-top">
     <!--Feedbacks section-->
 <div v-for="(value, key) in feedbacks($store.state.all.page)">
-
     <h2 class="uk-heading-divider uk-visible-toggle">
         <template v-if="!brandName">
             <a class="uk-logo"
                @click="$router.push({name: 'AllFB', params: {brandName: key}, query: {page: 1}})"
             >{{ key }}</a>
-            <!--<ul class="uk-invisible-hover uk-iconnav">-->
             <span class="uk-invisible-hover uk-margin-left">
                 <vk-icon-link reset icon="info"
                               @click="$router.push({ name: 'BrandInfo', params: {brandName: key}})"
@@ -23,7 +21,6 @@
                               title="Add feedback"
                 ></vk-icon-link>
             </span>
-            <!--</ul>-->
         </template>
         <!--Collapse button-->
         <span class="uk-clearfix">
