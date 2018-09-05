@@ -146,7 +146,7 @@
                     @upload-image-success="uploadImageSuccess()"
                     @upload-image-failure="() => {
                         $store.commit('SET_MESSAGE', {message: 'Error image upload', status: 'danger'});
-                        gotoAllFB()
+                        gotoAllBrandFB()
                     }"
                 ></upload-image>
                 <span class="img-uploader-text" v-if="!imagesQty()">drop or click to add images here</span>
@@ -313,7 +313,7 @@ export default {
                     }
                     if (Object.keys(this.$refs.images_form.image).length) {
                         this.uploadImages(response.data.id)
-                    } else { this.gotoAllFB() }
+                    } else { this.gotoAllBrandFB() }
                     this.$store.state.all.newFBId = response.data.id
                 })
                 .catch(error => {
@@ -331,7 +331,7 @@ export default {
         uploadImageSuccess () {
             this.uploadedImagesQty += 1;
             if (this.imagesQty() === this.uploadedImagesQty) {
-                this.gotoAllFB()
+                this.gotoAllBrandFB()
             }
         },
         // images qty in the form?
@@ -341,8 +341,8 @@ export default {
         goBack() {
             window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
         },
-        gotoAllFB () {
-            this.$router.push({ name: 'AllFB', params: { brandName: this.brandName }, query: { page: 1 } })
+        gotoAllBrandFB () {
+            this.$router.push({ name: 'AllBrandFB', params: { brandName: this.brandName }, query: { page: 1 } })
         },
         parseEngineVolume () {
             let engineVolume = Math.abs(Number(this.new_car.engine_volume));

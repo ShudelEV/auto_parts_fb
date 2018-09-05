@@ -7,6 +7,7 @@ import LoggedInCallback from './components/LoggedInCallback.vue'
 import BrandPage from './components/BrandPage.vue'
 import AddFB from './components/AddFB.vue'
 import AllFB from './components/AllFB.vue'
+import FBList from './components/FBList.vue'
 import BrandInfo from './components/BrandInfo.vue'
 
 
@@ -35,11 +36,17 @@ const router = new Router({
             path: '/',
             name: 'Home',
             component: Home,
+        },
+        {
+            path: '/',
+            name: 'All',
+            component: AllFB,
+            props: true,
             children: [
                 {
                     path: 'feedbacks/',
-                    name: 'AllFBHome',
-                    component: AllFB,
+                    name: 'AllFB',
+                    component: FBList,
                     props: getProps
                 }
             ]
@@ -64,8 +71,8 @@ const router = new Router({
                 },
                 {
                     path: 'feedbacks/',
-                    name: 'AllFB',
-                    component: AllFB,
+                    name: 'AllBrandFB',
+                    component: FBList,
                     props: getProps
                 }
             ]

@@ -1,24 +1,29 @@
 <template>
-<div>
+<div class="">
     <!--Error notification-->
     <vk-notification :messages.sync="messages"></vk-notification>
-    <div class="content">
+    <div class="content uk-background-contain" style="background-image: url(/static/images/bg.jpg); background-repeat: repeat-y;">
         <!--Load Progress Bar-->
         <nprogress-container></nprogress-container>
         <!--Navbar-->
         <div class="uk-section uk-section-default uk-padding-remove-vertical">
             <!--Home page navbar-->
             <template v-if="$route.name == 'Home'">
-                <img id="offset" src="/static/images/header.jpeg" alt="" class="uk-align-center">
-                <div class="uk-container uk-position-top">
-                    <vk-sticky bottom="#offset" animation="slide-top" @active="">
+                <div class="uk-card uk-hidden@m">
+                    <div class="uk-container">
+                        <nav-bar-login :logo="logo"></nav-bar-login>
+                    </div>
+                </div>
+                <img id="header_image" src="/static/images/header.jpeg" alt="" class="uk-align-center uk-margin-remove-top uk-margin-remove-bottom">
+                <div class="uk-container uk-position-top uk-visible@m">
+                    <vk-sticky bottom="#header_image" animation="slide-top" @active="">
                         <nav-bar-login :logo="logo"></nav-bar-login>
                     </vk-sticky>
                 </div>
             </template>
             <!--Other page navbar-->
             <template v-else>
-                <div id="navbar" class="uk-card uk-card-default" uk-sticky>
+                <div id="navbar" class="uk-card uk-card-default uk-margin-bottom" uk-sticky>
                     <div class="uk-container">
                         <nav-bar-login :logo="logo"></nav-bar-login>
                     </div>
@@ -28,9 +33,11 @@
         <!--Login Window-->
         <login-window :show="$store.state.account.showLoginWindow"></login-window>
         <!--Body-->
-        <div class="uk-container">
-            <router-view></router-view>
-        </div>
+        <!--<div class="" >-->
+            <div class="uk-container">
+                <router-view></router-view>
+            </div>
+        <!--</div>-->
     </div>
     <!--Footer-->
     <footer>
@@ -42,9 +49,9 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import NavBarLogin from './components/NavBarLogin.vue'
 import LoginWindow from './components/Login.vue'
-import { mapState } from 'vuex'
 import NprogressContainer from 'vue-nprogress/src/NprogressContainer'
 
 export default {

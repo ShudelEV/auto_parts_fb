@@ -1,10 +1,10 @@
 <template>
 <form class="uk-form-stacked">
     <fieldset class="uk-fieldset">
-        <legend class="uk-legend">Search</legend>
+        <!--<legend class="uk-legend">Search</legend>-->
         <!--Search by Part category or Part type-->
         <div class="uk-margin">
-            <label class="uk-form-label" for="part">Part</label>
+            <!--<label class="uk-form-label" for="part">Part</label>-->
             <div class="uk-form-controls">
                 <select id="part" v-model="part" name="part" class="uk-select" autofocus>
                     <option :value="''">&emsp;All parts</option>
@@ -31,7 +31,7 @@
             <!--</select>-->
         <!--</div>-->
         <!--Stars-->
-        <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+        <div class="uk-margin-top uk-grid-small uk-child-width-auto uk-grid">
             <label for="bad"><input class="uk-radio" id="bad" value="bad" type="radio" v-model="stars"> bad</label>
             <label for="nbad"><input class="uk-radio" id="nbad" value="nbad" type="radio" v-model="stars"> not bad</label>
             <label for="good"><input class="uk-radio" id="good" value="good" type="radio" v-model="stars"> good</label>
@@ -79,7 +79,7 @@ export default {
 
     methods: {
         fetchData () {
-            const name = this.brandName ? 'AllFB' : 'AllFBHome';
+            const name = this.brandName ? 'AllBrandFB' : 'AllFB';
             const query = { page: 1 };
             if (this.part) {
                 if (this.partCategories[this.part]) {
