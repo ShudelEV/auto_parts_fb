@@ -2,7 +2,7 @@
 <div class="">
     <!--Error notification-->
     <vk-notification :messages.sync="messages"></vk-notification>
-    <div class="content uk-background-contain" style="background-image: url(/static/images/bg.jpg); background-repeat: repeat-y;">
+    <div style="min-height: calc(100vh - 62px);">
         <!--Load Progress Bar-->
         <nprogress-container></nprogress-container>
         <!--Navbar-->
@@ -23,8 +23,8 @@
             </template>
             <!--Other page navbar-->
             <template v-else>
-                <div id="navbar" class="uk-card uk-card-default uk-margin-bottom" uk-sticky>
-                    <div class="uk-container">
+                <div id="navbar" class="uk-card uk-card-default" uk-sticky>
+                    <div class="uk-container bg-img">
                         <nav-bar-login :logo="logo"></nav-bar-login>
                     </div>
                 </div>
@@ -34,17 +34,26 @@
         <login-window :show="$store.state.account.showLoginWindow"></login-window>
         <!--Body-->
         <!--<div class="" >-->
-            <div class="uk-container">
+            <div class="uk-container bg-img">
                 <router-view></router-view>
             </div>
         <!--</div>-->
     </div>
     <!--Footer-->
-    <footer>
-         <vk-card padding="small" class="uk-background-muted">
-             <div class="uk-container">Footer</div>
-         </vk-card>
-    </footer>
+    <div class="uk-container bg-img">
+        <div v-show="$route.name==='Home'">
+            <footer class="uk-overlay-default uk-text-middle">
+                © 2018
+            </footer>
+        </div>
+        <div v-show="$route.name!=='Home'" class="uk-inline">
+            <img src="/static/images/footer.png" alt="">
+            <div class="uk-position-bottom uk-overlay uk-padding-small">
+                <div> © 2018</div>
+            </div>
+        </div>
+    </div>
+
 </div>
 </template>
 
@@ -88,20 +97,14 @@ export default {
         allMessage: function (val) {
             if (val) { this.messages.push(val) }
         }
-    },
-
-    methods: {
-        showOnUp () {
-            console.log(window.innerWidth <= 800 && window.innerHeight <= 600)
-            return (window.innerWidth <= 800 && window.innerHeight <= 600)
-        }
     }
 }
 </script>
 
 <style>
-    .content {
-        min-height: calc(100vh - 62px);
+    .uk-container.bg-img {
+        background-size: contain;
+        background-image: url(/static/images/bg.jpg);
     }
     footer {
         min-height: 50px;

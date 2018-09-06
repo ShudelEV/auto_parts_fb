@@ -74,7 +74,7 @@
                     <div class="uk-comment-meta uk-margin-top">
                         <ul class="uk-iconnav uk-padding-remove-left">
                             <li class="uk-padding-remove-left">
-                                <span>Created by: <b>{{ fb.owner }}</b> {{ (new Date(fb.created)).toLocaleString("ru") }}</span>
+                                <span>Created by:&nbsp; <b>{{ fb.owner }}</b>&emsp; {{ (new Date(fb.created)).toLocaleString("ru") }}</span>
                             </li>
                             <!--<template v-if="fb.owner === $store.state.account.name">-->
                                 <!--<li class="uk-margin-left"><a @click="" uk-icon="icon: plus"></a></li>-->

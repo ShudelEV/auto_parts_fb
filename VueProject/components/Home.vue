@@ -4,19 +4,27 @@
             <vk-sticky top="#header_image" :offset="20" media="@m">
                 <vk-card padding="small" class="uk-background-muted">
                     <!--<span class="uk-legend">Quick search by Brand</span>-->
-                    <div class="uk-margin">
+                    <div class="uk-margin-small">
                         <div class="uk-inline">
                             <vk-icon-link v-if="search_pattern"
                                           class="uk-form-icon uk-form-icon-flip"
                                           icon="close"
                                           @click="search_pattern = ''"
                             ></vk-icon-link>
-                            <input class="uk-input uk-form-small" type="text" v-model="search_pattern">
+                            <span class="uk-form-icon" uk-icon="icon: search"></span>
+                            <input class="uk-input uk-form-small"
+                                   type="text" placeholder="Filter brands"
+                                   v-model="search_pattern"
+                            >
                         </div>
                     </div>
-                    <vk-icon-button icon="search"
-                                    @click="$router.push({name: 'AllFB', query: {page: 1}})"
-                    ></vk-icon-button>
+                    <vk-nav>
+                        <vk-nav-item icon="list"
+                                     @click="$router.push({name: 'AllFB', query: {page: 1}})"
+                                     title="All feedbacks"
+                        >
+                        </vk-nav-item>
+                    </vk-nav>
                 </vk-card>
             </vk-sticky>
         </div>
@@ -29,9 +37,13 @@
                     <vk-card :key="key" hover padding="small">
                         <vk-card-title class="uk-margin-small-left">{{ key }}</vk-card-title>
                         <ul class="uk-list uk-list-bullet">
-                            <li v-for="i in getArray(key)">
+                            <li v-for="i in getArray(key)"
+                                @mouseover="addFBButton=value[i].name"
+                            >
                                 <div class="uk-inline">
-                                    <a class="uk-link-text" @click="gotoBrandFeedbacks(value[i])">
+                                    <a class="uk-link-text"
+                                       @click="gotoBrandFeedbacks(value[i])"
+                                    >
                                         {{ value[i].name }}
                                     </a>
                                     <!--a part manufacturer information when to hover the link-->
@@ -62,7 +74,13 @@
                                             </div>
                                         </vk-card>
                                     </vk-drop>
-                                    <span class="uk-badge uk-margin-small-left">
+                                    <vk-icon-link v-show="addFBButton===value[i].name"
+                                                  class="uk-margin-small-left"
+                                                  reset icon="plus-circle"
+                                                  @click="$router.push({name: 'AddFB', params: {brandName: addFBButton}})"
+                                                  title="Add feedback"
+                                    ></vk-icon-link>
+                                    <span v-show="addFBButton!==value[i].name" class="uk-badge uk-margin-small-left">
                                         {{ value[i].fb_quantity }}
                                     </span>
                                 </div>
@@ -92,6 +110,7 @@ export default {
         return {
             // a card key when to show all part brands
             showAll: null,
+            addFBButton: '',
             // how many part brands to show in a card?
             itemsShow: 5,
             // search box
@@ -122,6 +141,10 @@ export default {
             } else {
                 this.$router.push({ name: 'AddFB', params: { brandName: brand.name }})
             }
+        },
+        removeAddFBButton () {
+             console.log('delete')
+            setTimeout(() => { this.addFBButton = '' }, 250)
         },
         gotoBrandInfo (brandName) {
             this.$router.push({ name: 'BrandInfo', params: { brandName }})

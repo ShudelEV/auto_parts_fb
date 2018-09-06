@@ -4,7 +4,7 @@
     <div class="uk-width-1-4@m">
         <vk-sticky top="#navbar" :offset="100" media="@m">
             <div>
-                <vk-card padding="small">
+                <vk-card :class="{'uk-margin-top': showOnUp()}" padding="small">
                     <h2>{{brandName}}</h2>
                     <ul class="uk-iconnav">
                         <li><vk-icon-link icon="arrow-left" @click="goBack()" title="Go back"></vk-icon-link></li>
@@ -15,7 +15,7 @@
                             ></vk-icon-link>
                         </li>
                         <li v-if="$route.name != 'AllBrandFB'">
-                            <vk-icon-link icon="comments"
+                            <vk-icon-link icon="list"
                                           @click="$router.push({name: 'AllBrandFB', params: {brandName: brandName}, query: {page: 1}})"
                                           title="Feedbacks"
                             ></vk-icon-link>
@@ -72,6 +72,10 @@ export default {
 
     methods: {
         fetchData () {
+        },
+        showOnUp () {
+//            console.log(window.innerWidth <= 800 && window.innerHeight <= 600)
+            return (window.innerWidth <= 960)
         },
         goBack () {
             window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')

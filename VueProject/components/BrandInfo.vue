@@ -1,5 +1,5 @@
 <template>
-    <article class="uk-comment">
+    <article class="uk-comment uk-margin-top">
         <header class="uk-comment-header uk-grid-medium uk-flex-middle" uk-grid>
             <div class="uk-width-auto">
                 <img class="uk-comment-avatar uk-border-rounded"

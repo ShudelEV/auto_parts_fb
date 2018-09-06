@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="uk-margin-top">
     <div class="uk-width-1-1">
         <h2>Add Your Feedback</h2>
     </div>
