@@ -7,7 +7,7 @@
             <!--<label class="uk-form-label" for="part">Part</label>-->
             <div class="uk-form-controls">
                 <select id="part" v-model="part" name="part" class="uk-select" autofocus>
-                    <option :value="''">&emsp;All parts</option>
+                    <option :value="''">&emsp;{{ $t('All parts') }}</option>
                     <template v-for="(value, key) in partCategories">
                         <option style="color: darkgray"
                                 :value="key"
@@ -32,9 +32,9 @@
         <!--</div>-->
         <!--Stars-->
         <div class="uk-margin-top uk-grid-small uk-child-width-auto uk-grid">
-            <label for="bad"><input class="uk-radio" id="bad" value="bad" type="radio" v-model="stars"> bad</label>
-            <label for="nbad"><input class="uk-radio" id="nbad" value="nbad" type="radio" v-model="stars"> not bad</label>
-            <label for="good"><input class="uk-radio" id="good" value="good" type="radio" v-model="stars"> good</label>
+            <label for="bad"><input class="uk-radio" id="bad" value="bad" type="radio" v-model="stars"> {{ $t('bad') }}</label>
+            <label for="nbad"><input class="uk-radio" id="nbad" value="nbad" type="radio" v-model="stars"> {{ $t('not bad') }}</label>
+            <label for="good"><input class="uk-radio" id="good" value="good" type="radio" v-model="stars"> {{ $t('good') }}</label>
         </div>
     </fieldset>
 </form>

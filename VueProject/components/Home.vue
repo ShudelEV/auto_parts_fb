@@ -13,7 +13,7 @@
                             ></vk-icon-link>
                             <span class="uk-form-icon" uk-icon="icon: search"></span>
                             <input class="uk-input uk-form-small"
-                                   type="text" placeholder="Filter brands"
+                                   type="text" :placeholder="$t('Filter brands')"
                                    v-model="search_pattern"
                             >
                         </div>
@@ -21,7 +21,7 @@
                     <vk-nav>
                         <vk-nav-item icon="list"
                                      @click="$router.push({name: 'AllFB', query: {page: 1}})"
-                                     title="All feedbacks"
+                                     :title="$t('All feedbacks')"
                         >
                         </vk-nav-item>
                     </vk-nav>
@@ -59,9 +59,9 @@
                                             <div class="uk-padding-remove-bottom">
                                                 <dl class="uk-description-list uk-margin-remove-bottom">
                                                     <dt></dt>
-                                                    <dt>Country:</dt>
+                                                    <dt>{{ $t('Country') }}:</dt>
                                                     <dd>{{getCountry(value[i].country)}}</dd>
-                                                    <dt>Specialization:</dt>
+                                                    <dt>{{ $t('Specialization') }}:</dt>
                                                     <dd>{{value[i].specialization}}</dd>
                                                     <!--<dt>Link:</dt>-->
                                                     <!--<dd><a :href="value[i].site_url" target="_blank">{{value[i].site_url}}</a></dd>-->
@@ -70,7 +70,7 @@
                                             <div slot="footer">
                                                 <vk-button type="text"
                                                            @click="gotoBrandInfo(value[i].name)"
-                                                >Read more</vk-button>
+                                                >{{ $t('Read more') }}</vk-button>
                                             </div>
                                         </vk-card>
                                     </vk-drop>
@@ -78,7 +78,7 @@
                                                   class="uk-margin-small-left"
                                                   reset icon="plus-circle"
                                                   @click="$router.push({name: 'AddFB', params: {brandName: addFBButton}})"
-                                                  title="Add feedback"
+                                                  :title="$t('Add feedback')"
                                     ></vk-icon-link>
                                     <span v-show="addFBButton!==value[i].name" class="uk-badge uk-margin-small-left">
                                         {{ value[i].fb_quantity }}

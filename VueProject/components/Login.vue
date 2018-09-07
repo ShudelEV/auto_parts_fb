@@ -1,7 +1,7 @@
 <template>
 <vk-modal :show="show" center size="medium">
     <vk-tabs :activeTab.sync="activeTab" align="justify" active="1">
-        <vk-tabs-item title="Sig In" v-vk-margin>
+        <vk-tabs-item :title="$t('sign in')" v-vk-margin>
             <vk-grid gutter="small" class="uk-child-width-1-1 uk-flex-center uk-text-center">
                 <div class="uk-margin-small-top">
                     <a title="VKontakte" @click="regWithSocial('vk-oauth2')">
@@ -21,20 +21,20 @@
                           class="uk-border-rounded">
                     </a>
                 </div>
-                <div>OR</div>
+                <div>{{ $t('or') }}</div>
                 <div>
                     <form ref="form">
                         <div class="uk-inline uk-margin-small-bottom">
                             <span class="uk-form-icon" uk-icon="icon: user"></span>
                             <input class="uk-input uk-form-small" name="login"
-                                   type="text" placeholder="Login"
+                                   type="text" :placeholder="$t('username')"
                                    v-model="username"
                             >
                         </div>
                         <div class="uk-inline uk-margin-small-bottom">
                             <span class="uk-form-icon" uk-icon="icon: lock"></span>
                             <input class="uk-input uk-form-small" name="password"
-                                   type="password" placeholder="Password"
+                                   type="password" :placeholder="$t('password')"
                                    v-model="password"
                             >
                         </div>
@@ -42,45 +42,45 @@
                 </div>
             </vk-grid>
         </vk-tabs-item>
-        <vk-tabs-item title="Sign Up" v-vk-margin>
+        <vk-tabs-item :title="$t('sign up')" v-vk-margin>
             <vk-grid gutter="small" class="uk-child-width-1-1 uk-flex-center uk-text-center">
                 <div class="uk-margin-top">
                     <form ref="form">
                         <div class="uk-inline uk-margin-small-bottom">
                             <span class="uk-form-icon" uk-icon="icon: user"></span>
                             <input class="uk-input uk-form-small" name="login"
-                                   type="text" placeholder="Login"
+                                   type="text" :placeholder="$t('username')"
                                    v-model="username"
                             >
                         </div>
                         <div class="uk-inline uk-margin-small-bottom">
                             <span class="uk-form-icon" uk-icon="icon: lock"></span>
                             <input class="uk-input uk-form-small" name="password"
-                                   type="password" placeholder="Password"
+                                   type="password" :placeholder="$t('password')"
                                    v-model="password"
                             >
                         </div>
                         <div class="uk-inline uk-margin-small-bottom">
                             <span class="uk-form-icon" uk-icon="icon: lock"></span>
                             <input class="uk-input uk-form-small" name="password2"
-                                   type="password" placeholder="Confirm password"
+                                   type="password" :placeholder="$t('confirm password')"
                                    v-model="password2"
                             >
                         </div>
                     </form>
                 </div>
-                <div class="uk-margin-top uk-text-meta uk-text-left">*Password must be at list 8 characters</div>
+                <div class="uk-margin-top uk-text-meta uk-text-left">*{{ $t('pass8') }}</div>
             </vk-grid>
         </vk-tabs-item>
     </vk-tabs>
     <div slot="footer" class="uk-clearfix">
         <vk-button size="small" class="uk-float-left"
                    @click="account.showLoginWindow = false"
-        >Cancel</vk-button>
+        >{{ $t('cancel') }}</vk-button>
         <vk-button type="primary" size="small"
                    class="uk-float-right" :disabled="isValid"
                    @click="login"
-        >{{!activeTab ? 'Login' : 'Reg' }}</vk-button>
+        >{{!activeTab ? $t('login') : $t('registr') }}</vk-button>
     </div>
 </vk-modal>
 </template>

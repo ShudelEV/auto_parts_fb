@@ -10,21 +10,21 @@
             <span class="uk-invisible-hover uk-margin-left">
                 <vk-icon-link reset icon="info"
                               @click="$router.push({ name: 'BrandInfo', params: {brandName: key}})"
-                              title="Info"
+                              :title="$t('Info')"
                 ></vk-icon-link>
                 <vk-icon-link reset icon="comments"
                               @click="$router.push({name: 'AllBrandFB', params: {brandName: key}, query: {page: 1}})"
-                              title="Feedbacks"
+                              :title="$t('Feedbacks')"
                 ></vk-icon-link>
                 <vk-icon-link reset icon="plus-circle"
                               @click="$router.push({ name: 'AddFB', params: {brandName: key}})"
-                              title="Add feedback"
+                              :title="$t('Add feedback')"
                 ></vk-icon-link>
             </span>
         </template>
         <!--Collapse button-->
         <span class="uk-clearfix">
-            <vk-icon-link title="Collapse" class="uk-float-right"
+            <vk-icon-link :title="collapse.includes(key) ? $t('Scroll') : $t('Collapse')" class="uk-float-right"
                           :icon="collapse.includes(key) ? 'chevron-up' : 'chevron-down'"
                           @click="toggleAccordion(key)"
             ></vk-icon-link>
@@ -59,7 +59,7 @@
                     <div class="uk-comment-body"><p>{{ fb.description }}</p></div>
                     <!--Images-->
                     <template v-if="fb.images.length">
-                        <div uk-grid uk-lightbox="animation: scale" class="uk-margin-top" tt>
+                        <div uk-grid uk-lightbox="animation: scale" class="uk-margin-top">
                             <ul class="uk-thumbnav" uk-margin>
                                 <li v-for="img in fb.images" class="uk-active" uk-margin>
                                     <a class="uk-inline" :href="img.image"
@@ -74,7 +74,7 @@
                     <div class="uk-comment-meta uk-margin-top">
                         <ul class="uk-iconnav uk-padding-remove-left">
                             <li class="uk-padding-remove-left">
-                                <span>Created by:&nbsp; <b>{{ fb.owner }}</b>&emsp; {{ (new Date(fb.created)).toLocaleString("ru") }}</span>
+                                <span>{{ 'Created by' | translate }}&nbsp; <b>{{ fb.owner }}</b>&emsp; {{ (new Date(fb.created)).toLocaleString("ru") }}</span>
                             </li>
                             <!--<template v-if="fb.owner === $store.state.account.name">-->
                                 <!--<li class="uk-margin-left"><a @click="" uk-icon="icon: plus"></a></li>-->
@@ -93,9 +93,9 @@
                :page.sync="pageNumber" :perPage="1"
                :total="$store.state.all.pageQty" :range="20"
 >
-    <vk-pagination-page-prev label="Previous"></vk-pagination-page-prev>
+    <vk-pagination-page-prev :label="$t('Previous')"></vk-pagination-page-prev>
     <vk-pagination-pages></vk-pagination-pages>
-    <vk-pagination-page-next label="Next"></vk-pagination-page-next>
+    <vk-pagination-page-next :label="$t('Next')"></vk-pagination-page-next>
 </vk-pagination>
 </div>
 </template>

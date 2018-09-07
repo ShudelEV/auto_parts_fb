@@ -2,13 +2,13 @@
 <div class="">
     <!--Error notification-->
     <vk-notification :messages.sync="messages"></vk-notification>
-    <div style="min-height: calc(100vh - 62px);">
+    <div :class="{'content-min-height': $route.name=='Home'}">
         <!--Load Progress Bar-->
         <nprogress-container></nprogress-container>
         <!--Navbar-->
         <div class="uk-section uk-section-default uk-padding-remove-vertical">
             <!--Home page navbar-->
-            <template v-if="$route.name == 'Home'">
+            <template v-if="$route.name=='Home'">
                 <div class="uk-card uk-hidden@m">
                     <div class="uk-container">
                         <nav-bar-login :logo="logo"></nav-bar-login>
@@ -102,6 +102,7 @@ export default {
 </script>
 
 <style>
+    .content-min-height {min-height: calc(100vh - 62px);}
     .uk-container.bg-img {
         background-size: contain;
         background-image: url(/static/images/bg.jpg);
