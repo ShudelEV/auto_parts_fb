@@ -7,23 +7,23 @@
                 <vk-card :class="{'uk-margin-top': showOnUp()}" padding="small">
                     <h2>{{brandName}}</h2>
                     <ul class="uk-iconnav">
-                        <li><vk-icon-link icon="arrow-left" @click="goBack()" title="Go back"></vk-icon-link></li>
+                        <li><vk-icon-link icon="arrow-left" @click="goBack()" :title="$t('Go back')"></vk-icon-link></li>
                         <li v-if="$route.name != 'BrandInfo'">
                             <vk-icon-link icon="info"
                                           @click="$router.push({ name:'BrandInfo' })"
-                                          title="Info"
+                                          :title="$t('Info')"
                             ></vk-icon-link>
                         </li>
                         <li v-if="$route.name != 'AllBrandFB'">
                             <vk-icon-link icon="list"
                                           @click="$router.push({name: 'AllBrandFB', params: {brandName: brandName}, query: {page: 1}})"
-                                          title="Feedbacks"
+                                          :title="$t('Feedbacks')"
                             ></vk-icon-link>
                         </li>
                         <li v-if="$route.name != 'AddFB'">
                             <vk-icon-link icon="plus-circle"
                                           @click="$router.push({name: 'AddFB', params: {brandName: brandName}})"
-                                          title="Add feedback"
+                                          :title="$t('Add feedback')"
                             ></vk-icon-link>
                         </li>
                     </ul>

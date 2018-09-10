@@ -15,7 +15,7 @@
                 <ul class="uk-iconnav">
                     <li><vk-icon icon="user" :title="account.name"></vk-icon></li>
                     <li><vk-icon-link icon="file-edit" :title="$t('Edit account')"></vk-icon-link></li>
-                    <li><vk-icon-link @click="logout()" icon="sign-out" :title="$t('Sing out')"></vk-icon-link></li>
+                    <li><vk-icon-link @click="logout()" icon="sign-out" :title="$t('Sign out')"></vk-icon-link></li>
                 </ul>
             </vk-navbar-item>
         </vk-navbar-nav>

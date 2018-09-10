@@ -138,6 +138,5 @@ PART_CATEGORIES = {
 
 # For generating an anonymous user
 FIRST_NAMES = {"Anonymous"}
-
 LAST_NAMES = {"User"}
 

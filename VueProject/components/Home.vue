@@ -88,7 +88,7 @@
                         </ul>
                         <vk-icon-link reset icon="more" class="uk-margin-small-left"
                             v-show="getArray(key).length < value.length && showAll != key"
-                            @click="showAll = key"
+                            @click="showAll = key" :title="$t('Collapse')"
                         ></vk-icon-link>
                     </vk-card>
                 </div>

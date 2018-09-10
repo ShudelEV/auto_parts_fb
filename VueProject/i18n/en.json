@@ -1,3 +1,4 @@
 {
-  "pass8": "Password must be at list 8 characters"
+  "pass8": "Password must be at list 8 characters",
+  "suggestLogin": "Do you want to login before creating feedback?"
 }

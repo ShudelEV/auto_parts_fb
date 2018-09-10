@@ -1,19 +1,18 @@
 <template>
 <div class="uk-margin-top">
     <div class="uk-width-1-1">
-        <h2>Add Your Feedback</h2>
+        <h2>{{ 'Add Your Feedback' | translate }}</h2>
     </div>
     <div v-if="account.showSuggestLogin" class="uk-alert-success" uk-alert>
-        <p>Хотите войти, чтобы в дальнейшем у Вас была возможность редактировать
-            Ваши отзывы и видеть добавленные Вами авто?</p>
-        <vk-button size="small" class="uk-margin-right" @click="setAnswer(false)">No</vk-button>
-        <vk-button size="small" type="primary" @click="setAnswer(true)">Yes</vk-button>
+        <p>$t('suggestLogin')</p>
+        <vk-button size="small" class="uk-margin-right" @click="setAnswer(false)">{{ 'no' | translate }}</vk-button>
+        <vk-button size="small" type="primary" @click="setAnswer(true)">{{ 'yes' | translate }}</vk-button>
     </div>
     <form v-else class="uk-grid-small" uk-grid ref="form2">
         <!--Add part-->
         <template v-if="part == -1">
             <div class="uk-width-1-4@s">
-                <label class="uk-form-label" for="part_category">*Part Category</label>
+                <label class="uk-form-label" for="part_category">*{{ 'Category' | translate }}</label>
                 <select id="part_category" v-model="new_part_type.category" name="part_category" class="uk-select" autofocus>
                     <option v-for="(value, key) in categories"
                             :value="key"
@@ -21,15 +20,15 @@
                 </select>
             </div>
             <div class="uk-width-1-4@s">
-                <label class="uk-form-label" for="part_name">*Part Name</label>
+                <label class="uk-form-label" for="part_name">*{{ 'Part Name' | translate }}</label>
                 <input id="part_name" class="uk-input" v-model="new_part_type.name" name="part_name" type="text">
             </div>
         </template>
         <!--Select part-->
         <div v-else class="uk-width-1-2@s">
-            <label class="uk-form-label" for="part">*Part</label>
+            <label class="uk-form-label" for="part">*{{ 'Part' | translate }}</label>
             <select v-model="part" id="part" name="part" class="uk-select" autofocus>
-                <option :value="-1">&emsp;Add..</option>
+                <option :value="-1">&emsp;{{ 'Add' | translate }}..</option>
                 <template v-for="(value, key) in partTypes">
                     <option disabled style="color: darkgray">{{ key }}</option>
                     <option v-for="partType in value"
@@ -43,7 +42,7 @@
         <template v-if="car == -1">
             <div class="uk-width-1-2@s"></div>
             <div class="uk-width-1-6@s">
-                <label class="uk-form-label" for="car_brand">*Car Brand</label>
+                <label class="uk-form-label" for="car_brand">*{{ 'Car Brand' | translate }}</label>
                 <!--Reset the car model name if the car model is changed-->
                 <select @input="new_car.model_name = ''; new_car.model = null"
                         id="car_brand" v-model="new_car.brand"
@@ -54,7 +53,7 @@
                 </select>
             </div>
             <div class="uk-width-1-6@s">
-                <label class="uk-form-label" for="car_model">*Car Model</label>
+                <label class="uk-form-label" for="car_model">*{{ 'Car Model' | translate }}</label>
                 <input v-if="new_car.model == -1" autofocus
                        :disabled="!new_car.brand"
                        id="car_model" class="uk-input" type="text"
@@ -66,14 +65,14 @@
                         v-model="new_car.model"
                         name="car_model" class="uk-select"
                 >
-                    <option value="-1">Add..</option>
+                    <option value="-1">{{ 'Add' | translate }}..</option>
                     <option v-for="model in getCarModels(new_car.brand)"
                             :value="model.id"
                     >{{ model.name }}</option>
                 </select>
             </div>
             <div class="uk-width-1-6@s">
-                <label class="uk-form-label" for="car_year">Car Year</label>
+                <label class="uk-form-label" for="car_year">{{ 'Car Year' | translate }}</label>
                 <select :disabled="!new_car.brand" id="car_year"
                         v-model="new_car.year" name="car_year" class="uk-select"
                 >
@@ -83,7 +82,7 @@
             </div>
             <!--<div class="uk-width-1-2@s"></div>-->
             <div class="uk-width-1-6@s">
-                <label class="uk-form-label" for="engine_volume">Engine Volume</label>
+                <label class="uk-form-label" for="engine_volume">{{ 'Engine Capacity' | translate }}</label>
                 <input id="engine_volume" class="uk-input"
                        :disabled="!new_car.brand"
                        v-model="new_car.engine_volume" maxlength="4"
@@ -91,30 +90,30 @@
                 >
             </div>
             <div class="uk-width-1-6@s">
-                <label class="uk-form-label" for="engine_type">Engine Type</label>
+                <label class="uk-form-label" for="engine_type">{{ 'Engine Type' | translate }}</label>
                 <select :disabled="!new_car.brand" id="engine_type"
                         v-model="new_car.engine_type" name="engine_type" class="uk-select"
                 >
                     <option></option>
-                    <option v-for="(value, key) in engineTypes" :value="key">{{ value }}</option>
+                    <option v-for="(value, key) in engineTypes" :value="key">{{ value | translate }}</option>
                 </select>
             </div>
             <div class="uk-width-1-6@s">
-                <label class="uk-form-label" for="gear">Gear Type</label>
+                <label class="uk-form-label" for="gear">{{ 'Gear Type' | translate }}</label>
                 <select :disabled="!new_car.brand" id="gear"
                         v-model="new_car.gear" name="gear" class="uk-select"
                 >
                     <option></option>
-                    <option v-for="(value, key) in gearTypes" :value="key">{{ value }}</option>
+                    <option v-for="(value, key) in gearTypes" :value="key">{{ value | translate }}</option>
                 </select>
             </div>
         </template>
         <!--Select car-->
         <div v-else class="uk-width-1-2@s">
-            <label class="uk-form-label" for="car">Car</label>
+            <label class="uk-form-label" for="car">{{ 'Car' | translate }}</label>
             <select v-model="car" id="car" name="car" class="uk-select" :height="5">
                 <option></option>
-                <option :value="-1">Add..</option>
+                <option :value="-1">{{ 'Add' | translate }}..</option>
                 <template v-if="account.isAuthenticated && account.cars">
                     <option v-for="car in cars"
                             :key="car.id"
@@ -126,7 +125,7 @@
         <!--Description-->
         <div class="uk-width-1-1@s">
             <textarea v-model="description" name="fb"
-                      class="uk-textarea" rows="5" placeholder="*Feedback"
+                      class="uk-textarea" rows="5" :placeholder="'*'+$t('Feedback')"
             ></textarea>
         </div>
         <!--Stars-->
@@ -149,27 +148,27 @@
                         gotoAllBrandFB()
                     }"
                 ></upload-image>
-                <span class="img-uploader-text" v-if="!imagesQty()">drop or click to add images here</span>
+                <span class="img-uploader-text" v-if="!imagesQty()">{{ 'drop or click to add images here' | translate }}</span>
             </div>
         </div>
     </form>
     <template v-if="!account.showSuggestLogin">
         <hr>
         <article class="uk-comment">
-            <div class="uk-comment-meta uk-margin-top"> * - Required fields</div>
+            <div class="uk-comment-meta uk-margin-top"> * - {{ 'Required fields' | translate }}</div>
         </article>
         <hr>
         <!--Buttons-->
         <p>
             <vk-button class="uk-margin-right"
                        @click="resetForm()"
-                       title="Clear form"
-            >Clear</vk-button>
+                       :title="$t('Clear form')"
+            >{{ 'Clear' | translate }}</vk-button>
             <vk-button type="primary"
                        @click="preSend()"
                        :disabled="!sendPermit"
-                       :title="sendPermit ? 'Send feedback' : '*Fill required fields.'"
-            >Send</vk-button>
+                       :title="sendPermit ? $t('Send feedback') : $t('*Fill required fields.')"
+            >{{ 'Send' | translate }}</vk-button>
         </p>
     </template>
 </div>

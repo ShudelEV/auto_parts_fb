@@ -41,8 +41,8 @@
                 <div v-if="fb.part.car" class="uk-display-inline-block">
                     <vk-icon-image src="/static/images/car.svg" uk-svg class="uk-margin-small-left"></vk-icon-image>
                     {{ fb.part.car.model }}
-                    {{ fb.part.car.manufacture_year ? ' ' + fb.part.car.manufacture_year + ' m.y.' : '' }}
-                    {{ fb.part.car.engine_volume ? ' ' + fb.part.car.engine_volume + ' cm3' : '' }}
+                    {{ fb.part.car.manufacture_year ? ' ' + fb.part.car.manufacture_year + ' ' + $t('m.y.') : '' }}
+                    {{ fb.part.car.engine_volume ? ' ' + fb.part.car.engine_volume + ' ' + $t('cm3') : '' }}
                 </div>
                 <!--Stars-->
                 <div class="uk-margin-medium-left uk-display-inline-block">
