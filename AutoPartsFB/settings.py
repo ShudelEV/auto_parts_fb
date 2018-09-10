@@ -1,5 +1,6 @@
 import os
 from datetime import timedelta
+from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -26,8 +27,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'silk.middleware.SilkyMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -104,6 +107,13 @@ REST_FRAMEWORK = {
 }
 
 # I18N, L10N
+LANGUAGES = [
+    ('ru', _('Russian')),
+    ('en', _('English')),
+]
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'PartsFB/locale/'),
+]
 LANGUAGE_CODE = 'en-us'
 USE_TZ = True
 TIME_ZONE = 'Europe/Minsk'

@@ -8,7 +8,7 @@ ALLOWED_HOSTS.append('localhost')
 
 # Debug Tools for api's projects
 INSTALLED_APPS.append('silk')
-MIDDLEWARE.append('silk.middleware.SilkyMiddleware')
+# MIDDLEWARE.append('silk.middleware.SilkyMiddleware')
 # SILKY_PYTHON_PROFILER = True
 
 # App for hot-reload feature
