@@ -3,8 +3,10 @@
     <!--Menu-->
     <div class="uk-width-1-4@m">
         <vk-sticky top="#navbar" :offset="100" media="@m">
-            <vk-card padding="small" class="uk-background-muted">
-                <search class="uk-margin-top"></search>
+            <vk-card padding="small" class="uk-background-muted"
+                     :class="{'uk-margin-top': showOnUp(), 'disabled-content': $store.state.all.loading}"
+            >
+                <search></search>
             </vk-card>
         </vk-sticky>
     </div>
@@ -20,16 +22,24 @@
 <script>
 import Search from './Search.vue'
 import FBList from './FBList.vue'
+
 export default {
     name: 'AllFB',
 
     components: { Search, FBList },
 
-//    props:
-
     data () {
         return {
+        }
+    },
 
+    mounted () {
+        this.$store.commit('SET_ELEMENTS_HEIGHT')
+    },
+
+    methods: {
+        showOnUp () {
+            return (window.innerWidth <= 960)
         }
     }
 }

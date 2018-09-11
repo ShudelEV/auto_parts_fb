@@ -1,0 +1,879 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-09-11 08:59+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: .\AutoPartsFB\settings.py:111
+msgid "Russian"
+msgstr "Русский"
+
+#: .\AutoPartsFB\settings.py:112
+msgid "English"
+msgstr "Английский"
+
+#: .\PartsFB\data.py:6
+msgid "Argentina"
+msgstr "Аргентина"
+
+#: .\PartsFB\data.py:7
+msgid "Armenia"
+msgstr "Армения"
+
+#: .\PartsFB\data.py:8
+msgid "Australia"
+msgstr "Австралия"
+
+#: .\PartsFB\data.py:9
+msgid "Austria"
+msgstr "Австрия"
+
+#: .\PartsFB\data.py:10
+msgid "Azerbaijan"
+msgstr "Азербайджан"
+
+#: .\PartsFB\data.py:11
+msgid "Bangladesh"
+msgstr "Бангладеш"
+
+#: .\PartsFB\data.py:12
+msgid "Belarus"
+msgstr "Беларусь"
+
+#: .\PartsFB\data.py:13
+msgid "Belgium"
+msgstr "Бельгия"
+
+#: .\PartsFB\data.py:14
+msgid "Belize"
+msgstr ""
+
+#: .\PartsFB\data.py:15
+msgid "Brazil"
+msgstr "Бразилия"
+
+#: .\PartsFB\data.py:16
+msgid "Bulgaria"
+msgstr "Болгария"
+
+#: .\PartsFB\data.py:17
+msgid "Canada"
+msgstr "Канада"
+
+#: .\PartsFB\data.py:18
+msgid "Central African Republic"
+msgstr ""
+
+#: .\PartsFB\data.py:19
+msgid "Chile"
+msgstr "Чили"
+
+#: .\PartsFB\data.py:20
+msgid "China"
+msgstr "Китай"
+
+#: .\PartsFB\data.py:21
+msgid "Colombia"
+msgstr "Колумбия"
+
+#: .\PartsFB\data.py:22
+msgid "Cuba"
+msgstr "Куба"
+
+#: .\PartsFB\data.py:23
+msgid "Cyprus"
+msgstr "Кипр"
+
+#: .\PartsFB\data.py:24
+msgid "Czechia"
+msgstr "Чехия"
+
+#: .\PartsFB\data.py:25
+msgid "Denmark"
+msgstr "Дания"
+
+#: .\PartsFB\data.py:26
+msgid "Egypt"
+msgstr "Египет"
+
+#: .\PartsFB\data.py:27
+msgid "Estonia"
+msgstr "Эстония"
+
+#: .\PartsFB\data.py:28
+msgid "Finland"
+msgstr "Финляндия"
+
+#: .\PartsFB\data.py:29
+msgid "France"
+msgstr "Франция"
+
+#: .\PartsFB\data.py:30
+msgid "Georgia"
+msgstr "Грузия"
+
+#: .\PartsFB\data.py:31
+msgid "Germany"
+msgstr "Германия"
+
+#: .\PartsFB\data.py:32
+msgid "Greece"
+msgstr "Греция"
+
+#: .\PartsFB\data.py:33
+msgid "Hong Kong"
+msgstr "Гонк Конг"
+
+#: .\PartsFB\data.py:34
+msgid "Hungary"
+msgstr "Венгрия"
+
+#: .\PartsFB\data.py:35
+msgid "India"
+msgstr "Индия"
+
+#: .\PartsFB\data.py:36
+msgid "Indonesia"
+msgstr "Индонезия"
+
+#: .\PartsFB\data.py:37
+msgid "Israel"
+msgstr "Израиль"
+
+#: .\PartsFB\data.py:38
+msgid "Italy"
+msgstr "Италия"
+
+#: .\PartsFB\data.py:39
+msgid "Japan"
+msgstr "Япония"
+
+#: .\PartsFB\data.py:40
+msgid "Kazakhstan"
+msgstr "Казахстан"
+
+#: .\PartsFB\data.py:41
+msgid "Kenya"
+msgstr "Кения"
+
+#: .\PartsFB\data.py:42
+msgid "Korea (the Democratic People's Republic of)"
+msgstr ""
+
+#: .\PartsFB\data.py:43
+msgid "Korea (the Republic of)"
+msgstr ""
+
+#: .\PartsFB\data.py:44
+msgid "Kuwait"
+msgstr "Кувейт"
+
+#: .\PartsFB\data.py:45
+msgid "Kyrgyzstan"
+msgstr "Кыргызтан"
+
+#: .\PartsFB\data.py:46
+msgid "Latvia"
+msgstr "Латвия"
+
+#: .\PartsFB\data.py:47
+msgid "Lebanon"
+msgstr "Лебанон"
+
+#: .\PartsFB\data.py:48
+msgid "Lesotho"
+msgstr ""
+
+#: .\PartsFB\data.py:49
+msgid "Liberia"
+msgstr "Либерия"
+
+#: .\PartsFB\data.py:50
+msgid "Libya"
+msgstr "Ливия"
+
+#: .\PartsFB\data.py:51
+msgid "Liechtenstein"
+msgstr "Лихтенштейн"
+
+#: .\PartsFB\data.py:52
+msgid "Lithuania"
+msgstr "Литва"
+
+#: .\PartsFB\data.py:53
+msgid "Luxembourg"
+msgstr "Люксембург"
+
+#: .\PartsFB\data.py:54
+msgid "Macedonia (the former Yugoslav Republic of)"
+msgstr "Македония"
+
+#: .\PartsFB\data.py:55
+msgid "Malaysia"
+msgstr "Малайзия"
+
+#: .\PartsFB\data.py:56
+msgid "Mexico"
+msgstr "Мексика"
+
+#: .\PartsFB\data.py:57
+msgid "Moldova (the Republic of)"
+msgstr "Молдова"
+
+#: .\PartsFB\data.py:58
+msgid "Monaco"
+msgstr "Монако"
+
+#: .\PartsFB\data.py:59
+msgid "Mongolia"
+msgstr "Монголия"
+
+#: .\PartsFB\data.py:60
+msgid "Morocco"
+msgstr "Морокко"
+
+#: .\PartsFB\data.py:61
+msgid "Mozambique"
+msgstr "Мозамбик"
+
+#: .\PartsFB\data.py:62
+msgid "Nepal"
+msgstr "Непал"
+
+#: .\PartsFB\data.py:63
+msgid "Netherlands"
+msgstr "Нидерланды"
+
+#: .\PartsFB\data.py:64
+msgid "New Zealand"
+msgstr "Новая Зеландия"
+
+#: .\PartsFB\data.py:65
+msgid "Nicaragua"
+msgstr "Никарагуа"
+
+#: .\PartsFB\data.py:66
+msgid "Norway"
+msgstr "Норвегия"
+
+#: .\PartsFB\data.py:67
+msgid "Pakistan"
+msgstr "Пакистан"
+
+#: .\PartsFB\data.py:68
+msgid "Peru"
+msgstr "Перу"
+
+#: .\PartsFB\data.py:69
+msgid "Philippines"
+msgstr "Филиппины"
+
+#: .\PartsFB\data.py:70
+msgid "Poland"
+msgstr "Польша"
+
+#: .\PartsFB\data.py:71
+msgid "Portugal"
+msgstr "Португалия"
+
+#: .\PartsFB\data.py:72
+msgid "Romania"
+msgstr "Румыния"
+
+#: .\PartsFB\data.py:73
+msgid "Russian Federation"
+msgstr "Российская Федерация"
+
+#: .\PartsFB\data.py:74
+msgid "Saudi Arabia"
+msgstr "Саудовская Аравия"
+
+#: .\PartsFB\data.py:75
+msgid "Serbia"
+msgstr "Сербия"
+
+#: .\PartsFB\data.py:76
+msgid "Singapore"
+msgstr "Сингапур"
+
+#: .\PartsFB\data.py:77
+msgid "Slovakia"
+msgstr "Словакия"
+
+#: .\PartsFB\data.py:78
+msgid "Slovenia"
+msgstr "Словения"
+
+#: .\PartsFB\data.py:79
+msgid "Somalia"
+msgstr "Сомали"
+
+#: .\PartsFB\data.py:80
+msgid "South Africa"
+msgstr "Южная Африка"
+
+#: .\PartsFB\data.py:81
+msgid "Spain"
+msgstr "Испания"
+
+#: .\PartsFB\data.py:82
+msgid "Sri Lanka"
+msgstr "Шри Ланка"
+
+#: .\PartsFB\data.py:83
+msgid "Sudan"
+msgstr "Судан"
+
+#: .\PartsFB\data.py:84
+msgid "Swaziland"
+msgstr ""
+
+#: .\PartsFB\data.py:85
+msgid "Sweden"
+msgstr "Швеция"
+
+#: .\PartsFB\data.py:86
+msgid "Switzerland"
+msgstr "Швейцария"
+
+#: .\PartsFB\data.py:87
+msgid "Syrian Arab Republic"
+msgstr ""
+
+#: .\PartsFB\data.py:88
+msgid "Taiwan (Province of China)"
+msgstr "Тайвань"
+
+#: .\PartsFB\data.py:89
+msgid "Tajikistan"
+msgstr "Таджикистан"
+
+#: .\PartsFB\data.py:90
+msgid "Thailand"
+msgstr "Тайланд"
+
+#: .\PartsFB\data.py:91
+msgid "Tunisia"
+msgstr ""
+
+#: .\PartsFB\data.py:92
+msgid "Turkey"
+msgstr "Турция"
+
+#: .\PartsFB\data.py:93
+msgid "Turkmenistan"
+msgstr "Туркменистан"
+
+#: .\PartsFB\data.py:94
+msgid "Ukraine"
+msgstr "Украина"
+
+#: .\PartsFB\data.py:95
+msgid "United Arab Emirates"
+msgstr "ОАЭ"
+
+#: .\PartsFB\data.py:96
+msgid "United Kingdom of Great Britain and Northern Ireland"
+msgstr "Соединенное Королевство Великой Британии и Северной Ирландии"
+
+#: .\PartsFB\data.py:97
+msgid "United States of America"
+msgstr "США"
+
+#: .\PartsFB\data.py:98
+msgid "Uzbekistan"
+msgstr "Узбекистан"
+
+#: .\PartsFB\data.py:99
+msgid "Venezuela (Bolivarian Republic of)"
+msgstr "Венесуэла"
+
+#: .\PartsFB\data.py:100
+msgid "Viet Nam"
+msgstr "Вьетнам"
+
+#: .\PartsFB\data.py:130
+msgid "Engine"
+msgstr "Двигатель"
+
+#: .\PartsFB\data.py:131
+msgid "Electrical system"
+msgstr "Электрическая система"
+
+#: .\PartsFB\data.py:132
+msgid "Power transmission"
+msgstr "Передача мощности"
+
+#: .\PartsFB\data.py:133
+msgid "Brakes"
+msgstr "Тормоза"
+
+#: .\PartsFB\data.py:134
+msgid "Springs and wheels"
+msgstr "Подвеска и управление"
+
+#: .\PartsFB\data.py:135
+msgid "Body and interior"
+msgstr "Кузов и интерьер"
+
+#: .\PartsFB\data.py:136
+msgid "Other"
+msgstr "Другое"
+
+#: .\PartsFB\models.py:85
+msgid "bad"
+msgstr "плохо"
+
+#: .\PartsFB\models.py:86
+msgid "no bad"
+msgstr "не плохо"
+
+#: .\PartsFB\models.py:87
+msgid "normal"
+msgstr "средне"
+
+#: .\PartsFB\models.py:88
+msgid "good"
+msgstr "хорошо"
+
+#: .\PartsFB\models.py:89
+msgid "very good"
+msgstr "очень хорошо"
+
+
+# DJANGO REST FRAMEWORK
+
+#: authentication.py:73
+msgid "Invalid basic header. No credentials provided."
+msgstr "Неверный базовый заголовок. Полномочия не предоставлены."
+
+#: authentication.py:76
+msgid "Invalid basic header. Credentials string should not contain spaces."
+msgstr "Неверный базовый заголовок. Полномочия не должны содержать пробелы."
+
+#: authentication.py:82
+msgid "Invalid basic header. Credentials not correctly base64 encoded."
+msgstr "Неверный базовый заголовок. Полномочия имеют не корректную base64 кодировку."
+
+#: authentication.py:99
+msgid "Invalid username/password."
+msgstr "Неверные имя пользователя/пароль."
+
+#: authentication.py:102 authentication.py:198
+msgid "User inactive or deleted."
+msgstr "Пользователь не активен или удален."
+
+#: authentication.py:176
+msgid "Invalid token header. No credentials provided."
+msgstr "Неверный токен. Полномочия не предоставлены."
+
+#: authentication.py:179
+msgid "Invalid token header. Token string should not contain spaces."
+msgstr "Неверный токен. Токен не должен содержать пробелы."
+
+#: authentication.py:185
+msgid ""
+"Invalid token header. Token string should not contain invalid characters."
+msgstr "Неверный токен. Токен не может содержать неверные символы."
+
+#: authentication.py:195
+msgid "Invalid token."
+msgstr "Неверный токен."
+
+#: authtoken/apps.py:7
+msgid "Auth Token"
+msgstr "Токен авторизации"
+
+#: authtoken/models.py:15
+msgid "Key"
+msgstr "Ключ"
+
+#: authtoken/models.py:18
+msgid "User"
+msgstr "Пользователь"
+
+#: authtoken/models.py:20
+msgid "Created"
+msgstr "Создан"
+
+#: authtoken/models.py:29
+msgid "Token"
+msgstr "Токен"
+
+#: authtoken/models.py:30
+msgid "Tokens"
+msgstr "Токены"
+
+#: authtoken/serializers.py:8
+msgid "Username"
+msgstr "Имя пользователя"
+
+#: authtoken/serializers.py:9
+msgid "Password"
+msgstr "Пароль"
+
+#: authtoken/serializers.py:20
+msgid "User account is disabled."
+msgstr "Аккаунт пользователя деактивирован."
+
+#: authtoken/serializers.py:23
+msgid "Unable to log in with provided credentials."
+msgstr "Невозможно войти с помощью предоставленных логин/пароль."
+
+#: authtoken/serializers.py:26
+msgid "Must include \"username\" and \"password\"."
+msgstr "Должны быть включены \"username\" and \"password\"."
+
+#: exceptions.py:49
+msgid "A server error occurred."
+msgstr "Произошла ошибка сервера."
+
+#: exceptions.py:84
+msgid "Malformed request."
+msgstr ""
+
+#: exceptions.py:89
+msgid "Incorrect authentication credentials."
+msgstr "Неверные данные для аутентификации."
+
+#: exceptions.py:94
+msgid "Authentication credentials were not provided."
+msgstr "Данные для аутентификации не предоставлены."
+
+#: exceptions.py:99
+msgid "You do not have permission to perform this action."
+msgstr "Вы не имеете доступа к данной операции."
+
+#: exceptions.py:104 views.py:81
+msgid "Not found."
+msgstr "Не найдено."
+
+#: exceptions.py:109
+msgid "Method \"{method}\" not allowed."
+msgstr "Медот \"{method}\" не разрешен."
+
+#: exceptions.py:120
+msgid "Could not satisfy the request Accept header."
+msgstr ""
+
+#: exceptions.py:132
+msgid "Unsupported media type \"{media_type}\" in request."
+msgstr ""
+
+#: exceptions.py:145
+msgid "Request was throttled."
+msgstr ""
+
+#: fields.py:269 relations.py:206 relations.py:239 validators.py:98
+#: validators.py:181
+msgid "This field is required."
+msgstr "Это поле является обязательным."
+
+#: fields.py:270
+msgid "This field may not be null."
+msgstr "Этот поле не может быть нулевым."
+
+#: fields.py:608 fields.py:639
+msgid "\"{input}\" is not a valid boolean."
+msgstr ""
+
+#: fields.py:674
+msgid "This field may not be blank."
+msgstr "Этот поле не может быть пустым."
+
+#: fields.py:675 fields.py:1675
+msgid "Ensure this field has no more than {max_length} characters."
+msgstr ""
+
+#: fields.py:676
+msgid "Ensure this field has at least {min_length} characters."
+msgstr ""
+
+#: fields.py:713
+msgid "Enter a valid email address."
+msgstr ""
+
+#: fields.py:724
+msgid "This value does not match the required pattern."
+msgstr ""
+
+#: fields.py:735
+msgid ""
+"Enter a valid \"slug\" consisting of letters, numbers, underscores or "
+"hyphens."
+msgstr ""
+
+#: fields.py:747
+msgid "Enter a valid URL."
+msgstr ""
+
+#: fields.py:760
+msgid "\"{value}\" is not a valid UUID."
+msgstr ""
+
+#: fields.py:796
+msgid "Enter a valid IPv4 or IPv6 address."
+msgstr ""
+
+#: fields.py:821
+msgid "A valid integer is required."
+msgstr ""
+
+#: fields.py:822 fields.py:857 fields.py:891
+msgid "Ensure this value is less than or equal to {max_value}."
+msgstr ""
+
+#: fields.py:823 fields.py:858 fields.py:892
+msgid "Ensure this value is greater than or equal to {min_value}."
+msgstr ""
+
+#: fields.py:824 fields.py:859 fields.py:896
+msgid "String value too large."
+msgstr ""
+
+#: fields.py:856 fields.py:890
+msgid "A valid number is required."
+msgstr ""
+
+#: fields.py:893
+msgid "Ensure that there are no more than {max_digits} digits in total."
+msgstr ""
+
+#: fields.py:894
+msgid "Ensure that there are no more than {max_decimal_places} decimal places."
+msgstr ""
+
+#: fields.py:895
+msgid ""
+"Ensure that there are no more than {max_whole_digits} digits before the "
+"decimal point."
+msgstr ""
+
+#: fields.py:1025
+msgid "Datetime has wrong format. Use one of these formats instead: {format}."
+msgstr ""
+
+#: fields.py:1026
+msgid "Expected a datetime but got a date."
+msgstr ""
+
+#: fields.py:1103
+msgid "Date has wrong format. Use one of these formats instead: {format}."
+msgstr ""
+
+#: fields.py:1104
+msgid "Expected a date but got a datetime."
+msgstr ""
+
+#: fields.py:1170
+msgid "Time has wrong format. Use one of these formats instead: {format}."
+msgstr ""
+
+#: fields.py:1232
+msgid "Duration has wrong format. Use one of these formats instead: {format}."
+msgstr ""
+
+#: fields.py:1251 fields.py:1300
+msgid "\"{input}\" is not a valid choice."
+msgstr ""
+
+#: fields.py:1254 relations.py:71 relations.py:441
+msgid "More than {count} items..."
+msgstr ""
+
+#: fields.py:1301 fields.py:1448 relations.py:437 serializers.py:524
+msgid "Expected a list of items but got type \"{input_type}\"."
+msgstr ""
+
+#: fields.py:1302
+msgid "This selection may not be empty."
+msgstr ""
+
+#: fields.py:1339
+msgid "\"{input}\" is not a valid path choice."
+msgstr ""
+
+#: fields.py:1358
+msgid "No file was submitted."
+msgstr ""
+
+#: fields.py:1359
+msgid "The submitted data was not a file. Check the encoding type on the form."
+msgstr ""
+
+#: fields.py:1360
+msgid "No filename could be determined."
+msgstr ""
+
+#: fields.py:1361
+msgid "The submitted file is empty."
+msgstr ""
+
+#: fields.py:1362
+msgid ""
+"Ensure this filename has at most {max_length} characters (it has {length})."
+msgstr ""
+
+#: fields.py:1410
+msgid ""
+"Upload a valid image. The file you uploaded was either not an image or a "
+"corrupted image."
+msgstr ""
+
+#: fields.py:1449 relations.py:438 serializers.py:525
+msgid "This list may not be empty."
+msgstr "Список не может быть пустым."
+
+#: fields.py:1502
+msgid "Expected a dictionary of items but got type \"{input_type}\"."
+msgstr ""
+
+#: fields.py:1549
+msgid "Value must be valid JSON."
+msgstr "Значение должно быть верный JSON формат."
+
+#: filters.py:36 templates/rest_framework/filters/django_filter.html:5
+msgid "Submit"
+msgstr "Подвердить"
+
+#: filters.py:336
+msgid "ascending"
+msgstr ""
+
+#: filters.py:337
+msgid "descending"
+msgstr ""
+
+#: pagination.py:193
+msgid "Invalid page."
+msgstr "Неверная страница."
+
+#: pagination.py:427
+msgid "Invalid cursor"
+msgstr ""
+
+#: relations.py:207
+msgid "Invalid pk \"{pk_value}\" - object does not exist."
+msgstr ""
+
+#: relations.py:208
+msgid "Incorrect type. Expected pk value, received {data_type}."
+msgstr ""
+
+#: relations.py:240
+msgid "Invalid hyperlink - No URL match."
+msgstr ""
+
+#: relations.py:241
+msgid "Invalid hyperlink - Incorrect URL match."
+msgstr ""
+
+#: relations.py:242
+msgid "Invalid hyperlink - Object does not exist."
+msgstr ""
+
+#: relations.py:243
+msgid "Incorrect type. Expected URL string, received {data_type}."
+msgstr ""
+
+#: relations.py:401
+msgid "Object with {slug_name}={value} does not exist."
+msgstr ""
+
+#: relations.py:402
+msgid "Invalid value."
+msgstr "Неверное значение."
+
+#: serializers.py:326
+msgid "Invalid data. Expected a dictionary, but got {datatype}."
+msgstr ""
+
+#: templates/rest_framework/admin.html:116
+#: templates/rest_framework/base.html:128
+msgid "Filters"
+msgstr ""
+
+#: templates/rest_framework/filters/django_filter.html:2
+#: templates/rest_framework/filters/django_filter_crispyforms.html:4
+msgid "Field filters"
+msgstr ""
+
+#: templates/rest_framework/filters/ordering.html:3
+msgid "Ordering"
+msgstr "Сортировка"
+
+#: templates/rest_framework/filters/search.html:2
+msgid "Search"
+msgstr "Поиск"
+
+#: templates/rest_framework/horizontal/radio.html:2
+#: templates/rest_framework/inline/radio.html:2
+#: templates/rest_framework/vertical/radio.html:2
+msgid "None"
+msgstr ""
+
+#: templates/rest_framework/horizontal/select_multiple.html:2
+#: templates/rest_framework/inline/select_multiple.html:2
+#: templates/rest_framework/vertical/select_multiple.html:2
+msgid "No items to select."
+msgstr ""
+
+#: validators.py:43
+msgid "This field must be unique."
+msgstr "Это поле должно быть уникальным."
+
+#: validators.py:97
+msgid "The fields {field_names} must make a unique set."
+msgstr ""
+
+#: validators.py:245
+msgid "This field must be unique for the \"{date_field}\" date."
+msgstr ""
+
+#: validators.py:260
+msgid "This field must be unique for the \"{date_field}\" month."
+msgstr ""
+
+#: validators.py:273
+msgid "This field must be unique for the \"{date_field}\" year."
+msgstr ""
+
+#: versioning.py:42
+msgid "Invalid version in \"Accept\" header."
+msgstr ""
+
+#: versioning.py:73
+msgid "Invalid version in URL path."
+msgstr ""
+
+#: versioning.py:115
+msgid "Invalid version in URL path. Does not match any version namespace."
+msgstr ""
+
+#: versioning.py:147
+msgid "Invalid version in hostname."
+msgstr "Неверное версия в имени хоста."
+
+#: versioning.py:169
+msgid "Invalid version in query parameter."
+msgstr ""
+
+#: views.py:88
+msgid "Permission denied."
+msgstr "Доступ запрещен."

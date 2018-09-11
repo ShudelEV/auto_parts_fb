@@ -112,7 +112,7 @@ LANGUAGES = [
     ('en', _('English')),
 ]
 LOCALE_PATHS = [
-    os.path.join(BASE_DIR, 'PartsFB/locale/'),
+    os.path.join(BASE_DIR, 'AutoPartsFB/locale/'),
 ]
 LANGUAGE_CODE = 'en-us'
 USE_TZ = True
@@ -139,6 +139,7 @@ SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.vk.VKOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
     'social_core.backends.twitter.TwitterOAuth',
     'django.contrib.auth.backends.ModelBackend',
 )
@@ -156,12 +157,22 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
 SOCIAL_AUTH_VK_OAUTH2_KEY = '6670405'
 SOCIAL_AUTH_VK_OAUTH2_SECRET = 'qSX7E2IZhk1LQDYySu6I'
 
+SOCIAL_AUTH_FACEBOOK_KEY = '254286108555969'
+SOCIAL_AUTH_FACEBOOK_SECRET = '532a3eb5975b519f43d079d51897cd85'
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+  'locale': 'ru_RU',
+  'fields': 'id, name, email'
+}
+
+SOCIAL_AUTH_TWITTER_KEY = ''
+SOCIAL_AUTH_TWITTER_SECRET = ''
+
 # djoser
 DJOSER = {
     'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': [
-        '/auth/o/vk-oauth2/',
         '/logged-in/google-oauth2',
         '/logged-in/vk-oauth2',
+        '/logged-in/facebook-oauth2',
         '/logged-in/twitter-oauth'
     ]
 }

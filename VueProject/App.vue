@@ -2,11 +2,11 @@
 <div class="">
     <!--Error notification-->
     <vk-notification :messages.sync="messages"></vk-notification>
-    <div :class="{'content-min-height': $route.name=='Home'}">
+    <div :style="{'min-height': $store.state.all.pageMinHeight + 'px'}">
         <!--Load Progress Bar-->
         <nprogress-container></nprogress-container>
         <!--Navbar-->
-        <div class="uk-section uk-section-default uk-padding-remove-vertical">
+        <div id="header" class="uk-section uk-section-default uk-padding-remove-vertical">
             <!--Home page navbar-->
             <template v-if="$route.name=='Home'">
                 <div class="uk-card uk-hidden@m">
@@ -32,24 +32,48 @@
         </div>
         <!--Login Window-->
         <login-window :show="$store.state.account.showLoginWindow"></login-window>
+        <!--Edit Account-->
+        <!--<edit-account :show="$store.state.account.showEditUsername || $store.state.account.showEditPassword"></edit-account>-->
         <!--Body-->
-        <!--<div class="" >-->
-            <div class="uk-container bg-img">
-                <router-view></router-view>
-            </div>
-        <!--</div>-->
+        <div class="uk-container bg-img" :style="{'min-height': $store.state.all.contentMinHeight + 'px'}">
+            <router-view></router-view>
+        </div>
     </div>
     <!--Footer-->
-    <div class="uk-container bg-img">
+    <div id="footer" class="uk-container bg-img">
         <div v-show="$route.name==='Home'">
-            <footer class="uk-overlay-default uk-text-middle">
-                © 2018
+            <footer class="uk-overlay-default uk-flex uk-flex-middle">
+                <div class=""> © 2018</div>
+                <div class="uk-margin-left">
+                    <a type="text" v-show="$i18n.locale()!=='ru'"
+                                    @click="changeI18n('ru')"
+                                    title="Русская версия"
+                    >RU</a>
+                    <a type="text" v-show="$i18n.locale()!=='en'"
+                       @click="changeI18n('en')"
+                       title="English version"
+                    >EN</a>
+                </div>
             </footer>
         </div>
         <div v-show="$route.name!=='Home'" class="uk-inline">
             <img src="/static/images/footer.png" alt="">
             <div class="uk-position-bottom uk-overlay uk-padding-small">
-                <div> © 2018</div>
+                <vk-grid>
+                    <div class=""> © 2018</div>
+                    <div class="">
+                        <a type="text" v-show="$i18n.locale()!=='ru'"
+                                        @click="changeI18n('ru')"
+                                        title="Русская версия"
+                        >RU</a>
+                    </div>
+                    <div>
+                        <a type="text" v-show="$i18n.locale()!=='en'"
+                           @click="changeI18n('en')"
+                           title="English version"
+                        >EN</a>
+                    </div>
+                </vk-grid>
             </div>
         </div>
     </div>
@@ -97,18 +121,29 @@ export default {
         allMessage: function (val) {
             if (val) { this.messages.push(val) }
         }
+    },
+
+    methods: {
+        changeI18n(lang) {
+            this.$i18n.set(lang);
+            this.axios.defaults.headers.common['Accept-Language'] = lang;
+            this.$http.get('/api/part-types/').then(
+                response => this.$store.commit('SET_PART_TYPES', response.data)
+            );
+        }
     }
 }
 </script>
 
 <style>
-    .content-min-height {min-height: calc(100vh - 62px);}
     .uk-container.bg-img {
         background-size: contain;
         background-image: url(/static/images/bg.jpg);
     }
     footer {
         min-height: 50px;
+        /*display: flex;*/
+        /*align-items: center;*/
     }
     /*Show progress bar*/
     .nprogress-custom-parent {

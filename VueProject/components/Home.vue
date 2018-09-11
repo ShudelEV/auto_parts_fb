@@ -12,8 +12,8 @@
                                           @click="search_pattern = ''"
                             ></vk-icon-link>
                             <span class="uk-form-icon" uk-icon="icon: search"></span>
-                            <input class="uk-input uk-form-small"
-                                   type="text" :placeholder="$t('Filter brands')"
+                            <input class="uk-input uk-form-small uk-form-width-medium"
+                                   type="text" :placeholder="$t('Filter by brands')"
                                    v-model="search_pattern"
                             >
                         </div>
@@ -117,6 +117,10 @@ export default {
             // by brand
             search_pattern: '',
         }
+    },
+
+    mounted () {
+        this.$store.commit('SET_ELEMENTS_HEIGHT')
     },
 
     computed: {

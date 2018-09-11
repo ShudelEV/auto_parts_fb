@@ -1,10 +1,8 @@
 <template>
 <form class="uk-form-stacked">
     <fieldset class="uk-fieldset">
-        <!--<legend class="uk-legend">Search</legend>-->
         <!--Search by Part category or Part type-->
         <div class="uk-margin">
-            <!--<label class="uk-form-label" for="part">Part</label>-->
             <div class="uk-form-controls">
                 <select id="part" v-model="part" name="part" class="uk-select" autofocus>
                     <option :value="''">&emsp;{{ $t('All parts') }}</option>
@@ -20,21 +18,16 @@
                 </select>
             </div>
         </div>
-        <!--Part type-->
-        <!--<div class="uk-margin">-->
-            <!--<label class="uk-form-label" for="part_type">Part type</label>-->
-            <!--<select :disabled="!part_category" v-model="part_type" id="part_type" name="part_type" class="uk-select">-->
-                <!--<option v-for="partType in part_category ? partTypes[partCategories[part_category]] : []"-->
-                        <!--:key="partType.id"-->
-                        <!--:value="partType.id"-->
-                <!--&gt; {{ partType.name }} </option>-->
-            <!--</select>-->
-        <!--</div>-->
-        <!--Stars-->
         <div class="uk-margin-top uk-grid-small uk-child-width-auto uk-grid">
-            <label for="bad"><input class="uk-radio" id="bad" value="bad" type="radio" v-model="stars"> {{ $t('bad') }}</label>
-            <label for="nbad"><input class="uk-radio" id="nbad" value="nbad" type="radio" v-model="stars"> {{ $t('not bad') }}</label>
-            <label for="good"><input class="uk-radio" id="good" value="good" type="radio" v-model="stars"> {{ $t('good') }}</label>
+            <label for="bad"><input class="uk-radio" id="bad" value="bad" type="radio" v-model="stars">
+                <span class="uk-text-small">{{ $t('bad') }}</span>
+            </label>
+            <label for="nbad"><input class="uk-radio" id="nbad" value="nbad" type="radio" v-model="stars">
+                <span class="uk-text-small">{{ $t('not bad') }}</span>
+            </label>
+            <label for="good"><input class="uk-radio" id="good" value="good" type="radio" v-model="stars">
+                <span class="uk-text-small">{{ $t('good') }}</span>
+            </label>
         </div>
     </fieldset>
 </form>

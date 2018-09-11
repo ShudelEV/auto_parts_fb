@@ -7,6 +7,8 @@ const JWT_REFRESH_BEFORE_EXPIRATION_DELTA = 1;  // in hours
 
 const state = {
     showLoginWindow: false,
+    showEditUsername: false,
+    showEditPassword: false,
     // before send fb and user is not authenticated, suggest login
     showSuggestLogin: false,
     id: null,
@@ -97,6 +99,26 @@ const actions = {
         ).catch(
             error => commit('HANDLE_ERROR', error)
         );
+    },
+    changeUsername ({ state, dispatch }, form) {
+        dispatch('verifySession', (ver) => {
+            if (ver) {
+                Vue.axios.post('/auth/users/change_username/', form).then(
+                    response => {
+                        state.name = new_username
+                    }
+                ).catch(
+                    error => {
+                        // Unauthorized user
+                        if (error.response.status === 401) {
+                            commit('REMOVE_SESSION');
+                        } else {
+                            commit('HANDLE_ERROR', error)
+                        }
+                    }
+                );
+            }
+        })
     },
     // verify the session
     verifySession ({ commit, dispatch }, callback) {

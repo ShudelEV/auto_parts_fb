@@ -9,6 +9,8 @@ import AddFB from './components/AddFB.vue'
 import AllFB from './components/AllFB.vue'
 import FBList from './components/FBList.vue'
 import BrandInfo from './components/BrandInfo.vue'
+import PageNotFound from './components/PageNotFound.vue'
+import Page404 from './components/Page404.vue'
 
 
 // tell Vue to use the vue-router plugin
@@ -83,6 +85,8 @@ const router = new Router({
             component: LoggedInCallback,
             props: true
         },
+        { path: "/404", component: Page404 },
+        { path: "*", component: PageNotFound }
     ]
 });
 

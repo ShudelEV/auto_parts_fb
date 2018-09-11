@@ -2,6 +2,8 @@ import { ALPHABET } from '../../data'
 import Vue from 'vue'
 
 const state = {
+    pageMinHeight: 0,
+    contentMinHeight: 0,
     // partBrands: [{ id: Integr, name: String, feedbacks: { [pageNumber]: [feedbacks] }, ... }, ...]
     partBrands: [],
     partTypes: [],
@@ -138,6 +140,10 @@ const mutations = {
         }
         // console.log('error.config', error.config);
     },
+    SET_ELEMENTS_HEIGHT (state) {
+        state.pageMinHeight = window.innerHeight - document.getElementById('footer').offsetHeight;
+        state.contentMinHeight = state.pageMinHeight - document.getElementById('header').offsetHeight
+    }
 };
 
 export default {

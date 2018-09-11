@@ -12,11 +12,19 @@
             </vk-navbar-item>
             <!--Account bar-->
             <vk-navbar-item v-else>
-                <ul class="uk-iconnav">
-                    <li><vk-icon icon="user" :title="account.name"></vk-icon></li>
-                    <li><vk-icon-link icon="file-edit" :title="$t('Edit account')"></vk-icon-link></li>
-                    <li><vk-icon-link @click="logout()" icon="sign-out" :title="$t('Sign out')"></vk-icon-link></li>
-                </ul>
+                <vk-iconnav>
+                    <vk-iconnav-item icon="user" :title="account.name"></vk-iconnav-item>
+                    <!--<vk-iconnav-item icon="file-edit" :title="$t('Edit account')"></vk-iconnav-item>-->
+                    <!--<vk-dropdown class="uk-padding-small">-->
+                        <!--<vk-nav-dropdown>-->
+                            <!--<vk-nav-item-header :title="account.name" active></vk-nav-item-header>-->
+                            <!--<vk-nav-item-divider></vk-nav-item-divider>-->
+                            <!--<vk-nav-item :title="$t('Change username')" @click="$store.state.account.showEditUsername=true"></vk-nav-item>-->
+                            <!--<vk-nav-item :title="$t('Change password')"></vk-nav-item>-->
+                        <!--</vk-nav-dropdown>-->
+                    <!--</vk-dropdown>-->
+                    <vk-iconnav-item @click="logout()" icon="sign-out" :title="$t('Sign out')"></vk-iconnav-item>
+                </vk-iconnav>
             </vk-navbar-item>
         </vk-navbar-nav>
     </vk-navbar>

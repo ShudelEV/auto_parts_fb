@@ -1,5 +1,5 @@
 <template>
-<div :class="{ 'disabled-content': $store.state.all.loading }" class="uk-margin-top">
+<div :class="{'disabled-content': $store.state.all.loading}" class="uk-margin-top">
     <!--Feedbacks section-->
 <div v-for="(value, key) in feedbacks($store.state.all.page)">
     <h2 class="uk-heading-divider uk-visible-toggle">
@@ -225,6 +225,7 @@ export default {
         },
         // highlight feedback if created
         highlightFB () {
+            this.$emit('showSearch');
             const fb_id = this.$store.state.all.newFBId;
             if (fb_id) {
                 setTimeout(() => {

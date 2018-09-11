@@ -6,17 +6,17 @@
                      :src="brand.image" width="160" height="160" alt=""
                 >
             </div>
-            <div class="uk-width-expand">
+            <div v-show="!loading"  class="uk-width-expand">
                 <ul class="uk-subnav uk-subnav-divider uk-margin-remove">
-                    <li style="text-transform:uppercase">Country</li>
+                    <li style="text-transform:uppercase">{{ 'Country' | translate }}</li>
                     <li>{{brand.country}}</li>
                 </ul>
                 <ul class="uk-subnav uk-subnav-divider uk-margin-remove">
-                    <li style="text-transform:uppercase">Specialization</li>
+                    <li style="text-transform:uppercase">{{ 'Specialization' | translate }}</li>
                     <li>{{brand.specialization}}</li>
                 </ul>
                 <ul class="uk-subnav uk-subnav-divider uk-margin-remove">
-                    <li style="text-transform:uppercase">Link</li>
+                    <li style="text-transform:uppercase">{{ 'Site' | translate }}</li>
                     <li><a :href="brand.site_url" target="_blank">{{brand.site_url}}</a></li>
                 </ul>
             </div>
@@ -35,6 +35,7 @@ export default {
 
     data () {
         return {
+            loading: true,
             brand: {
                 image: '',
                 country: '',
@@ -51,6 +52,10 @@ export default {
         if (this.brandInfo) {
             this.fetchData(this.brandInfo.id)
         }
+    },
+
+    mounted () {
+        this.$store.commit('SET_ELEMENTS_HEIGHT')
     },
 
     computed: {
@@ -75,7 +80,8 @@ export default {
             this.brand.image = this.brandInfo.image;
             this.brand.country = COUNTRIES[this.brandInfo.country];
             this.brand.specialization = this.brandInfo.specialization;
-            this.brand.site_url = this.brandInfo.site_url
+            this.brand.site_url = this.brandInfo.site_url;
+            this.loading = false
         },
     }
 }

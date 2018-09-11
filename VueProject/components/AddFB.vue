@@ -4,7 +4,7 @@
         <h2>{{ 'Add Your Feedback' | translate }}</h2>
     </div>
     <div v-if="account.showSuggestLogin" class="uk-alert-success" uk-alert>
-        <p>$t('suggestLogin')</p>
+        <p>{{ $t('suggestLogin') }}</p>
         <vk-button size="small" class="uk-margin-right" @click="setAnswer(false)">{{ 'no' | translate }}</vk-button>
         <vk-button size="small" type="primary" @click="setAnswer(true)">{{ 'yes' | translate }}</vk-button>
     </div>
@@ -148,7 +148,7 @@
                         gotoAllBrandFB()
                     }"
                 ></upload-image>
-                <span class="img-uploader-text" v-if="!imagesQty()">{{ 'drop or click to add images here' | translate }}</span>
+                <span class="img-uploader-text uk-text-muted uk-text-large" v-if="!imagesQty()">{{ 'drop or click to add images here' | translate }}</span>
             </div>
         </div>
     </form>
@@ -417,12 +417,10 @@ export default {
     }
     .img-uploader .img-uploader-text {
         position: absolute;
-        font-size: 200%;
         left: 0;
         width: 100%;
         text-align: center;
-        color: lightgray;
-        top: 25%;
+        top: 30%;
         z-index: -1;
     }
     /*min height for "drop or choose images" field*/

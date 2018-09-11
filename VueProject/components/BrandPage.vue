@@ -28,8 +28,11 @@
                         </li>
                     </ul>
                 </vk-card>
-                <vk-card padding="small" class="uk-background-muted uk-margin-top">
-                    <search v-if="$route.name==='AllBrandFB'" :brandName="brandName"></search>
+                <vk-card v-show="$route.name==='AllBrandFB' && showSearch"
+                         padding="small" class="uk-background-muted uk-margin-top"
+                         :class="{'disabled-content': $store.state.all.loading}"
+                >
+                    <search :brandName="brandName"></search>
                 </vk-card>
             </div>
         </vk-sticky>
@@ -38,7 +41,7 @@
     <!--Feedbackes-->
     <div class="uk-width-3-4@m uk-margin-remove-top">
         <!--Add feedback or Show all feedbacks section-->
-        <router-view class="uk-margin-medium-bottom"></router-view>
+        <router-view @showSearch="showSearch=true" class="uk-margin-medium-bottom"></router-view>
     </div>
 </vk-grid>
 </template>
@@ -53,33 +56,30 @@ export default {
 
     data () {
         return {
-            loading: false,
-            error: null
+            showSearch: false,
         }
     },
 
     props: ['brandName'],
 
     created () {
-        this.fetchData();
     },
 
-    mounted () {},
+    mounted () {
+        this.$store.commit('SET_ELEMENTS_HEIGHT')
+    },
 
     watch: {
-        '$route': 'fetchData'
+//        '$route': 'fetchData'
     },
 
     methods: {
-        fetchData () {
-        },
         showOnUp () {
-//            console.log(window.innerWidth <= 800 && window.innerHeight <= 600)
             return (window.innerWidth <= 960)
         },
         goBack () {
             window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
-        }
+        },
     }
 }
 </script>
