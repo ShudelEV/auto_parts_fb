@@ -25,7 +25,7 @@
         <!--Collapse button-->
         <span class="uk-clearfix">
             <vk-icon-link :title="collapse.includes(key) ? $t('Scroll') : $t('Collapse')" class="uk-float-right"
-                          :icon="collapse.includes(key) ? 'chevron-up' : 'chevron-down'"
+                          :icon="collapse.includes(key) ? 'triangle-up' : 'triangle-down'"
                           @click="toggleAccordion(key)"
             ></vk-icon-link>
         </span>

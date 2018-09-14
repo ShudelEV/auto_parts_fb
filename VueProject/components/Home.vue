@@ -3,7 +3,6 @@
         <div class="uk-width-1-4@m">
             <vk-sticky top="#header_image" :offset="20" media="@m">
                 <vk-card padding="small" class="uk-background-muted">
-                    <!--<span class="uk-legend">Quick search by Brand</span>-->
                     <div class="uk-margin-small">
                         <div class="uk-inline">
                             <vk-icon-link v-if="search_pattern"

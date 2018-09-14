@@ -4,7 +4,7 @@
     <vk-notification :messages.sync="messages"></vk-notification>
     <div :style="{'min-height': $store.state.all.pageMinHeight + 'px'}">
         <!--Load Progress Bar-->
-        <nprogress-container></nprogress-container>
+        <nprogress-container id="nprogress-container"></nprogress-container>
         <!--Navbar-->
         <div id="header" class="uk-section uk-section-default uk-padding-remove-vertical">
             <!--Home page navbar-->
@@ -41,24 +41,25 @@
     </div>
     <!--Footer-->
     <div id="footer" class="uk-container bg-img">
-        <div v-show="$route.name==='Home'">
-            <footer class="uk-overlay-default uk-flex uk-flex-middle">
-                <div class=""> © 2018</div>
-                <div class="uk-margin-left">
-                    <a type="text" v-show="$i18n.locale()!=='ru'"
-                                    @click="changeI18n('ru')"
-                                    title="Русская версия"
-                    >RU</a>
-                    <a type="text" v-show="$i18n.locale()!=='en'"
-                       @click="changeI18n('en')"
-                       title="English version"
-                    >EN</a>
-                </div>
-            </footer>
-        </div>
-        <div v-show="$route.name!=='Home'" class="uk-inline">
-            <img src="/static/images/footer.png" alt="">
-            <div class="uk-position-bottom uk-overlay uk-padding-small">
+        <!--<div v-show="$route.name==='Home'">-->
+            <!--<footer class="uk-overlay-default uk-flex uk-flex-middle">-->
+                <!--<div class=""> © 2018</div>-->
+                <!--<div class="uk-margin-left">-->
+                    <!--<a type="text" v-show="$i18n.locale()!=='ru'"-->
+                                    <!--@click="changeI18n('ru')"-->
+                                    <!--title="Русская версия"-->
+                    <!--&gt;RU</a>-->
+                    <!--<a type="text" v-show="$i18n.locale()!=='en'"-->
+                       <!--@click="changeI18n('en')"-->
+                       <!--title="English version"-->
+                    <!--&gt;EN</a>-->
+                <!--</div>-->
+                <!--<div><a href="#" uk-totop uk-scroll></a></div>-->
+            <!--</footer>-->
+        <!--</div>-->
+        <div :class="{'uk-inline': $route.name!=='Home'}">
+            <img v-show="$route.name!=='Home'" src="/static/images/footer.png" alt="">
+            <div class="uk-padding-small" :class="{'uk-position-bottom uk-overlay': $route.name!=='Home', 'uk-overlay-default': $route.name=='Home'}">
                 <vk-grid>
                     <div class=""> © 2018</div>
                     <div class="">
@@ -73,11 +74,12 @@
                            title="English version"
                         >EN</a>
                     </div>
+                    <div class="uk-width-expand"></div>
+                    <div><a href="#" uk-totop uk-scroll></a></div>
                 </vk-grid>
             </div>
         </div>
     </div>
-
 </div>
 </template>
 
@@ -140,7 +142,7 @@ export default {
         background-size: contain;
         background-image: url(/static/images/bg.jpg);
     }
-    footer {
+    .footer {
         min-height: 50px;
         /*display: flex;*/
         /*align-items: center;*/
