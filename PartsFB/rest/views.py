@@ -15,14 +15,6 @@ from django.views.decorators.csrf import csrf_protect
 from django.db.models import Prefetch
 from PartsFB.data import PART_CATEGORIES, FIRST_NAMES, LAST_NAMES
 import random
-import logging
-# from silk.profiling.profiler import silk_profile
-
-logging.basicConfig(
-    filename="test.log",
-    level=logging.DEBUG,
-    format="%(asctime)s:%(levelname)s:%(message)s"
-)
 
 
 def bad_request(err_massage):

@@ -8,7 +8,7 @@ SECRET_KEY = 'f1_g=%%re(xwle(n!(7@)=ih47ckk5%qvuufre7e5vqlly0)ew'
 
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', ]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -22,12 +22,10 @@ INSTALLED_APPS = [
     'rest_framework_jwt',
     'djoser',
     'social_django',
-    # 'Profile.apps.ProfileConfig',
     'PartsFB.apps.PartsFBConfig',
 ]
 
 MIDDLEWARE = [
-    'silk.middleware.SilkyMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -38,7 +36,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# AUTH_USER_MODEL = 'Profile.User'
 
 ROOT_URLCONF = 'AutoPartsFB.urls'
 

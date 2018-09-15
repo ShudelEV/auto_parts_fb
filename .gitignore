@@ -2,20 +2,16 @@
 *.py[cod]
 
 ### Translations ###
-*.mo
 *.pot
 
 ### Django ###
 *.log
 .idea
-**/migrations/
 .sass-cache
-PartsFB/static/js/
 PartsFB/static/public/
 /static/public/
 
 ### Vue ###
-.DS_Store
 node_modules/
 package-lock.json
 webpack-stats.json
@@ -24,4 +20,3 @@ webpack-stats.json
 *.suo
 *.ntvs*
 *.njsproj
-*.sln

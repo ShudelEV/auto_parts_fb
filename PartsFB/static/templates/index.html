@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 
-{% load render_bundle from webpack_loader %}
 {% load staticfiles %}
 
 <html lang="en" style="overflow-y: scroll">
@@ -12,14 +11,14 @@
 	<meta name="keywords" content="" />
 	<meta name="author" content="" />
 
-   	<title>AutoPartsFB</title>
+   	<title>PartsFB</title>
 
 	<!-- Place favicon.ico -->
 	<link rel="shortcut icon" href="{% static "/images/favicon.png" %}">
 
 	<!-- Stylesheets -->
     <!-- UIkit CSS -->
-    <link rel="stylesheet" href="{% static "/css/uikit.min.css" %}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.16/css/uikit.min.css" />
 
 </head>
 
@@ -28,10 +27,9 @@
     <div id="app"></div>
     {% csrf_token %}
 {# If production, ucomment the script: #}
-{#    <script src="{% static 'main-a96041a089063d32afd9.js' %}"></script>#}
-    {% render_bundle 'main' %}
+    <script src="{% static 'main.js' %}"></script>
     <!-- UIkit JS -->
-    <script src="{% static "/js/uikit.min.js" %}"></script>
-    <script src="{% static "/js/uikit-icons.min.js" %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.16/js/uikit.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.16/js/uikit-icons.min.js"></script>
 </body>
 </html>
