@@ -10,6 +10,7 @@
 .sass-cache
 PartsFB/static/public/
 /static/
+migrations/
 
 ### Vue ###
 node_modules/

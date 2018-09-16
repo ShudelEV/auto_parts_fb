@@ -12,9 +12,6 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = []
 
-if settings.DEBUG:
-    urlpatterns += [re_path(r'^silk/', include('silk.urls'))]
-
 urlpatterns += [
     path('admin/', admin.site.urls),
     re_path(r'^auth/users/create-anonymous/', create_anonymous_user),

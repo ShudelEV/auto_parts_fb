@@ -8,7 +8,7 @@ SECRET_KEY = 'f1_g=%%re(xwle(n!(7@)=ih47ckk5%qvuufre7e5vqlly0)ew'
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', ]
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'avtoparts.herokuapp.com']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -183,3 +183,9 @@ JWT_AUTH = {
 
 # Simplified static file serving.
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Parse database configuration from $DATABASE_URL
+import dj_database_url
+
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
