@@ -1,7 +1,9 @@
-django>=2.1
+django==2.1
 psycopg2>=2.7.5
+gunicorn==19.9.0
 pillow>=5.2.0
 djangorestframework>=3.8.2
 djoser>=1.2
 djangorestframework-jwt>=1.11.0
 social-auth-app-django>=2.1.0
+whitenoise>=4.1

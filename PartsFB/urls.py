@@ -6,5 +6,5 @@ from .rest import urls as api_urls
 urlpatterns = [
     path('api/', include(api_urls)),
     re_path(r'^', views.page),
-    # re_path(r'^index$', views.page)
+    re_path(r'^not-found', views.not_found_404)
 ]

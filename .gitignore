@@ -9,7 +9,7 @@
 .idea
 .sass-cache
 PartsFB/static/public/
-/static/public/
+/static/
 
 ### Vue ###
 node_modules/

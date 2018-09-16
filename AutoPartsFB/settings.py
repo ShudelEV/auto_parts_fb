@@ -27,6 +27,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -121,9 +122,9 @@ USE_L10N = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-# STATIC_DIRS = (
-#     os.path.join(BASE_DIR, 'static/'),
-# )
+STATIC_DIRS = (
+    # os.path.join(BASE_DIR, 'PartsFB/static/'),
+)
 
 # Media static files (Images, Video)
 MEDIA_URL = '/media/'
@@ -179,3 +180,6 @@ JWT_AUTH = {
     'JWT_REFRESH_EXPIRATION_DELTA': timedelta(hours=168),  # default - 7 days
     'JWT_ALLOW_REFRESH': True,
 }
+
+# Simplified static file serving.
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
