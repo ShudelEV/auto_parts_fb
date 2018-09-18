@@ -4,6 +4,7 @@ import Vue from 'vue'
 const state = {
     pageMinHeight: 0,
     contentMinHeight: 0,
+    showSearchMenu: false,
     // partBrands: [{ id: Integr, name: String, feedbacks: { [pageNumber]: [feedbacks] }, ... }, ...]
     partBrands: [],
     partTypes: [],
@@ -142,7 +143,12 @@ const mutations = {
     },
     SET_ELEMENTS_HEIGHT (state) {
         state.pageMinHeight = window.innerHeight - document.getElementById('footer').offsetHeight;
+        // console.log('innerHeight', window.innerHeight);
+        // console.log('footer', document.getElementById('footer').offsetHeight);
+        // console.log('pageMinHeight', state.pageMinHeight);
         state.contentMinHeight = state.pageMinHeight - document.getElementById('header').offsetHeight
+        // console.log('header', document.getElementById('header').offsetHeight)
+        // console.log('contentMinHeight', state.contentMinHeight)
     }
 };
 

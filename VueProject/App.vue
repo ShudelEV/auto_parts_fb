@@ -8,27 +8,30 @@
         <!--Navbar-->
         <div id="header" class="uk-section uk-section-default uk-padding-remove-vertical">
             <!--Home page navbar-->
-            <template v-if="$route.name=='Home'">
+            <div v-show="$route.name=='Home'">
                 <div class="uk-card uk-hidden@m">
                     <div class="uk-container">
                         <nav-bar-login :logo="logo"></nav-bar-login>
                     </div>
                 </div>
-                <img id="header_image" src="/static/images/header.jpeg" alt="" class="uk-align-center uk-margin-remove-top uk-margin-remove-bottom">
+                <img id="header_image" src="/static/images/header.jpeg" alt=""
+                     class="uk-align-center uk-margin-remove-top uk-margin-remove-bottom"
+                     @load="$store.commit('SET_ELEMENTS_HEIGHT'); $store.state.all.showSearch=true"
+                >
                 <div class="uk-container uk-position-top uk-visible@m">
-                    <vk-sticky bottom="#header_image" animation="slide-top" @active="">
+                    <!--<div uk-sticky="bottom: #header_image; animation: uk-animation-slide-top">-->
                         <nav-bar-login :logo="logo"></nav-bar-login>
-                    </vk-sticky>
+                    <!--</div>-->
                 </div>
-            </template>
+            </div>
             <!--Other page navbar-->
-            <template v-else>
+            <div v-show="$route.name!=='Home'">
                 <div id="navbar" class="uk-card uk-card-default" uk-sticky>
                     <div class="uk-container bg-img">
                         <nav-bar-login :logo="logo"></nav-bar-login>
                     </div>
                 </div>
-            </template>
+            </div>
         </div>
         <!--Login Window-->
         <login-window :show="$store.state.account.showLoginWindow"></login-window>
@@ -41,42 +44,26 @@
     </div>
     <!--Footer-->
     <div id="footer" class="uk-container bg-img">
-        <!--<div v-show="$route.name==='Home'">-->
-            <!--<footer class="uk-overlay-default uk-flex uk-flex-middle">-->
-                <!--<div class=""> © 2018</div>-->
-                <!--<div class="uk-margin-left">-->
-                    <!--<a type="text" v-show="$i18n.locale()!=='ru'"-->
-                                    <!--@click="changeI18n('ru')"-->
-                                    <!--title="Русская версия"-->
-                    <!--&gt;RU</a>-->
-                    <!--<a type="text" v-show="$i18n.locale()!=='en'"-->
-                       <!--@click="changeI18n('en')"-->
-                       <!--title="English version"-->
-                    <!--&gt;EN</a>-->
-                <!--</div>-->
-                <!--<div><a href="#" uk-totop uk-scroll></a></div>-->
-            <!--</footer>-->
-        <!--</div>-->
         <div :class="{'uk-inline': $route.name!=='Home'}">
-            <img v-show="$route.name!=='Home'" src="/static/images/footer.png" alt="">
+            <img v-show="$route.name!=='Home'" @load="$store.commit('SET_ELEMENTS_HEIGHT')" src="/static/images/footer.png" alt="">
             <div class="uk-padding-small" :class="{'uk-position-bottom uk-overlay': $route.name!=='Home', 'uk-overlay-default': $route.name=='Home'}">
-                <vk-grid>
-                    <div class=""> © 2018</div>
-                    <div class="">
-                        <a type="text" v-show="$i18n.locale()!=='ru'"
-                                        @click="changeI18n('ru')"
-                                        title="Русская версия"
-                        >RU</a>
-                    </div>
+                <div uk-grid>
+                    <div class="uk-flex-first"> © 2018</div>
                     <div>
-                        <a type="text" v-show="$i18n.locale()!=='en'"
-                           @click="changeI18n('en')"
-                           title="English version"
-                        >EN</a>
+                        <ul class="uk-subnav uk-subnav-divider">
+                            <li><a type="text" :class="{'disabled-content': $i18n.locale()=='ru'}"
+                                            @click="changeI18n('ru')"
+                                            title="Русская версия"
+                            >RU</a></li>
+                            <li><a type="text" :class="{'disabled-content': $i18n.locale()=='en'}"
+                               @click="changeI18n('en')"
+                               title="English version"
+                            >EN</a></li>
+                        </ul>
                     </div>
                     <div class="uk-width-expand"></div>
                     <div><a href="#" uk-totop uk-scroll></a></div>
-                </vk-grid>
+                </div>
             </div>
         </div>
     </div>
@@ -141,11 +128,6 @@ export default {
     .uk-container.bg-img {
         background-size: contain;
         background-image: url(/static/images/bg.jpg);
-    }
-    .footer {
-        min-height: 50px;
-        /*display: flex;*/
-        /*align-items: center;*/
     }
     /*Show progress bar*/
     .nprogress-custom-parent {

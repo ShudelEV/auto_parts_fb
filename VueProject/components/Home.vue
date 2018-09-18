@@ -2,7 +2,7 @@
     <vk-grid gutter="large">
         <div class="uk-width-1-4@m">
             <vk-sticky top="#header_image" :offset="20" media="@m">
-                <vk-card padding="small" class="uk-background-muted">
+                <vk-card v-show="$store.state.all.showSearch" padding="small" class="uk-background-muted">
                     <div class="uk-margin-small">
                         <div class="uk-inline">
                             <vk-icon-link v-if="search_pattern"
@@ -12,7 +12,9 @@
                             ></vk-icon-link>
                             <span class="uk-form-icon" uk-icon="icon: search"></span>
                             <input class="uk-input uk-form-small uk-form-width-medium"
-                                   type="text" :placeholder="$t('Filter by brands')"
+                                   type="text"
+                                   :placeholder="$t('Filter by brands')"
+                                   :title="$t('Filter by brands')"
                                    v-model="search_pattern"
                             >
                         </div>
@@ -119,7 +121,7 @@ export default {
     },
 
     mounted () {
-        this.$store.commit('SET_ELEMENTS_HEIGHT')
+        this.$nextTick(() => { this.$store.commit('SET_ELEMENTS_HEIGHT') })
     },
 
     computed: {
