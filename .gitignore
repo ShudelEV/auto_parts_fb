@@ -9,6 +9,8 @@
 .idea
 .sass-cache
 PartsFB/static/public/
+PartsFB/static/js/
+PartsFB/static/images/
 /static/
 migrations/
 
