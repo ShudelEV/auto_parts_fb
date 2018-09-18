@@ -67,8 +67,18 @@ TEMPLATES = [
 WSGI_APPLICATION = 'AutoPartsFB.wsgi.application'
 
 DATABASES = {
-    'default': dj_database_url.config(conn_max_age=500, ssl_require=True)
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'autoparts_db',
+        'USER': 'autoparts_user',
+        'PASSWORD': 'autoparts5000',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
 }
+
+# Parse database configuration from $DATABASE_URL
+DATABASES['default'].update(dj_database_url.config(conn_max_age=500, ssl_require=True))
 
 AUTH_PASSWORD_VALIDATORS = [
     {

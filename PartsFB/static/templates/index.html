@@ -19,16 +19,15 @@
 	<!-- Stylesheets -->
     <!-- UIkit CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.16/css/uikit.min.css" />
-
 </head>
 
 <body>
-
     <div id="app"></div>
-    {% csrf_token %}
-    <script src="{% static '/js/main.js' %}"></script>
     <!-- UIkit JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.16/js/uikit.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.16/js/uikit-icons.min.js"></script>
+
+    {% csrf_token %}
+    <script src="{% static '/js/main.js' %}"></script>
 </body>
 </html>
