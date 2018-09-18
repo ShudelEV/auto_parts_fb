@@ -4,15 +4,14 @@ import Router from 'vue-router'
 
 import Home from './components/Home.vue'
 import LoggedInCallback from './components/LoggedInCallback.vue'
-import BrandPage from './components/BrandPage.vue'
-import AddFB from './components/AddFB.vue'
-import AllFB from './components/AllFB.vue'
 import FBList from './components/FBList.vue'
-import BrandInfo from './components/BrandInfo.vue'
 import PageNotFound from './components/PageNotFound.vue'
 import Page404 from './components/Page404.vue'
 
-
+const BrandPage = () => import(/* webpackChunkName: "BrandPage" */ './components/BrandPage.vue');
+const AddFB = () => import(/* webpackChunkName: "BrandPage" */ './components/AddFB.vue');
+const AllFB = () => import(/* webpackChunkName: "BrandPage" */ './components/AllFB.vue');
+const BrandInfo = () => import(/* webpackChunkName: "BrandPage" */ './components/BrandInfo.vue');
 // tell Vue to use the vue-router plugin
 Vue.use(Router);
 

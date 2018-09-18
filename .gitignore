@@ -12,7 +12,7 @@
 .sass-cache
 PartsFB/static/js/
 PartsFB/static/public/
-/static/public/
+/static/
 
 ### Vue ###
 .DS_Store

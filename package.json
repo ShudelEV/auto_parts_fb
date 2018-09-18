@@ -13,6 +13,7 @@
     "@vuikit/icons": "^0.8.1",
     "@vuikit/theme": "^0.8.1",
     "axios": "^0.17.1",
+    "babel": "^6.23.0",
     "hawk": "^7.0.7",
     "js-cookie": "^2.2.0",
     "libcipm": "^1.6.3",
@@ -31,6 +32,7 @@
     "vuikit": "^0.8.5"
   },
   "devDependencies": {
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^7.0.0",
     "babel-loader": "^7.1.5",
