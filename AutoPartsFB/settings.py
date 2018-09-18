@@ -1,5 +1,7 @@
 import os
 from datetime import timedelta
+import dj_database_url
+import django_heroku
 from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -8,7 +10,10 @@ SECRET_KEY = 'f1_g=%%re(xwle(n!(7@)=ih47ckk5%qvuufre7e5vqlly0)ew'
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'avtoparts.herokuapp.com']
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -16,7 +21,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'whitenoise.runserver_nostatic',
+    # 'django.contrib.staticfiles',
 
     'rest_framework',
     'rest_framework_jwt',
@@ -54,6 +60,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'debug': DEBUG,
         },
     },
 ]
@@ -70,6 +77,9 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+# Parse database configuration from $DATABASE_URL
+DATABASES['default'].update(dj_database_url.config(conn_max_age=500, ssl_require=True))
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -114,17 +124,19 @@ LOCALE_PATHS = [
 ]
 LANGUAGE_CODE = 'en-us'
 USE_TZ = True
-TIME_ZONE = 'Europe/Minsk'
+TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 
 # File spreading
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_DIRS = (
     # os.path.join(BASE_DIR, 'PartsFB/static/'),
 )
+# Simplified static file serving.
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media static files (Images, Video)
 MEDIA_URL = '/media/'
@@ -181,11 +193,5 @@ JWT_AUTH = {
     'JWT_ALLOW_REFRESH': True,
 }
 
-# Simplified static file serving.
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# Parse database configuration from $DATABASE_URL
-import dj_database_url
-
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
+# Activate Django-Heroku.
+django_heroku.settings(locals())

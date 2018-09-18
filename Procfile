@@ -1,1 +1,1 @@
-web: gunicorn AutoPartsFB.wsgi --log-file -
+web: gunicorn AutoPartsFB.wsgi
