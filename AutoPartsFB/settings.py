@@ -22,7 +22,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',
-    # 'django.contrib.staticfiles',
+    'django.contrib.staticfiles',
 
     'rest_framework',
     'rest_framework_jwt',
@@ -67,18 +67,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'AutoPartsFB.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'autoparts_db',
-        'USER': 'autoparts_user',
-        'PASSWORD': 'autoparts5000',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(conn_max_age=500, ssl_require=True)
 }
-
-# Parse database configuration from $DATABASE_URL
-DATABASES['default'].update(dj_database_url.config(conn_max_age=500, ssl_require=True))
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -129,7 +119,6 @@ USE_L10N = True
 
 # File spreading
 STATIC_URL = '/static/'
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_DIRS = (
     # os.path.join(BASE_DIR, 'PartsFB/static/'),
@@ -169,8 +158,8 @@ SOCIAL_AUTH_VK_OAUTH2_SECRET = 'qSX7E2IZhk1LQDYySu6I'
 SOCIAL_AUTH_FACEBOOK_KEY = '254286108555969'
 SOCIAL_AUTH_FACEBOOK_SECRET = '532a3eb5975b519f43d079d51897cd85'
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-  'locale': 'ru_RU',
-  'fields': 'id, name, email'
+    'locale': 'ru_RU',
+    'fields': 'id, name, email'
 }
 
 SOCIAL_AUTH_TWITTER_KEY = ''
