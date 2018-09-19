@@ -6,14 +6,14 @@
                 <div>
                     <form ref="form3">
                         <div class="uk-inline uk-margin-small-bottom">
-                            <span class="uk-form-icon" uk-icon="icon: user"></span>
+                            <span class="uk-form-icon" uk-icon="user"></span>
                             <input class="uk-input uk-form-small" name="login"
                                    type="text" :placeholder="$t('new username')"
                                    v-model="newUsername"
                             >
                         </div>
                         <div class="uk-inline uk-margin-small-bottom">
-                            <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                            <span class="uk-form-icon" uk-icon="lock"></span>
                             <input class="uk-input uk-form-small" name="password"
                                    type="password" :placeholder="$t('password')"
                                    v-model="newPassword"
@@ -28,14 +28,14 @@
                 <div class="uk-margin-top">
                     <form ref="form3">
                         <div class="uk-inline uk-margin-small-bottom">
-                            <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                            <span class="uk-form-icon" uk-icon="lock"></span>
                             <input class="uk-input uk-form-small" name="password"
                                    type="password" :placeholder="$t('new password')"
                                    v-model="newPassword"
                             >
                         </div>
                         <div class="uk-inline uk-margin-small-bottom">
-                            <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                            <span class="uk-form-icon" uk-icon="lock"></span>
                             <input class="uk-input uk-form-small" name="password2"
                                    type="password" :placeholder="$t('confirm password')"
                                    v-model="newPassword2"
