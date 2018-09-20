@@ -23,3 +23,5 @@ webpack-stats.json
 *.suo
 *.ntvs*
 *.njsproj
+
+.env
