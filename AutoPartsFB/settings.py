@@ -189,7 +189,6 @@ JWT_AUTH = {
     'JWT_ALLOW_REFRESH': True,
 }
 
-# MAILER_LIST = ['shudelev@gmail.com', 'e.shudel@mail.ru']
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'shudelev'
