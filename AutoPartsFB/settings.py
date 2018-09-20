@@ -55,12 +55,12 @@ TEMPLATES = [
         ],
         'APP_DIRS': False,
         'OPTIONS': {
-            # 'context_processors': [
-            #     'django.template.context_processors.debug',
-            #     'django.template.context_processors.request',
-            #     'django.contrib.auth.context_processors.auth',
-            #     'django.contrib.messages.context_processors.messages',
-            # ],
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
         },
     },
 ]
@@ -185,5 +185,33 @@ JWT_AUTH = {
     'JWT_ALLOW_REFRESH': True,
 }
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        },
+    },
+    'console': {
+           'level': 'DEBUG',
+           'class': 'logging.StreamHandler',
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    }
+}
 # Activate Django-Heroku.
 django_heroku.settings(locals())
