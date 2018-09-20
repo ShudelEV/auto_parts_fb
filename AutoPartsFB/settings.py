@@ -13,8 +13,13 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-# CSRF_COOKIE_SECURE = True
-# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE=True
+# SESSION_COOKIE_SECURE=True
+# SECURE_HSTS_SECONDS=30
+# SECURE_CONTENT_TYPE_NOSNIFF=True
+# SECURE_BROWSER_XSS_FILTER=True
+# X_FRAME_OPTIONS='DENY'
+
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 INSTALLED_APPS = [
@@ -193,25 +198,16 @@ LOGGING = {
             '()': 'django.utils.log.RequireDebugFalse'
         }
     },
-
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        },
-    },
     'console': {
            'level': 'DEBUG',
            'class': 'logging.StreamHandler',
     },
     'loggers': {
-        'django.request': {
+        'django': {
             'handlers': ['console'],
-            'level': 'ERROR',
-            'propagate': True,
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
         },
-    }
+    },
 }
 # Activate Django-Heroku.
 django_heroku.settings(locals())
