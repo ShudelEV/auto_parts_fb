@@ -189,21 +189,26 @@ JWT_AUTH = {
     'JWT_ALLOW_REFRESH': True,
 }
 
+# MAILER_LIST = ['shudelev@gmail.com', 'e.shudel@mail.ru']
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'shudelev@gmail.com'
+EMAIL_HOST_USER = 'shudelev'
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 SERVER_EMAIL = EMAIL_HOST_USER
 
+ADMINS = [('avtoparts-admin', 'e.shudel@mail.ru')]
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'filters': {
-        'special': {
-            '()': 'project.logging.SpecialFilter',
-            'foo': 'bar',
+    'formatters': {
+        'verbose': {
+        'format': '%(levelname)s [%(asctime)s] %(module)s %(message)s'
         },
+    },
+    'filters': {
         'require_debug_true': {
             '()': 'django.utils.log.RequireDebugTrue',
         },
@@ -211,23 +216,30 @@ LOGGING = {
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'file': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'verbose',
+            'filename': '/var/www/logs/ibiddjango.log',
+            'maxBytes': 1024000,
+            'backupCount': 3,
         },
         'mail_admins': {
             'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler',
-            'filters': ['special']
+            'class': 'django.utils.log.AdminEmailHandler'
         }
     },
     'loggers': {
         'django': {
-            'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'ERROR'),
+            'handlers': ['console', 'mail_admins', 'file'],
+            'level': 'DEBUG',
         },
-    'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
+        # 'django.request': {
+        #     'handlers': ['mail_admins'],
+        #     'level': 'ERROR',
+        #     'propagate': True,
+        # },
     },
 }
 # Activate Django-Heroku.
