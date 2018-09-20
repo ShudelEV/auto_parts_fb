@@ -22,7 +22,4 @@ urlpatterns += [
     re_path(r'^auth/', include('djoser.urls.jwt')),
 ]
 
-# urlpatterns += staticfiles_urlpatterns()
-# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
 urlpatterns += [path('', include('PartsFB.urls'))]

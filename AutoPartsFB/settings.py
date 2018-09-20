@@ -66,19 +66,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'AutoPartsFB.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': '5432',
-    }
-}
-
 # Parse database configuration from $DATABASE_URL
-DATABASES['default'].update(dj_database_url.config(conn_max_age=500, ssl_require=True))
+DATABASES = {
+    'default': dj_database_url.config(conn_max_age=500, ssl_require=True)
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -131,7 +122,7 @@ USE_L10N = True
 # File spreading
 # Static files
 STATIC_DIRS = (
-    # os.path.join(BASE_DIR, 'PartsFB/static/'),
+    os.path.join(BASE_DIR, 'PartsFB/static/'),
 )
 
 AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
