@@ -20,7 +20,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 # SECURE_BROWSER_XSS_FILTER=True
 # X_FRAME_OPTIONS = 'DENY'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 INSTALLED_APPS = [
     'django.contrib.admin',
