@@ -1,7 +1,6 @@
 import os
 from datetime import timedelta
 import dj_database_url
-# import django_heroku
 from decouple import config, Csv
 from django.utils.translation import gettext_lazy as _
 
@@ -55,9 +54,7 @@ ROOT_URLCONF = 'AutoPartsFB.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(BASE_DIR, 'PartsFB/templates'),
-        ],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -129,9 +126,10 @@ USE_L10N = True
 # Static files
 AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+AWS_DEFAULT_ACL = None
 AWS_STORAGE_BUCKET_NAME = 'avtoparts'
 AWS_S3_REGION_NAME = 'eu-central-1'
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_CUSTOM_DOMAIN = 's3.%s.amazonaws.com/%s' % (AWS_S3_REGION_NAME, AWS_STORAGE_BUCKET_NAME)
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
@@ -248,6 +246,3 @@ LOGGING = {
         # },
     },
 }
-
-# Activate Django-Heroku.
-# django_heroku.settings(locals())

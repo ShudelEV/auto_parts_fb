@@ -8,11 +8,9 @@
 *.log
 .idea
 .sass-cache
-PartsFB/static/public/
-PartsFB/static/js/
-PartsFB/static/images/
-/static/
+PartsFB/static/
 migrations/
+static/
 
 ### Vue ###
 node_modules/
