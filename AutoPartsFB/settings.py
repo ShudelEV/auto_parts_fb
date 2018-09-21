@@ -1,7 +1,7 @@
 import os
 from datetime import timedelta
 import dj_database_url
-import django_heroku
+# import django_heroku
 from decouple import config, Csv
 from django.utils.translation import gettext_lazy as _
 
@@ -246,4 +246,4 @@ LOGGING = {
 }
 
 # Activate Django-Heroku.
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
