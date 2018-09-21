@@ -224,13 +224,13 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
-        'file': {
-            'class': 'logging.handlers.RotatingFileHandler',
-            'formatter': 'verbose',
-            'filename': '/var/www/logs/ibiddjango.log',
-            'maxBytes': 1024000,
-            'backupCount': 3,
-        },
+        # 'file': {
+        #     'class': 'logging.handlers.RotatingFileHandler',
+        #     'formatter': 'verbose',
+        #     'filename': 'django-logger.log',
+        #     'maxBytes': 1024000,
+        #     'backupCount': 3,
+        # },
         'mail_admins': {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler'
@@ -238,7 +238,7 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'mail_admins', 'file'],
+            'handlers': ['console', 'mail_admins'],
             'level': 'DEBUG',
         },
         # 'django.request': {
