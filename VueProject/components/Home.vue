@@ -7,7 +7,7 @@
                     <nav-bar-login :logo="logo"></nav-bar-login>
                 </div>
             </div>
-            <img id="header_image" src="/static/images/header.jpeg" alt=""
+            <img id="header_image" :src="$store.state.all.staticUrl + 'images/header.jpeg'" alt=""
                  class="uk-align-center uk-margin-remove-top uk-margin-remove-bottom"
                  @load="$store.commit('SET_ELEMENTS_HEIGHT'); $store.state.all.showSearch=true"
             >

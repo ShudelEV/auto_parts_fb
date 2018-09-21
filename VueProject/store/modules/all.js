@@ -5,6 +5,7 @@ const state = {
     pageMinHeight: 0,
     contentMinHeight: 0,
     showSearchMenu: false,
+    staticUrl: 'https://s3.eu-central-1.amazonaws.com/avtoparts/static/',
     // partBrands: [{ id: Integr, name: String, feedbacks: { [pageNumber]: [feedbacks] }, ... }, ...]
     partBrands: [],
     partTypes: [],

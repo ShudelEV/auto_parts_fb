@@ -11,7 +11,7 @@
     <!--Footer-->
     <div id="footer" class="uk-container bg-img">
         <div :class="{'uk-inline': $route.name!=='Home'}">
-            <img v-show="$route.name!=='Home'" @load="$store.commit('SET_ELEMENTS_HEIGHT')" src="/static/images/footer.png" alt="">
+            <img v-show="$route.name!=='Home'" @load="$store.commit('SET_ELEMENTS_HEIGHT')" :src="staticUrl + 'images/footer.png'" alt="">
             <div class="uk-padding-small" :class="{'uk-position-bottom uk-overlay': $route.name!=='Home', 'uk-overlay-default': $route.name=='Home'}">
                 <div uk-grid>
                     <div class="uk-flex-first"> © 2018</div>
@@ -64,7 +64,8 @@ export default {
 
     computed: mapState({
         accountMessage: state => state.account.message,
-        allMessage: state => state.all.message
+        allMessage: state => state.all.message,
+        staticUrl: state => state.all.staticUrl
     }),
 
     watch: {
@@ -91,7 +92,7 @@ export default {
 <style>
     .uk-container.bg-img {
         background-size: contain;
-        background-image: url(/static/images/bg.jpg);
+        background-image: url(https://s3.eu-central-1.amazonaws.com/avtoparts/static/images/bg.jpg);
     }
     /*Show progress bar*/
     .nprogress-custom-parent {
