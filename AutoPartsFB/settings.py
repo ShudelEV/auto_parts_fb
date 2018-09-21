@@ -197,7 +197,7 @@ EMAIL_HOST_USER = 'elenashudel'
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_USE_SSL =True
+EMAIL_USE_SSL = False
 SERVER_EMAIL = EMAIL_HOST_USER
 
 ADMINS = [('avtopartsadmin', 'e.shudel@mail.ru')]
