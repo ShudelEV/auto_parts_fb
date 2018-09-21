@@ -5,10 +5,6 @@
 </template>
 <script>
 export default {
-    name: "Page404",
-
-    mounted () {
-        this.$nextTick(() => { this.$store.commit('SET_ELEMENTS_HEIGHT') })
-    }
+    name: "Page404"
 }
 </script>

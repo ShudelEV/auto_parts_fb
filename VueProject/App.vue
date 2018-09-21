@@ -1,47 +1,13 @@
 <template>
 <div class="">
+    <!--Load Progress Bar-->
+    <nprogress-container id="nprogress-container"></nprogress-container>
     <!--Error notification-->
     <vk-notification :messages.sync="messages"></vk-notification>
-    <div :style="{'min-height': $store.state.all.pageMinHeight + 'px'}">
-        <!--Load Progress Bar-->
-        <nprogress-container id="nprogress-container"></nprogress-container>
-        <!--Navbar-->
-        <div id="header" class="uk-section uk-section-default uk-padding-remove-vertical">
-            <!--Home page navbar-->
-            <div v-show="$route.name=='Home'">
-                <div class="uk-card uk-hidden@m">
-                    <div class="uk-container">
-                        <nav-bar-login :logo="logo"></nav-bar-login>
-                    </div>
-                </div>
-                <img id="header_image" src="/static/images/header.jpeg" alt=""
-                     class="uk-align-center uk-margin-remove-top uk-margin-remove-bottom"
-                     @load="$store.commit('SET_ELEMENTS_HEIGHT'); $store.state.all.showSearch=true"
-                >
-                <div class="uk-container uk-position-top uk-visible@m">
-                    <!--<div uk-sticky="bottom: #header_image; animation: uk-animation-slide-top">-->
-                        <nav-bar-login :logo="logo"></nav-bar-login>
-                    <!--</div>-->
-                </div>
-            </div>
-            <!--Other page navbar-->
-            <div v-show="$route.name!=='Home'">
-                <div id="navbar" class="uk-card uk-card-default" uk-sticky>
-                    <div class="uk-container bg-img">
-                        <nav-bar-login :logo="logo"></nav-bar-login>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--Login Window-->
-        <login-window :show="$store.state.account.showLoginWindow"></login-window>
-        <!--Edit Account-->
-        <!--<edit-account :show="$store.state.account.showEditUsername || $store.state.account.showEditPassword"></edit-account>-->
-        <!--Body-->
-        <div class="uk-container bg-img" :style="{'min-height': $store.state.all.contentMinHeight + 'px'}">
-            <router-view></router-view>
-        </div>
-    </div>
+    <!--Login Window-->
+    <login-window :show="$store.state.account.showLoginWindow"></login-window>
+    <!--Page-->
+    <router-view></router-view>
     <!--Footer-->
     <div id="footer" class="uk-container bg-img">
         <div :class="{'uk-inline': $route.name!=='Home'}">
@@ -72,18 +38,16 @@
 
 <script>
 import { mapState } from 'vuex'
-import NavBarLogin from './components/NavBarLogin.vue'
 import LoginWindow from './components/Login.vue'
 import NprogressContainer from 'vue-nprogress/src/NprogressContainer'
 
 export default {
     name: 'App',
 
-    components: { NavBarLogin, LoginWindow, NprogressContainer },
+    components: { LoginWindow, NprogressContainer },
 
     data () {
         return {
-            logo: 'PartsOK',
             messages: []
         }
     },

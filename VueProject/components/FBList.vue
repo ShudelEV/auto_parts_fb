@@ -26,7 +26,7 @@
         <span class="uk-clearfix">
             <a class="uk-icon-link uk-float-right"
                 :title="collapse.includes(key) ? $t('Scroll') : $t('Collapse')"
-                :icon="collapse.includes(key) ? 'triangle-up' : 'triangle-down'"
+                :uk-icon="collapse.includes(key) ? 'triangle-up' : 'triangle-down'"
                 @click="toggleAccordion(key)"
             ></a>
         </span>

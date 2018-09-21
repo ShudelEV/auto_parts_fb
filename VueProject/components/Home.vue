@@ -1,113 +1,147 @@
 <template>
-    <vk-grid gutter="large">
-        <div class="uk-width-1-4@m">
-            <vk-sticky top="#header_image" :offset="20" media="@m">
-                <vk-card v-if="$store.state.all.showSearch" padding="small" class="uk-background-muted">
-                    <div class="uk-margin-small">
-                        <div class="uk-inline">
-                            <a v-if="search_pattern"
-                                class="uk-icon-link uk-form-icon uk-form-icon-flip"
-                                uk-icon="close"
-                                @click="search_pattern = ''"
-                            ></a>
-                            <span class="uk-form-icon" uk-icon="search"></span>
-                            <input class="uk-input uk-form-small uk-form-width-medium"
-                                   type="text"
-                                   :placeholder="$t('Filter by brands')"
-                                   :title="$t('Filter by brands')"
-                                   v-model="search_pattern"
-                            >
-                        </div>
-                    </div>
-                    <ul class="uk-nav-default uk-nav-parent-icon" uk-nav>
-                        <li><a @click="$router.push({name: 'AllFB', query: {page: 1}})">
-                            <span class="uk-margin-small-right" uk-icon="list"></span>
-                            {{ $t('All feedbacks') }}
-                        </a></li>
-                    </ul>
-                </vk-card>
-            </vk-sticky>
-        </div>
-        <div class="uk-width-expand@m" style="padding-bottom: 100px">
-            <div uk-grid="masonry: true"
-                 class="uk-grid-small uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-3@m uk-child-width-1-4@l"
-                 uk-scrollspy="cls: uk-animation-slide-bottom; repeat: true"
-            >
-                <div v-for="(value, key) in sortedPartBrands(search_pattern)" class="uk-margin-bottom">
-                    <vk-card :key="key" hover padding="small">
-                        <vk-card-title class="uk-margin-small-left">{{ key }}</vk-card-title>
-                        <ul class="uk-list uk-list-bullet">
-                            <li v-for="i in getArray(key)"
-                                @mouseover="addFBButton=value[i].name"
-                            >
-                                <div class="uk-inline">
-                                    <a class="uk-link-text"
-                                       @click="gotoBrandFeedbacks(value[i])"
-                                    >
-                                        {{ value[i].name }}
-                                    </a>
-                                    <!--a part manufacturer information when to hover the link-->
-                                    <vk-drop position="top-center"
-                                             :flip="false" mode="hover"
-                                             :delay-hide="300" :delay-show="1000"
-                                             @show="showElement('info-window' + value[i].id)"
-                                    >
-                                        <vk-card padding="small" :id="'info-window' + value[i].id">
-                                            <div class="uk-flex uk-flex-center">
-                                                <img class="uk-border-rounded" :src="value[i].image" alt="">
-                                            </div>
-                                            <div class="uk-padding-remove-bottom">
-                                                <dl class="uk-description-list uk-margin-remove-bottom">
-                                                    <dt></dt>
-                                                    <dt>{{ $t('Country') }}:</dt>
-                                                    <dd>{{getCountry(value[i].country)}}</dd>
-                                                    <dt>{{ $t('Specialization') }}:</dt>
-                                                    <dd>{{value[i].specialization}}</dd>
-                                                    <!--<dt>Link:</dt>-->
-                                                    <!--<dd><a :href="value[i].site_url" target="_blank">{{value[i].site_url}}</a></dd>-->
-                                                </dl>
-                                            </div>
-                                            <div slot="footer">
-                                                <vk-button type="text"
-                                                           @click="gotoBrandInfo(value[i].name)"
-                                                >{{ $t('Read more') }}</vk-button>
-                                            </div>
-                                        </vk-card>
-                                    </vk-drop>
-                                    <a v-show="addFBButton===value[i].name"
-                                       class="uk-icon-link uk-margin-small-left"
-                                                  uk-icon="plus-circle"
-                                                  @click="$router.push({name: 'AddFB', params: {brandName: addFBButton}})"
-                                                  :title="$t('Add feedback')"
-                                    ></a>
-                                    <span v-show="addFBButton!==value[i].name" class="uk-badge uk-margin-small-left">
-                                        {{ value[i].fb_quantity }}
-                                    </span>
-                                </div>
-                            </li>
-                        </ul>
-                        <a uk-icon="more" class="uk-icon-link uk-margin-small-left"
-                            v-show="getArray(key).length < value.length && showAll != key"
-                            @click="showAll = key" :title="$t('Collapse')"
-                        ></a>
-                    </vk-card>
+    <div :style="{'min-height': $store.state.all.pageMinHeight + 'px'}">
+        <!--Navbar-->
+        <div id="header" class="uk-section uk-section-default uk-padding-remove-vertical">
+            <div class="uk-card uk-hidden@m">
+                <div class="uk-container">
+                    <nav-bar-login :logo="logo"></nav-bar-login>
                 </div>
             </div>
+            <img id="header_image" src="/static/images/header.jpeg" alt=""
+                 class="uk-align-center uk-margin-remove-top uk-margin-remove-bottom"
+                 @load="$store.commit('SET_ELEMENTS_HEIGHT'); $store.state.all.showSearch=true"
+            >
+            <div class="uk-container uk-position-top uk-visible@m">
+                <!--<div uk-sticky="bottom: #header_image; animation: uk-animation-slide-top">-->
+                    <nav-bar-login :logo="logo"></nav-bar-login>
+                <!--</div>-->
+            </div>
+            <!--Other page navbar-->
+            <!--<div v-show="$route.name!=='Home'">-->
+                <!--<div id="navbar" class="uk-card uk-card-default" uk-sticky>-->
+                    <!--<div class="uk-container bg-img">-->
+                        <!--<nav-bar-login :logo="logo"></nav-bar-login>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
         </div>
-    </vk-grid>
+        <!--Edit Account-->
+        <!--<edit-account :show="$store.state.account.showEditUsername || $store.state.account.showEditPassword"></edit-account>-->
+        <!--Body-->
+        <div class="uk-container bg-img" :style="{'min-height': $store.state.all.contentMinHeight + 'px'}">
+            <vk-grid gutter="large">
+                <div class="uk-width-1-4@m">
+                    <div uk-sticky="top: #header_image; offset: 20" media="@m">
+                        <vk-card v-if="$store.state.all.showSearch" padding="small" class="uk-background-muted">
+                            <div class="uk-margin-small">
+                                <div class="uk-inline">
+                                    <a v-if="search_pattern"
+                                        class="uk-icon-link uk-form-icon uk-form-icon-flip"
+                                        uk-icon="close"
+                                        @click="search_pattern = ''"
+                                    ></a>
+                                    <span class="uk-form-icon" uk-icon="search"></span>
+                                    <input class="uk-input uk-form-small uk-form-width-medium"
+                                           type="text"
+                                           :placeholder="$t('Filter by brands')"
+                                           :title="$t('Filter by brands')"
+                                           v-model="search_pattern"
+                                    >
+                                </div>
+                            </div>
+                            <ul class="uk-nav-default uk-nav-parent-icon" uk-nav>
+                                <li><a @click="$router.push({name: 'AllFB', query: {page: 1}})">
+                                    <span class="uk-margin-small-right" uk-icon="list"></span>
+                                    {{ $t('All feedbacks') }}
+                                </a></li>
+                            </ul>
+                        </vk-card>
+                    </div>
+                </div>
+                <div class="uk-width-expand@m" style="padding-bottom: 100px">
+                    <div uk-grid="masonry: true"
+                         class="uk-grid-small uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-3@m uk-child-width-1-4@l"
+                         uk-scrollspy="cls: uk-animation-slide-bottom; repeat: true"
+                    >
+                        <div v-for="(value, key) in sortedPartBrands(search_pattern)" class="uk-margin-bottom">
+                            <vk-card :key="key" hover padding="small">
+                                <vk-card-title class="uk-margin-small-left">{{ key }}</vk-card-title>
+                                <ul class="uk-list uk-list-bullet">
+                                    <li v-for="i in getArray(key)"
+                                        @mouseover="addFBButton=value[i].name"
+                                    >
+                                        <div class="uk-inline">
+                                            <a class="uk-link-text"
+                                               @click="gotoBrandFeedbacks(value[i])"
+                                            >
+                                                {{ value[i].name }}
+                                            </a>
+                                            <!--a part manufacturer information when to hover the link-->
+                                            <vk-drop position="top-center"
+                                                     :flip="false" mode="hover"
+                                                     :delay-hide="300" :delay-show="1000"
+                                                     @show="showElement('info-window' + value[i].id)"
+                                            >
+                                                <vk-card padding="small" :id="'info-window' + value[i].id">
+                                                    <div class="uk-flex uk-flex-center">
+                                                        <img class="uk-border-rounded" :src="value[i].image" alt="">
+                                                    </div>
+                                                    <div class="uk-padding-remove-bottom">
+                                                        <dl class="uk-description-list uk-margin-remove-bottom">
+                                                            <dt></dt>
+                                                            <dt>{{ $t('Country') }}:</dt>
+                                                            <dd>{{getCountry(value[i].country)}}</dd>
+                                                            <dt>{{ $t('Specialization') }}:</dt>
+                                                            <dd>{{value[i].specialization}}</dd>
+                                                            <!--<dt>Link:</dt>-->
+                                                            <!--<dd><a :href="value[i].site_url" target="_blank">{{value[i].site_url}}</a></dd>-->
+                                                        </dl>
+                                                    </div>
+                                                    <div slot="footer">
+                                                        <vk-button type="text"
+                                                                   @click="gotoBrandInfo(value[i].name)"
+                                                        >{{ $t('Read more') }}</vk-button>
+                                                    </div>
+                                                </vk-card>
+                                            </vk-drop>
+                                            <a v-show="addFBButton===value[i].name"
+                                               class="uk-icon-link uk-margin-small-left"
+                                                          uk-icon="plus-circle"
+                                                          @click="$router.push({name: 'AddFB', params: {brandName: addFBButton}})"
+                                                          :title="$t('Add feedback')"
+                                            ></a>
+                                            <span v-show="addFBButton!==value[i].name" class="uk-badge uk-margin-small-left">
+                                                {{ value[i].fb_quantity }}
+                                            </span>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <a uk-icon="more" class="uk-icon-link uk-margin-small-left"
+                                    v-show="getArray(key).length < value.length && showAll != key"
+                                    @click="showAll = key" :title="$t('Collapse')"
+                                ></a>
+                            </vk-card>
+                        </div>
+                    </div>
+                </div>
+            </vk-grid>
+        </div>
+    </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import { COUNTRIES } from '../data'
+import NavBarLogin from './NavBarLogin.vue'
 
 export default {
     name: 'Home',
 
-    components: {},
+    components: { NavBarLogin, },
 
     data () {
         return {
+            logo: 'PartsOK',
             // a card key when to show all part brands
             showAll: null,
             addFBButton: '',

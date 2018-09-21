@@ -3,6 +3,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Home from './components/Home.vue'
+import OtherPageTemplate from './components/OtherPageTemplate.vue'
 import LoggedInCallback from './components/LoggedInCallback.vue'
 import BrandPage from './components/BrandPage.vue'
 import AddFB from './components/AddFB.vue'
@@ -40,52 +41,58 @@ const router = new Router({
         },
         {
             path: '/',
-            name: 'All',
-            component: AllFB,
-            props: true,
+            component: OtherPageTemplate,
             children: [
                 {
-                    path: 'feedbacks/',
-                    name: 'AllFB',
-                    component: FBList,
-                    props: getProps
-                }
-            ]
-        },
-        {
-            path: '/brand/:brandName',
-            name: 'Brand',
-            component: BrandPage,
-            props: true,
-            children: [
-                {
-                    path: 'info',
-                    name: 'BrandInfo',
-                    component: BrandInfo,
-                    props: true
+                    path: '',
+                    name: 'All',
+                    component: AllFB,
+                    props: true,
+                    children: [
+                        {
+                            path: 'feedbacks/',
+                            name: 'AllFB',
+                            component: FBList,
+                            props: getProps
+                        }
+                    ]
                 },
                 {
-                    path: 'feedbacks/add',
-                    name: 'AddFB',
-                    component: AddFB,
-                    props: true
+                    path: '/brand/:brandName',
+                    name: 'Brand',
+                    component: BrandPage,
+                    props: true,
+                    children: [
+                        {
+                            path: 'info',
+                            name: 'BrandInfo',
+                            component: BrandInfo,
+                            props: true
+                        },
+                        {
+                            path: 'feedbacks/add',
+                            name: 'AddFB',
+                            component: AddFB,
+                            props: true
+                        },
+                        {
+                            path: 'feedbacks/',
+                            name: 'AllBrandFB',
+                            component: FBList,
+                            props: getProps
+                        }
+                    ]
                 },
                 {
-                    path: 'feedbacks/',
-                    name: 'AllBrandFB',
-                    component: FBList,
-                    props: getProps
-                }
+                    path: '/logged-in/:provider',
+                    name: 'LoggedInCallback',
+                    component: LoggedInCallback,
+                    props: true
+                },
+                { path: "404", component: Page404 },
+                { path: "*", component: PageNotFound }
             ]
-        },
-        {
-            path: '/logged-in/:provider',
-            name: 'LoggedInCallback',
-            component: LoggedInCallback,
-            props: true
-        },
-        { path: "/404", component: Page404 },
-        { path: "*", component: PageNotFound }
+        }
     ]
 });
 

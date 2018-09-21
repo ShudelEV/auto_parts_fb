@@ -2,13 +2,13 @@
 <vk-grid gutter="large">
     <!--Menu-->
     <div class="uk-width-1-4@m">
-        <vk-sticky top="#navbar" :offset="100" media="@m">
+        <div uk-sticky="top: #navbar; offset: 100" media="@m">
             <vk-card padding="small" class="uk-background-muted"
                      :class="{'uk-margin-top': showOnUp(), 'disabled-content': $store.state.all.loading}"
             >
                 <search></search>
             </vk-card>
-        </vk-sticky>
+        </div>
     </div>
 
     <!--Feedbackes-->

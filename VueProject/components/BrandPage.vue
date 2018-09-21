@@ -67,17 +67,6 @@ export default {
 
     props: ['brandName'],
 
-    created () {
-    },
-
-    mounted () {
-        this.$store.commit('SET_ELEMENTS_HEIGHT')
-    },
-
-    watch: {
-//        '$route': 'fetchData'
-    },
-
     methods: {
         showOnUp () {
             return (window.innerWidth <= 960)
