@@ -142,7 +142,8 @@ STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # Media static files
-DEFAULT_FILE_STORAGE = 'AutoPartsFB.storage_backends.MediaStorage'
+AWS_PUBLIC_MEDIA_LOCATION = 'media'
+DEFAULT_FILE_STORAGE = 'AutoPartsFB.storage_backends.PublicMediaStorage'
 
 
 # python-social-auth
