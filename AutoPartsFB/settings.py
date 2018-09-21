@@ -130,6 +130,7 @@ USE_L10N = True
 AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = 'avtoparts'
+AWS_S3_REGION_NAME = 'eu-central-1'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
@@ -196,9 +197,10 @@ EMAIL_HOST_USER = 'elenashudel'
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+EMAIL_USE_SSL =True
 SERVER_EMAIL = EMAIL_HOST_USER
 
-ADMINS = [('avtoparts-admin', 'e.shudel@mail.ru')]
+ADMINS = [('avtopartsadmin', 'e.shudel@mail.ru')]
 
 LOGGING = {
     'version': 1,
@@ -242,5 +244,6 @@ LOGGING = {
         # },
     },
 }
+
 # Activate Django-Heroku.
 django_heroku.settings(locals())
