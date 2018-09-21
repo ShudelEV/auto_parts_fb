@@ -1,24 +1,24 @@
 <template>
     <article class="uk-comment uk-margin-top">
         <header class="uk-comment-header uk-grid-medium uk-flex-middle" uk-grid>
-            <div class="uk-width-auto">
+            <div class="uk-width-auto@m">
                 <img class="uk-comment-avatar uk-border-rounded"
                      :src="brand.image" width="160" height="160" alt=""
                 >
             </div>
-            <div v-show="!loading"  class="uk-width-expand">
-                <ul class="uk-subnav uk-subnav-divider uk-margin-remove">
-                    <li style="text-transform:uppercase">{{ 'Country' | translate }}</li>
-                    <li>{{brand.country}}</li>
-                </ul>
-                <ul class="uk-subnav uk-subnav-divider uk-margin-remove">
-                    <li style="text-transform:uppercase">{{ 'Specialization' | translate }}</li>
-                    <li>{{brand.specialization}}</li>
-                </ul>
-                <ul class="uk-subnav uk-subnav-divider uk-margin-remove">
-                    <li style="text-transform:uppercase">{{ 'Site' | translate }}</li>
-                    <li><a :href="brand.site_url" target="_blank">{{brand.site_url}}</a></li>
-                </ul>
+            <div v-show="!loading" class="uk-width-1-1 uk-width-expand@m">
+                <div class="uk-margin-small-top" uk-grid>
+                    <div class="uk-width-auto uk-text-uppercase uk-text-muted">{{ 'Country' | translate }}:</div>
+                    <div class="uk-width-expand">{{brand.country}}</div>
+                </div>
+                <div class="uk-margin-small-top" uk-grid>
+                    <div class="uk-width-auto uk-text-uppercase uk-text-muted">{{ 'Specialization' | translate }}:</div>
+                    <div class="uk-width-expand">{{brand.specialization}}</div>
+                </div>
+                <div class="uk-margin-small-top" uk-grid>
+                    <div class="uk-width-auto uk-text-uppercase uk-text-muted">{{ 'Site' | translate }}:</div>
+                    <div class="uk-width-expand"><a :href="brand.site_url" target="_blank">{{brand.site_url}}</a></div>
+                </div>
             </div>
         </header>
         <div class="uk-comment-body">

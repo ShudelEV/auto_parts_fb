@@ -26,8 +26,8 @@
         </template>
         <!--Select part-->
         <div v-else class="uk-width-1-2@s">
-            <label class="uk-form-label" for="part">*{{ 'Part' | translate }}</label>
-            <select v-model="part" id="part" name="part" class="uk-select" autofocus>
+            <label class="uk-form-label" for="part_part">*{{ 'Part' | translate }}</label>
+            <select v-model="part" id="part_part" name="part" class="uk-select" autofocus>
                 <option :value="-1">&emsp;{{ 'Add' | translate }}..</option>
                 <template v-for="(value, key) in partTypes">
                     <option disabled style="color: darkgray">{{ key }}</option>
@@ -148,7 +148,10 @@
                         gotoAllBrandFB()
                     }"
                 ></upload-image>
-                <span class="img-uploader-text uk-text-muted uk-text-large" v-if="!imagesQty()">{{ 'drop or click to add images here' | translate }}</span>
+                <span v-if="!imagesQty()"
+                      class="img-uploader-text uk-text-muted"
+                      :class="{'uk-text-large': showOnUp()}"
+                >{{ 'drop or click to add images here' | translate }}</span>
             </div>
         </div>
     </form>
@@ -397,6 +400,9 @@ export default {
             element.classList.toggle("uk-form-danger");
             setTimeout(() => { element.classList.toggle("uk-form-danger") }, 2000)
         },
+        showOnUp () {
+            return (window.innerWidth >= 960)
+        }
     }
 }
 </script>
