@@ -2,28 +2,29 @@
     <vk-grid gutter="large">
         <div class="uk-width-1-4@m">
             <vk-sticky top="#header_image" :offset="20" media="@m">
-                <vk-card padding="small" class="uk-background-muted">
+                <vk-card v-if="$store.state.all.showSearch" padding="small" class="uk-background-muted">
                     <div class="uk-margin-small">
                         <div class="uk-inline">
-                            <vk-icon-link v-if="search_pattern"
-                                          class="uk-form-icon uk-form-icon-flip"
-                                          icon="close"
-                                          @click="search_pattern = ''"
-                            ></vk-icon-link>
-                            <span class="uk-form-icon" uk-icon="icon: search"></span>
+                            <a v-if="search_pattern"
+                                class="uk-icon-link uk-form-icon uk-form-icon-flip"
+                                uk-icon="close"
+                                @click="search_pattern = ''"
+                            ></a>
+                            <span class="uk-form-icon" uk-icon="search"></span>
                             <input class="uk-input uk-form-small uk-form-width-medium"
-                                   type="text" :placeholder="$t('Filter by brands')"
+                                   type="text"
+                                   :placeholder="$t('Filter by brands')"
+                                   :title="$t('Filter by brands')"
                                    v-model="search_pattern"
                             >
                         </div>
                     </div>
-                    <vk-nav>
-                        <vk-nav-item icon="list"
-                                     @click="$router.push({name: 'AllFB', query: {page: 1}})"
-                                     :title="$t('All feedbacks')"
-                        >
-                        </vk-nav-item>
-                    </vk-nav>
+                    <ul class="uk-nav-default uk-nav-parent-icon" uk-nav>
+                        <li><a @click="$router.push({name: 'AllFB', query: {page: 1}})">
+                            <span class="uk-margin-small-right" uk-icon="list"></span>
+                            {{ $t('All feedbacks') }}
+                        </a></li>
+                    </ul>
                 </vk-card>
             </vk-sticky>
         </div>
@@ -73,22 +74,22 @@
                                             </div>
                                         </vk-card>
                                     </vk-drop>
-                                    <vk-icon-link v-show="addFBButton===value[i].name"
-                                                  class="uk-margin-small-left"
-                                                  reset icon="plus-circle"
+                                    <a v-show="addFBButton===value[i].name"
+                                       class="uk-icon-link uk-margin-small-left"
+                                                  uk-icon="plus-circle"
                                                   @click="$router.push({name: 'AddFB', params: {brandName: addFBButton}})"
                                                   :title="$t('Add feedback')"
-                                    ></vk-icon-link>
+                                    ></a>
                                     <span v-show="addFBButton!==value[i].name" class="uk-badge uk-margin-small-left">
                                         {{ value[i].fb_quantity }}
                                     </span>
                                 </div>
                             </li>
                         </ul>
-                        <vk-icon-link reset icon="more" class="uk-margin-small-left"
+                        <a uk-icon="more" class="uk-icon-link uk-margin-small-left"
                             v-show="getArray(key).length < value.length && showAll != key"
                             @click="showAll = key" :title="$t('Collapse')"
-                        ></vk-icon-link>
+                        ></a>
                     </vk-card>
                 </div>
             </div>
@@ -119,7 +120,7 @@ export default {
     },
 
     mounted () {
-        this.$store.commit('SET_ELEMENTS_HEIGHT')
+        this.$nextTick(() => { this.$store.commit('SET_ELEMENTS_HEIGHT') })
     },
 
     computed: {

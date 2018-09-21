@@ -8,26 +8,27 @@
                @click="$router.push({name: 'AllBrandFB', params: {brandName: key}, query: {page: 1}})"
             >{{ key }}</a>
             <span class="uk-invisible-hover uk-margin-left">
-                <vk-icon-link reset icon="info"
+                <a class="uk-icon-link" uk-icon="info"
                               @click="$router.push({ name: 'BrandInfo', params: {brandName: key}})"
                               :title="$t('Info')"
-                ></vk-icon-link>
-                <vk-icon-link reset icon="comments"
+                ></a>
+                <a class="uk-icon-link" uk-icon="comments"
                               @click="$router.push({name: 'AllBrandFB', params: {brandName: key}, query: {page: 1}})"
                               :title="$t('Feedbacks')"
-                ></vk-icon-link>
-                <vk-icon-link reset icon="plus-circle"
+                ></a>
+                <a class="uk-icon-link" uk-icon="plus-circle"
                               @click="$router.push({ name: 'AddFB', params: {brandName: key}})"
                               :title="$t('Add feedback')"
-                ></vk-icon-link>
+                ></a>
             </span>
         </template>
         <!--Collapse button-->
         <span class="uk-clearfix">
-            <vk-icon-link :title="collapse.includes(key) ? $t('Scroll') : $t('Collapse')" class="uk-float-right"
-                          :icon="collapse.includes(key) ? 'triangle-up' : 'triangle-down'"
-                          @click="toggleAccordion(key)"
-            ></vk-icon-link>
+            <a class="uk-icon-link uk-float-right"
+                :title="collapse.includes(key) ? $t('Scroll') : $t('Collapse')"
+                :icon="collapse.includes(key) ? 'triangle-up' : 'triangle-down'"
+                @click="toggleAccordion(key)"
+            ></a>
         </span>
     </h2>
     <ul uk-accordion="multiple: true" :id="accordionId(key)" class="uk-list uk-list-divider">
@@ -36,10 +37,12 @@
             <!--Header-->
             <a class="uk-accordion-title" href="#">
                 <!--Part name-->
-                <vk-icon icon="cog"></vk-icon> {{ fb.part.type }}
+                <span uk-icon="cog"></span> {{ fb.part.type }}
                 <!--Car name-->
                 <div v-if="fb.part.car" class="uk-display-inline-block">
-                    <vk-icon-image src="/static/images/car.svg" uk-svg class="uk-margin-small-left"></vk-icon-image>
+                    <span class="uk-icon uk-icon-image uk-margin-small-left"
+                          style="background-image: url(/static/images/car.svg);" uk-svg
+                    ></span>
                     {{ fb.part.car.model }}
                     {{ fb.part.car.manufacture_year ? ' ' + fb.part.car.manufacture_year + ' ' + $t('m.y.') : '' }}
                     {{ fb.part.car.engine_volume ? ' ' + fb.part.car.engine_volume + ' ' + $t('cm3') : '' }}

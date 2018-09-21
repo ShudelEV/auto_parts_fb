@@ -12,7 +12,6 @@ import BrandInfo from './components/BrandInfo.vue'
 import PageNotFound from './components/PageNotFound.vue'
 import Page404 from './components/Page404.vue'
 
-
 // tell Vue to use the vue-router plugin
 Vue.use(Router);
 

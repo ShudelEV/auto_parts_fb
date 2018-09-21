@@ -8,8 +8,7 @@ export default {
     name: "Page404",
 
     mounted () {
-        this.$store.commit('SET_ELEMENTS_HEIGHT')
-    },
-
+        this.$nextTick(() => { this.$store.commit('SET_ELEMENTS_HEIGHT') })
+    }
 }
 </script>

@@ -1,14 +1,15 @@
 import os
 from datetime import timedelta
+from decouple import config, Csv
 from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = 'f1_g=%%re(xwle(n!(7@)=ih47ckk5%qvuufre7e5vqlly0)ew'
+SECRET_KEY = config('SECRET_KEY')
 
-DEBUG = False
+DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -65,10 +66,10 @@ WSGI_APPLICATION = 'AutoPartsFB.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'autoparts_db',
-        'USER': 'autoparts_user',
-        'PASSWORD': 'autoparts5000',
-        'HOST': '127.0.0.1',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST':  config('DB_HOST'),
         'PORT': '5432',
     }
 }
@@ -146,35 +147,31 @@ AUTHENTICATION_BACKENDS = (
 
 # SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '475790162750-ler2ioqumfa9qrobql0j6qeh7lfnr61u.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'TDFXKJD4l8FmhTDkd-N8k1TC'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_IGNORE_DEFAULT_SCOPE = True
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     'https://www.googleapis.com/auth/userinfo.email',
     'https://www.googleapis.com/auth/userinfo.profile'
 ]
-SOCIAL_AUTH_VK_OAUTH2_KEY = '6670405'
-SOCIAL_AUTH_VK_OAUTH2_SECRET = 'qSX7E2IZhk1LQDYySu6I'
 
-SOCIAL_AUTH_FACEBOOK_KEY = '254286108555969'
-SOCIAL_AUTH_FACEBOOK_SECRET = '532a3eb5975b519f43d079d51897cd85'
+SOCIAL_AUTH_VK_OAUTH2_KEY = config('SOCIAL_AUTH_VK_OAUTH2_KEY')
+SOCIAL_AUTH_VK_OAUTH2_SECRET = config('SOCIAL_AUTH_VK_OAUTH2_SECRET')
+
+SOCIAL_AUTH_FACEBOOK_KEY = config('SOCIAL_AUTH_FACEBOOK_KEY')
+SOCIAL_AUTH_FACEBOOK_SECRET = config('SOCIAL_AUTH_FACEBOOK_SECRET')
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-  'locale': 'ru_RU',
-  'fields': 'id, name, email'
+    'locale': 'ru_RU',
+    'fields': 'id, name, email'
 }
 
-SOCIAL_AUTH_TWITTER_KEY = ''
-SOCIAL_AUTH_TWITTER_SECRET = ''
+SOCIAL_AUTH_TWITTER_KEY = config('SOCIAL_AUTH_TWITTER_KEY')
+SOCIAL_AUTH_TWITTER_SECRET = config('SOCIAL_AUTH_TWITTER_SECRET')
 
 # djoser
 DJOSER = {
-    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': [
-        '/logged-in/google-oauth2',
-        '/logged-in/vk-oauth2',
-        '/logged-in/facebook-oauth2',
-        '/logged-in/twitter-oauth'
-    ]
+    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': config('SOCIAL_AUTH_ALLOWED_REDIRECT_URIS', cast=Csv())
 }
 
 JWT_AUTH = {
