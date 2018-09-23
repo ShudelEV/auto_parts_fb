@@ -7,22 +7,22 @@
                 >
             </div>
             <div v-show="!loading" class="uk-width-1-1 uk-width-expand@m">
-                <div class="uk-margin-small-top" uk-grid>
-                    <div class="uk-width-auto uk-text-uppercase uk-text-muted">{{ 'Country' | translate }}:</div>
-                    <div class="uk-width-expand">{{brand.country}}</div>
+                <div class="uk-margin-small-top  uk-text-uppercase" uk-grid>
+                    <div class="uk-width-auto uk-text-muted">{{ 'Country' | translate }}:</div>
+                    <div class="uk-width-expand" style="padding-left: 10px">{{ brand.country | translate }}</div>
                 </div>
                 <div class="uk-margin-small-top" uk-grid>
                     <div class="uk-width-auto uk-text-uppercase uk-text-muted">{{ 'Specialization' | translate }}:</div>
-                    <div class="uk-width-expand">{{brand.specialization}}</div>
+                    <div class="uk-width-expand" style="padding-left: 10px">{{ brand.specialization }}</div>
                 </div>
                 <div class="uk-margin-small-top" uk-grid>
                     <div class="uk-width-auto uk-text-uppercase uk-text-muted">{{ 'Site' | translate }}:</div>
-                    <div class="uk-width-expand"><a :href="brand.site_url" target="_blank">{{brand.site_url}}</a></div>
+                    <div class="uk-width-expand" style="padding-left: 10px"><a :href="brand.site_url" target="_blank">{{brand.site_url}}</a></div>
                 </div>
             </div>
         </header>
         <div class="uk-comment-body">
-            <span v-html="brand.description"></span>
+            <div v-html="brand.description"></div>
         </div>
     </article>
 </template>

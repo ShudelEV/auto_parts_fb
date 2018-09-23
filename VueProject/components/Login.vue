@@ -5,20 +5,28 @@
             <vk-grid gutter="small" class="uk-child-width-1-1 uk-flex-center uk-text-center">
                 <div class="uk-margin-small-top">
                     <a title="VKontakte" @click="regWithSocial('vk-oauth2')">
-                        <img :src="staticUrl + 'images/social-icon/vk.svg'" alt="" height="36" width="36" uk-svg
+                        <img src="/static/images/social-icon/vk.svg" alt="" height="36" width="36" uk-svg
                           class="uk-border-rounded uk-margin-small-right">
+                        <!--<img :src="staticUrl + 'images/social-icon/vk.svg'" alt="" height="36" width="36" uk-svg-->
+                          <!--class="uk-border-rounded uk-margin-small-right">-->
                     </a>
                     <a title="Facebook" @click="regWithSocial('facebook-oauth2')">
-                        <img :src="staticUrl + 'images/social-icon/facebook.svg'" alt="" height="36" width="36" uk-svg
+                        <img src="/static/images/social-icon/facebook.svg" alt="" height="36" width="36" uk-svg
                           class="uk-border-rounded uk-margin-small-right">
+                        <!--<img :src="staticUrl + 'images/social-icon/facebook.svg'" alt="" height="36" width="36" uk-svg-->
+                          <!--class="uk-border-rounded uk-margin-small-right">-->
                     </a>
                     <a title="Twitter" @click="regWithSocial('twitter-oauth')">
-                        <img :src="staticUrl + 'images/social-icon/twitter.svg'" alt="" height="36" width="36" uk-svg
+                        <img src="/static/images/social-icon/twitter.svg" alt="" height="36" width="36" uk-svg
                           class="uk-border-rounded uk-margin-small-right">
+                        <!--<img :src="staticUrl + 'images/social-icon/twitter.svg'" alt="" height="36" width="36" uk-svg-->
+                          <!--class="uk-border-rounded uk-margin-small-right">-->
                     </a>
                     <a title="Google+" @click="regWithSocial('google-oauth2')">
-                        <img :src="staticUrl + 'images/social-icon/google-plus.svg'" alt="" height="36" width="36" uk-svg
+                        <img src="/static/images/social-icon/google-plus.svg" alt="" height="36" width="36" uk-svg
                           class="uk-border-rounded">
+                        <!--<img :src="staticUrl + 'images/social-icon/google-plus.svg'" alt="" height="36" width="36" uk-svg-->
+                          <!--class="uk-border-rounded">-->
                     </a>
                 </div>
                 <div>{{ $t('or') }}</div>

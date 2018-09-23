@@ -31,7 +31,7 @@ const getters = {
                 .filter(i => PATTERN.test(i.name))
                 .filter(i => i.name.startsWith(a) || i.name.startsWith(a.toLowerCase()));
             if (obj_a.length) {
-                res[a] = obj_a.sort((a, b) => a.fb_quantity > b.fb_quantity ? -1 : 1);
+                res[a] = obj_a.sort((a, b) => (a.fb_quantity > b.fb_quantity) ? -1 : (a.fb_quantity === b.fb_quantity && a.name < b.name ? -1 : 1));
             }
         }
         return res
