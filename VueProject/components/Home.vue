@@ -9,11 +9,11 @@
             </div>
             <img id="header_image" src="/static/images/header.jpeg" alt=""
                  class="uk-align-center uk-margin-remove-top uk-margin-remove-bottom"
-                 @load="$store.commit('SET_ELEMENTS_HEIGHT'); $store.state.all.showSearch=true"
+                 @load="$store.commit('SET_ELEMENTS_HEIGHT')"
             >
             <!--<img id="header_image" :src="$store.state.all.staticUrl + 'images/header.jpeg'" alt=""-->
                  <!--class="uk-align-center uk-margin-remove-top uk-margin-remove-bottom"-->
-                 <!--@load="$store.commit('SET_ELEMENTS_HEIGHT'); $store.state.all.showSearch=true"-->
+                 <!--@load="$store.commit('SET_ELEMENTS_HEIGHT')"-->
             <!--&gt;-->
             <div class="uk-container uk-position-top uk-visible@m">
                 <!--<div uk-sticky="bottom: #header_image; animation: uk-animation-slide-top">-->
@@ -28,7 +28,7 @@
             <div class="" uk-grid>
                 <div class="uk-width-1-4@m">
                     <div uk-sticky="top: #header_image; offset: 20" media="@m">
-                        <div v-if="$store.state.all.showSearch"
+                        <div v-if="!loading"
                              class="uk-card uk-card-default uk-card-small uk-card-default uk-card-body uk-background-muted"
                         >
                             <div class="uk-margin-small">
@@ -56,7 +56,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="uk-width-expand@m" style="padding-bottom: 140px">
+                <div class="uk-width-expand@m" style="padding-bottom: 240px">
                     <div v-if="!loading"
                          uk-grid="masonry: true"
                          class="uk-grid-small uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-3@m uk-child-width-1-4@l"

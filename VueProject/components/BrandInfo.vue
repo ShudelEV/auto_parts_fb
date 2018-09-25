@@ -3,7 +3,7 @@
         <header class="uk-comment-header uk-grid-medium uk-flex-middle" uk-grid>
             <div class="uk-width-auto@m">
                 <img class="uk-comment-avatar uk-border-rounded"
-                     :src="brand.image" width="160" height="160" alt=""
+                     :src="brand.image" width="160" height="160" :alt="brand.name"
                 >
             </div>
             <div v-show="!loading" class="uk-width-1-1 uk-width-expand@m">
@@ -21,6 +21,7 @@
                 </div>
             </div>
         </header>
+        <hr v-show="!loading">
         <div class="uk-comment-body">
             <div v-html="brand.description"></div>
         </div>
