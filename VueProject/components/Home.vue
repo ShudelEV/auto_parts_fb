@@ -25,7 +25,7 @@
         <!--<edit-account :show="$store.state.account.showEditUsername || $store.state.account.showEditPassword"></edit-account>-->
         <!--Body-->
         <div class="uk-container bg-img" :style="{'min-height': $store.state.all.contentMinHeight + 'px'}">
-            <div class="uk-grid-large" uk-grid>
+            <div class="" uk-grid>
                 <div class="uk-width-1-4@m">
                     <div uk-sticky="top: #header_image; offset: 20" media="@m">
                         <div v-if="$store.state.all.showSearch"
@@ -56,8 +56,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="uk-width-expand@m" style="padding-bottom: 100px">
-                    <div uk-grid="masonry: true"
+                <div class="uk-width-expand@m" style="padding-bottom: 140px">
+                    <div v-if="!loading"
+                         uk-grid="masonry: true"
                          class="uk-grid-small uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-3@m uk-child-width-1-4@l"
                          uk-scrollspy="cls: uk-animation-slide-bottom; repeat: true"
                     >
@@ -75,19 +76,20 @@
                                                 {{ value[i].name }}
                                             </a>
                                             <!--a part manufacturer information when to hover the link-->
-                                            <div v-if="dropWindow.includes(value[i].id)" uk-drop="pos: top-center; mode: hover; delay-show: 1000; delay-hide: 300; flip: false"
+                                            <div v-if="dropWindow.includes(value[i].id)"
+                                                 uk-drop="pos: top-center; mode: hover; delay-show: 1000; delay-hide: 300; flip: false"
                                                  @show="showElement('info-window' + value[i].id)"
                                             >
                                                 <div class="uk-card uk-card-default uk-card-small"
                                                      :id="'info-window' + value[i].id"
                                                 >
+                                                    <div v-if="value[i].image" class="uk-card-media-top uk-flex uk-flex-center">
+                                                        <img :src="value[i].image" :alt="value[i].name">
+                                                    </div>
                                                     <div class="uk-card-body">
-                                                        <div class="uk-flex uk-flex-center">
-                                                            <img :src="value[i].image" :alt="value[i].name">
-                                                        </div>
-                                                        <div class="uk-padding-remove-bottom">
+                                                        <!--<div class="uk-padding-remove-bottom">-->
                                                             <dl class="uk-description-list uk-margin-remove-bottom">
-                                                                <dt></dt>
+                                                                <!--<dt></dt>-->
                                                                 <dt>{{ $t('Country') }}:</dt>
                                                                 <dd>{{ $t(getCountry(value[i].country)) }}</dd>
                                                                 <dt>{{ $t('Specialization') }}:</dt>
@@ -95,7 +97,7 @@
                                                                 <!--<dt>Link:</dt>-->
                                                                 <!--<dd><a :href="value[i].site_url" target="_blank">{{value[i].site_url}}</a></dd>-->
                                                             </dl>
-                                                        </div>
+                                                        <!--</div>-->
                                                     </div>
                                                     <div class="uk-card-footer">
                                                         <button class="uk-button uk-button-text"
@@ -159,6 +161,8 @@ export default {
     },
 
     computed: {
+        // show animation (scroll-spy) at first loading
+        loading: function () { return !this.$store.state.all.partBrands.length },
         ...mapGetters(['sortedPartBrands']),
     },
 

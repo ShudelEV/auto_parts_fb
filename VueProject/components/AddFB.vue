@@ -217,7 +217,9 @@ export default {
 
     created () {
         this.$store.dispatch('verifySession', () => {});
-        this.$store.state.account.showSuggestLogin = !sessionStorage.getItem('notSuggestLogin')
+        const notSuggestLogin = sessionStorage.getItem('notSuggestLogin');
+        this.$store.state.account.showSuggestLogin = notSuggestLogin === null ?
+            !this.account.isAuthenticated : !notSuggestLogin
     },
 
     computed: {
@@ -260,7 +262,7 @@ export default {
     methods: {
         setAnswer (answer) {
             if (answer) {
-                 this.$store.state.account.showLoginWindow = true
+                 UIkit.modal(document.getElementById('modal-login')).show();
             } else {
                 sessionStorage.setItem('notSuggestLogin', true);
                 this.$store.state.account.showSuggestLogin = false

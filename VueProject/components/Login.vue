@@ -59,7 +59,7 @@
                 <li>
                     <div class="uk-grid-small uk-child-width-1-1 uk-flex-center uk-text-center">
                         <div class="">
-                            <form ref="form">
+                            <form ref="form2">
                                 <div class="uk-inline uk-margin-small-bottom">
                                     <span class="uk-form-icon" uk-icon="icon: user"></span>
                                     <input class="uk-input uk-form-small" name="login"
@@ -88,15 +88,15 @@
                 </li>
             </ul>
         </div>
-    <div class="uk-modal-footer uk-clearfix">
-        <button class="uk-button uk-button-default uk-button-small uk-float-left"
-                @click="closeWindow()"
-        >{{ $t('cancel') }}</button>
-        <button class="uk-button uk-button-primary uk-button-small uk-float-right"
-                :disabled="isValid"
-                @click="login()"
-        >{{!activeTab ? $t('login') : $t('registr') }}</button>
-    </div>
+        <div class="uk-modal-footer uk-clearfix">
+            <button class="uk-button uk-button-default uk-button-small uk-float-left"
+                    @click="closeWindow()"
+            >{{ $t('cancel') }}</button>
+            <button class="uk-button uk-button-primary uk-button-small uk-float-right"
+                    :disabled="isValid"
+                    @click="login()"
+            >{{!activeTab ? $t('login') : $t('registr') }}</button>
+        </div>
     </div>
 </div>
 </template>
@@ -143,7 +143,7 @@ export default {
             return false
         },
         highlightInput (elName) {
-            let element = this.$refs.form[elName];
+            let element = this.activeTab ? this.$refs.form2[elName] : this.$refs.form[elName];
             element.classList.toggle("uk-form-danger");
             setTimeout(() => { element.classList.toggle("uk-form-danger") }, 2000)
         },
