@@ -6,9 +6,6 @@ const JWT_REFRESH_EXPIRATION_DELTA = 168;  // in hours
 const JWT_REFRESH_BEFORE_EXPIRATION_DELTA = 1;  // in hours
 
 const state = {
-    showLoginWindow: false,
-    showEditUsername: false,
-    showEditPassword: false,
     // before send fb and user is not authenticated, suggest login
     showSuggestLogin: false,
     id: null,
@@ -258,7 +255,7 @@ const mutations = {
     },
     SET_SESSION (state, response) {
         // close the login window
-        state.showLoginWindow = false;
+        UIkit.modal(document.getElementById('modal-login')).hide();
         state.showSuggestLogin = false;
         // set axios default config
         Vue.axios.defaults.headers.common['Authorization'] = 'JWT ' + response.data.token;

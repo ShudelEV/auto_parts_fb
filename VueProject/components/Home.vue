@@ -20,23 +20,17 @@
                     <nav-bar-login :logo="logo"></nav-bar-login>
                 <!--</div>-->
             </div>
-            <!--Other page navbar-->
-            <!--<div v-show="$route.name!=='Home'">-->
-                <!--<div id="navbar" class="uk-card uk-card-default" uk-sticky>-->
-                    <!--<div class="uk-container bg-img">-->
-                        <!--<nav-bar-login :logo="logo"></nav-bar-login>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
         </div>
         <!--Edit Account-->
         <!--<edit-account :show="$store.state.account.showEditUsername || $store.state.account.showEditPassword"></edit-account>-->
         <!--Body-->
         <div class="uk-container bg-img" :style="{'min-height': $store.state.all.contentMinHeight + 'px'}">
-            <vk-grid gutter="large">
+            <div class="uk-grid-large" uk-grid>
                 <div class="uk-width-1-4@m">
                     <div uk-sticky="top: #header_image; offset: 20" media="@m">
-                        <vk-card v-if="$store.state.all.showSearch" padding="small" class="uk-background-muted">
+                        <div v-if="$store.state.all.showSearch"
+                             class="uk-card uk-card-default uk-card-small uk-card-default uk-card-body uk-background-muted"
+                        >
                             <div class="uk-margin-small">
                                 <div class="uk-inline">
                                     <a v-if="search_pattern"
@@ -59,7 +53,7 @@
                                     {{ $t('All feedbacks') }}
                                 </a></li>
                             </ul>
-                        </vk-card>
+                        </div>
                     </div>
                 </div>
                 <div class="uk-width-expand@m" style="padding-bottom: 100px">
@@ -68,8 +62,8 @@
                          uk-scrollspy="cls: uk-animation-slide-bottom; repeat: true"
                     >
                         <div v-for="(value, key) in sortedPartBrands(search_pattern)" class="uk-margin-bottom">
-                            <vk-card :key="key" hover padding="small">
-                                <vk-card-title class="uk-margin-small-left">{{ key }}</vk-card-title>
+                            <div class="uk-card uk-card-default uk-card-small uk-card-hover uk-card-body" :key="key">
+                                <span class="uk-card-title uk-margin-small-left">{{ key }}</span>
                                 <ul class="uk-list uk-list-bullet">
                                     <li v-for="i in getArray(key)"
                                         @mouseover="addFBButton=value[i].id; dropWindow.push(value[i].id)"
@@ -87,7 +81,7 @@
                                                 <div class="uk-card uk-card-default uk-card-small"
                                                      :id="'info-window' + value[i].id"
                                                 >
-                                                    <div class="uk-card-body ">
+                                                    <div class="uk-card-body">
                                                         <div class="uk-flex uk-flex-center">
                                                             <img :src="value[i].image" :alt="value[i].name">
                                                         </div>
@@ -113,7 +107,7 @@
                                             <a v-show="addFBButton===value[i].id"
                                                class="uk-icon-link uk-margin-small-left"
                                                           uk-icon="plus-circle"
-                                                          @click="$router.push({name: 'AddFB', params: {brandName: addFBButton}})"
+                                                          @click="$router.push({name: 'AddFB', params: {brandName: value[i].name}})"
                                                           :title="$t('Add feedback')"
                                             ></a>
                                             <span v-show="addFBButton!==value[i].id" class="uk-badge uk-margin-small-left">
@@ -126,11 +120,11 @@
                                     v-show="getArray(key).length < value.length && showAll != key"
                                     @click="showAll = key" :title="$t('Collapse')"
                                 ></a>
-                            </vk-card>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </vk-grid>
+            </div>
         </div>
     </div>
 </template>
@@ -188,7 +182,6 @@ export default {
             }
         },
         removeAddFBButton () {
-             console.log('delete')
             setTimeout(() => { this.addFBButton = '' }, 250)
         },
         gotoBrandInfo (brandName) {

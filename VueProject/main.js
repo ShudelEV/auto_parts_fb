@@ -6,9 +6,6 @@ import store from './store/index'
 import vuexI18n from 'vuex-i18n';
 import en from './i18n/en.json';
 import ru from './i18n/ru.json';
-import Vuikit from 'vuikit'
-// import VuikitIcons from '@vuikit/icons'
-import '@vuikit/theme'
 import VueStars from './plugins/plugin'
 import NProgress from 'vue-nprogress'
 import Cookies from 'js-cookie'
@@ -53,10 +50,6 @@ Vue.i18n.add('en', en);
 Vue.i18n.add('ru', ru);
 // set the start locale to use
 Vue.i18n.set('ru');
-
-// UIKit
-Vue.use(Vuikit);
-// Vue.use(VuikitIcons);
 
 // Stars
 Vue.use(VueStars);

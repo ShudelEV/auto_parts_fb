@@ -1,10 +1,10 @@
 <template>
-<vk-grid gutter="large">
+<div class="uk-grid-large" uk-grid>
     <!--Menu-->
     <div class="uk-width-1-4@m">
-        <vk-sticky top="#navbar" :offset="100" media="@m">
+        <div uk-sticky="top:#navbar; offset: 100" media="@m">
             <div>
-                <vk-card :class="{'uk-margin-top': showOnUp()}" padding="small">
+                <div class="uk-card uk-card-default uk-card-small uk-card-body" :class="{'uk-margin-top': showOnUp()}">
                     <h2>{{ brandName }}</h2>
                     <ul class="uk-iconnav">
                         <li>
@@ -32,15 +32,15 @@
                             ></a>
                         </li>
                     </ul>
-                </vk-card>
-                <vk-card v-show="$route.name==='AllBrandFB' && showSearch"
-                         padding="small" class="uk-background-muted uk-margin-top"
-                         :class="{'disabled-content': $store.state.all.loading}"
+                </div>
+                <div v-show="$route.name==='AllBrandFB' && showSearch"
+                     class="uk-card uk-card-default uk-card-small uk-card-body uk-background-muted uk-margin-top"
+                     :class="{'disabled-content': $store.state.all.loading}"
                 >
                     <search :brandName="brandName"></search>
-                </vk-card>
+                </div>
             </div>
-        </vk-sticky>
+        </div>
     </div>
 
     <!--Feedbackes-->
@@ -48,7 +48,7 @@
         <!--Add feedback or Show all feedbacks section-->
         <router-view @showSearch="showSearch=true" class="uk-margin-medium-bottom"></router-view>
     </div>
-</vk-grid>
+</div>
 </template>
 
 <script>

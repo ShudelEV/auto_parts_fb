@@ -1,96 +1,104 @@
 <template>
-<vk-modal :show="show" center size="medium">
-    <vk-tabs :activeTab.sync="activeTab" align="justify" active="1">
-        <vk-tabs-item :title="$t('sign in')" v-vk-margin>
-            <vk-grid gutter="small" class="uk-child-width-1-1 uk-flex-center uk-text-center">
-                <div class="uk-margin-small-top">
-                    <a title="VKontakte" @click="regWithSocial('vk-oauth2')">
-                        <img src="/static/images/social-icon/vk.svg" alt="" height="36" width="36" uk-svg
-                          class="uk-border-rounded uk-margin-small-right">
-                        <!--<img :src="staticUrl + 'images/social-icon/vk.svg'" alt="" height="36" width="36" uk-svg-->
-                          <!--class="uk-border-rounded uk-margin-small-right">-->
-                    </a>
-                    <a title="Facebook" @click="regWithSocial('facebook-oauth2')">
-                        <img src="/static/images/social-icon/facebook.svg" alt="" height="36" width="36" uk-svg
-                          class="uk-border-rounded uk-margin-small-right">
-                        <!--<img :src="staticUrl + 'images/social-icon/facebook.svg'" alt="" height="36" width="36" uk-svg-->
-                          <!--class="uk-border-rounded uk-margin-small-right">-->
-                    </a>
-                    <a title="Twitter" @click="regWithSocial('twitter-oauth')">
-                        <img src="/static/images/social-icon/twitter.svg" alt="" height="36" width="36" uk-svg
-                          class="uk-border-rounded uk-margin-small-right">
-                        <!--<img :src="staticUrl + 'images/social-icon/twitter.svg'" alt="" height="36" width="36" uk-svg-->
-                          <!--class="uk-border-rounded uk-margin-small-right">-->
-                    </a>
-                    <a title="Google+" @click="regWithSocial('google-oauth2')">
-                        <img src="/static/images/social-icon/google-plus.svg" alt="" height="36" width="36" uk-svg
-                          class="uk-border-rounded">
-                        <!--<img :src="staticUrl + 'images/social-icon/google-plus.svg'" alt="" height="36" width="36" uk-svg-->
-                          <!--class="uk-border-rounded">-->
-                    </a>
-                </div>
-                <div>{{ $t('or') }}</div>
-                <div>
-                    <form ref="form">
-                        <div class="uk-inline uk-margin-small-bottom">
-                            <span class="uk-form-icon" uk-icon="icon: user"></span>
-                            <input class="uk-input uk-form-small" name="login"
-                                   type="text" :placeholder="$t('username')"
-                                   v-model="username"
-                            >
+<div id="modal-login" ref="loginWindow" class="uk-flex-top" uk-modal="bg-close: false">
+    <div class="uk-modal-dialog uk-width-medium uk-margin-auto-vertical">
+        <div class="uk-modal-body">
+            <ul class="uk-flex-center" uk-tab>
+                <li><a @click="activeTab=0">{{ $t('sign in') }}</a></li>
+                <li><a @click="activeTab=1">{{ $t('sign up') }}</a></li>
+            </ul>
+            <ul class="uk-switcher uk-margin-medium-top">
+                <li>
+                    <div class="uk-grid-small uk-child-width-1-1 uk-flex-center uk-text-center" uk-grid>
+                        <div class="">
+                            <a title="VKontakte" @click="regWithSocial('vk-oauth2')">
+                                <img src="/static/images/social-icon/vk.svg" alt="" height="36" width="36" uk-svg
+                                  class="uk-border-rounded uk-margin-small-right">
+                                <!--<img :src="staticUrl + 'images/social-icon/vk.svg'" alt="" height="36" width="36" uk-svg-->
+                                  <!--class="uk-border-rounded uk-margin-small-right">-->
+                            </a>
+                            <a title="Facebook" @click="regWithSocial('facebook-oauth2')">
+                                <img src="/static/images/social-icon/facebook.svg" alt="" height="36" width="36" uk-svg
+                                  class="uk-border-rounded uk-margin-small-right">
+                                <!--<img :src="staticUrl + 'images/social-icon/facebook.svg'" alt="" height="36" width="36" uk-svg-->
+                                  <!--class="uk-border-rounded uk-margin-small-right">-->
+                            </a>
+                            <a title="Twitter" @click="regWithSocial('twitter-oauth')">
+                                <img src="/static/images/social-icon/twitter.svg" alt="" height="36" width="36" uk-svg
+                                  class="uk-border-rounded uk-margin-small-right">
+                                <!--<img :src="staticUrl + 'images/social-icon/twitter.svg'" alt="" height="36" width="36" uk-svg-->
+                                  <!--class="uk-border-rounded uk-margin-small-right">-->
+                            </a>
+                            <a title="Google+" @click="regWithSocial('google-oauth2')">
+                                <img src="/static/images/social-icon/google-plus.svg" alt="" height="36" width="36" uk-svg
+                                  class="uk-border-rounded">
+                                <!--<img :src="staticUrl + 'images/social-icon/google-plus.svg'" alt="" height="36" width="36" uk-svg-->
+                                  <!--class="uk-border-rounded">-->
+                            </a>
                         </div>
-                        <div class="uk-inline uk-margin-small-bottom">
-                            <span class="uk-form-icon" uk-icon="icon: lock"></span>
-                            <input class="uk-input uk-form-small" name="password"
-                                   type="password" :placeholder="$t('password')"
-                                   v-model="password"
-                            >
+                        <div>{{ $t('or') }}</div>
+                        <div>
+                            <form ref="form">
+                                <div class="uk-inline uk-margin-small-bottom">
+                                    <span class="uk-form-icon" uk-icon="icon: user"></span>
+                                    <input class="uk-input uk-form-small" name="login"
+                                           type="text" :placeholder="$t('username')"
+                                           v-model="username"
+                                    >
+                                </div>
+                                <div class="uk-inline uk-margin-small-bottom">
+                                    <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                                    <input class="uk-input uk-form-small" name="password"
+                                           type="password" :placeholder="$t('password')"
+                                           v-model="password"
+                                    >
+                                </div>
+                            </form>
                         </div>
-                    </form>
-                </div>
-            </vk-grid>
-        </vk-tabs-item>
-        <vk-tabs-item :title="$t('sign up')" v-vk-margin>
-            <vk-grid gutter="small" class="uk-child-width-1-1 uk-flex-center uk-text-center">
-                <div class="uk-margin-top">
-                    <form ref="form">
-                        <div class="uk-inline uk-margin-small-bottom">
-                            <span class="uk-form-icon" uk-icon="icon: user"></span>
-                            <input class="uk-input uk-form-small" name="login"
-                                   type="text" :placeholder="$t('username')"
-                                   v-model="username"
-                            >
+                    </div>
+                </li>
+                <li>
+                    <div class="uk-grid-small uk-child-width-1-1 uk-flex-center uk-text-center">
+                        <div class="">
+                            <form ref="form">
+                                <div class="uk-inline uk-margin-small-bottom">
+                                    <span class="uk-form-icon" uk-icon="icon: user"></span>
+                                    <input class="uk-input uk-form-small" name="login"
+                                           type="text" :placeholder="$t('username')"
+                                           v-model="username"
+                                    >
+                                </div>
+                                <div class="uk-inline uk-margin-small-bottom">
+                                    <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                                    <input class="uk-input uk-form-small" name="password"
+                                           type="password" :placeholder="$t('password')"
+                                           v-model="password"
+                                    >
+                                </div>
+                                <div class="uk-inline uk-margin-small-bottom">
+                                    <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                                    <input class="uk-input uk-form-small" name="password2"
+                                           type="password" :placeholder="$t('confirm password')"
+                                           v-model="password2"
+                                    >
+                                </div>
+                            </form>
                         </div>
-                        <div class="uk-inline uk-margin-small-bottom">
-                            <span class="uk-form-icon" uk-icon="icon: lock"></span>
-                            <input class="uk-input uk-form-small" name="password"
-                                   type="password" :placeholder="$t('password')"
-                                   v-model="password"
-                            >
-                        </div>
-                        <div class="uk-inline uk-margin-small-bottom">
-                            <span class="uk-form-icon" uk-icon="icon: lock"></span>
-                            <input class="uk-input uk-form-small" name="password2"
-                                   type="password" :placeholder="$t('confirm password')"
-                                   v-model="password2"
-                            >
-                        </div>
-                    </form>
-                </div>
-                <div class="uk-margin-top uk-text-meta uk-text-left">*{{ $t('pass8') }}</div>
-            </vk-grid>
-        </vk-tabs-item>
-    </vk-tabs>
-    <div slot="footer" class="uk-clearfix">
-        <vk-button size="small" class="uk-float-left"
-                   @click="account.showLoginWindow = false"
-        >{{ $t('cancel') }}</vk-button>
-        <vk-button type="primary" size="small"
-                   class="uk-float-right" :disabled="isValid"
-                   @click="login"
-        >{{!activeTab ? $t('login') : $t('registr') }}</vk-button>
+                        <div class="uk-margin-top uk-text-meta uk-text-left">*{{ $t('pass8') }}</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    <div class="uk-modal-footer uk-clearfix">
+        <button class="uk-button uk-button-default uk-button-small uk-float-left"
+                @click="closeWindow()"
+        >{{ $t('cancel') }}</button>
+        <button class="uk-button uk-button-primary uk-button-small uk-float-right"
+                :disabled="isValid"
+                @click="login()"
+        >{{!activeTab ? $t('login') : $t('registr') }}</button>
     </div>
-</vk-modal>
+    </div>
+</div>
 </template>
 
 <script>
@@ -109,11 +117,8 @@ export default {
         }
     },
 
-    props: ['show'],
-
     computed: {
         ...mapState({
-            account: state => state.account,
             staticUrl: state => state.all.staticUrl
         })
     },
@@ -156,6 +161,9 @@ export default {
         regWithSocial (provider) {
             sessionStorage.setItem('social_redirect_url', this.$route.fullPath);
             this.$store.dispatch('registerWithSocial', provider)
+        },
+        closeWindow () {
+            UIkit.modal(this.$refs.loginWindow).hide()
         }
     }
 }

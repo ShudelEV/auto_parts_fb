@@ -2,10 +2,8 @@
 <div class="">
     <!--Load Progress Bar-->
     <nprogress-container id="nprogress-container"></nprogress-container>
-    <!--Error notification-->
-    <vk-notification :messages.sync="messages"></vk-notification>
     <!--Login Window-->
-    <login-window :show="$store.state.account.showLoginWindow"></login-window>
+    <login-window></login-window>
     <!--Page-->
     <router-view></router-view>
     <!--Footer-->
@@ -47,12 +45,6 @@ export default {
 
     components: { LoginWindow, NprogressContainer },
 
-    data () {
-        return {
-            messages: []
-        }
-    },
-
     created () {
         this.$http.get('/api/part-brands/').then(
             response => { this.$store.commit('SET_PART_BRANDS', response.data) }
@@ -71,10 +63,10 @@ export default {
 
     watch: {
         accountMessage: function (val) {
-            if (val) { this.messages.push(val) }
+            if (val) { UIkit.notification(val) }
         },
         allMessage: function (val) {
-            if (val) { this.messages.push(val) }
+            if (val) { UIkit.notification(val) }
         }
     },
 

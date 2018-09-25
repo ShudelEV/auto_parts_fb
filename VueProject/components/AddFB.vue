@@ -5,8 +5,8 @@
     </div>
     <div v-if="account.showSuggestLogin" class="uk-alert-success" uk-alert>
         <p>{{ $t('suggestLogin') }}</p>
-        <vk-button size="small" class="uk-margin-right" @click="setAnswer(false)">{{ 'no' | translate }}</vk-button>
-        <vk-button size="small" type="primary" @click="setAnswer(true)">{{ 'yes' | translate }}</vk-button>
+        <button class="uk-button uk-button-default uk-button-small uk-margin-right" @click="setAnswer(false)">{{ 'no' | translate }}</button>
+        <button class="uk-button uk-button-primary uk-button-small" @click="setAnswer(true)">{{ 'yes' | translate }}</button>
     </div>
     <form v-else class="uk-grid-small" uk-grid ref="form2">
         <!--Add part-->
@@ -163,15 +163,15 @@
         <hr>
         <!--Buttons-->
         <p>
-            <vk-button class="uk-margin-right"
-                       @click="resetForm()"
-                       :title="$t('Clear form')"
-            >{{ 'Clear' | translate }}</vk-button>
-            <vk-button type="primary"
-                       @click="preSend()"
-                       :disabled="!sendPermit"
-                       :title="sendPermit ? $t('Send feedback') : $t('*Fill required fields.')"
-            >{{ 'Send' | translate }}</vk-button>
+            <button class="uk-button uk-button-default uk-margin-right"
+                    @click="resetForm()"
+                    :title="$t('Clear form')"
+            >{{ 'Clear' | translate }}</button>
+            <button class="uk-button uk-button-primary"
+                    @click="preSend()"
+                    :disabled="!sendPermit"
+                    :title="sendPermit ? $t('Send feedback') : $t('*Fill required fields.')"
+            >{{ 'Send' | translate }}</button>
         </p>
     </template>
 </div>
@@ -408,11 +408,6 @@ export default {
 </script>
 
 <style>
-    /*.uk-icon svg[meta='vk-icons-star'] { color: gold; }*/
-    /*.uk-icon.fill-star-red svg[meta='vk-icons-star'] polygon { fill: red; }*/
-    /*.uk-icon.fill-star-yellow svg[meta='vk-icons-star'] polygon { fill: #fdff00; }*/
-    /*.uk-icon.fill-star-green svg[meta='vk-icons-star'] polygon { fill: green; }*/
-
     div.img-uploader {
         position: relative;
         overflow-y: hidden;

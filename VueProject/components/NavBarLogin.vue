@@ -1,14 +1,12 @@
 <template>
     <nav class="uk-navbar-container uk-navbar-transparent" uk-navbar>
         <div class="uk-navbar-left">
-            <!--<a>-->
-                <a class="uk-navbar-item uk-logo uk-link-reset" @click="$router.push({ name: 'Home' })">{{ logo }}</a>
-            <!--</a>-->
+            <a class="uk-navbar-item uk-logo uk-link-reset" @click="$router.push({ name: 'Home' })">{{ logo }}</a>
         </div>
         <div class="uk-navbar-right">
             <!--Register/Login bar-->
             <div class="uk-navbar-item" v-if="!account.isAuthenticated || account.isAnonymous">
-                <vk-button class="uk-button-small" @click="account.showLoginWindow = true">{{ 'login' | translate }}</vk-button>
+                <button class="uk-button uk-button-default uk-button-small" uk-toggle="target: #modal-login">{{ 'login' | translate }}</button>
             </div>
             <!--Account bar-->
             <div class="uk-navbar-item" v-else>
@@ -35,11 +33,6 @@ import { mapState } from 'vuex'
 
 export default {
     name: 'NavBarLogin',
-
-    data () {
-        return {
-        }
-    },
 
     props: ['logo'],
 

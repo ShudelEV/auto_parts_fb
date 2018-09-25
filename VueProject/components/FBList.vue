@@ -1,113 +1,121 @@
 <template>
 <div :class="{'disabled-content': $store.state.all.loading}" class="uk-margin-top">
     <!--Feedbacks section-->
-<div v-for="(value, key) in feedbacks($store.state.all.page)">
-    <h2 class="uk-heading-divider uk-visible-toggle">
-        <template v-if="!brandName">
-            <a class="uk-logo"
-               @click="$router.push({name: 'AllBrandFB', params: {brandName: key}, query: {page: 1}})"
-            >{{ key }}</a>
-            <span class="uk-invisible-hover uk-margin-left">
-                <a class="uk-icon-link" uk-icon="info"
-                              @click="$router.push({ name: 'BrandInfo', params: {brandName: key}})"
-                              :title="$t('Info')"
-                ></a>
-                <a class="uk-icon-link" uk-icon="comments"
-                              @click="$router.push({name: 'AllBrandFB', params: {brandName: key}, query: {page: 1}})"
-                              :title="$t('Feedbacks')"
-                ></a>
-                <a class="uk-icon-link" uk-icon="plus-circle"
-                              @click="$router.push({ name: 'AddFB', params: {brandName: key}})"
-                              :title="$t('Add feedback')"
+    <div v-for="(value, key) in feedbacks($store.state.all.page)">
+        <h2 class="uk-heading-divider uk-visible-toggle">
+            <template v-if="!brandName">
+                <a class="uk-logo"
+                   @click="$router.push({name: 'AllBrandFB', params: {brandName: key}, query: {page: 1}})"
+                >{{ key }}</a>
+                <span class="uk-invisible-hover uk-margin-left">
+                    <a class="uk-icon-link" uk-icon="info"
+                                  @click="$router.push({ name: 'BrandInfo', params: {brandName: key}})"
+                                  :title="$t('Info')"
+                    ></a>
+                    <a class="uk-icon-link" uk-icon="comments"
+                                  @click="$router.push({name: 'AllBrandFB', params: {brandName: key}, query: {page: 1}})"
+                                  :title="$t('Feedbacks')"
+                    ></a>
+                    <a class="uk-icon-link" uk-icon="plus-circle"
+                                  @click="$router.push({ name: 'AddFB', params: {brandName: key}})"
+                                  :title="$t('Add feedback')"
+                    ></a>
+                </span>
+            </template>
+            <!--Collapse button-->
+            <span class="uk-clearfix">
+                <a class="uk-icon-link uk-float-right"
+                    :title="collapse.includes(key) ? $t('Scroll') : $t('Collapse')"
+                    :uk-icon="collapse.includes(key) ? 'triangle-up' : 'triangle-down'"
+                    @click="toggleAccordion(key)"
                 ></a>
             </span>
-        </template>
-        <!--Collapse button-->
-        <span class="uk-clearfix">
-            <a class="uk-icon-link uk-float-right"
-                :title="collapse.includes(key) ? $t('Scroll') : $t('Collapse')"
-                :uk-icon="collapse.includes(key) ? 'triangle-up' : 'triangle-down'"
-                @click="toggleAccordion(key)"
-            ></a>
-        </span>
-    </h2>
-    <ul uk-accordion="multiple: true" :id="accordionId(key)" class="uk-list uk-list-divider">
-        <!--Feedback-->
-        <li v-for="fb in value" :key="fb.id" :id="'fb_' + fb.id">
-            <!--Header-->
-            <a class="uk-accordion-title" href="#">
-                <!--Part name-->
-                <span uk-icon="cog"></span> {{ fb.part.type }}
-                <!--Car name-->
-                <div v-if="fb.part.car" class="uk-display-inline-block">
-                    <span class="uk-icon uk-icon-image uk-margin-small-left"
-                          style="background-image: url(/static/images/car.svg);" uk-svg
-                    ></span>
-                    {{ fb.part.car.model }}
-                    {{ fb.part.car.manufacture_year ? ' ' + fb.part.car.manufacture_year + ' ' + $t('m.y.') : '' }}
-                    {{ fb.part.car.engine_volume ? ' ' + fb.part.car.engine_volume + ' ' + $t('cm3') : '' }}
-                </div>
-                <!--Stars-->
-                <div class="uk-margin-medium-left uk-display-inline-block">
-                    <span v-for="i in [1,2,3,4,5]" :key="i"
-                         :class="getStarClass(i, fb.stars)"
-                          style="font-size: 125%"
-                    >★</span>
-                </div>
-            </a>
-            <!--Content-->
-            <div class="uk-accordion-content">
-                <article class="uk-comment">
-                    <!--Feedback text-->
-                    <div class="uk-comment-body"><p>{{ fb.description }}</p></div>
-                    <!--Images-->
-                    <template v-if="fb.images.length">
-                        <div uk-grid uk-lightbox="animation: scale" class="uk-margin-top">
-                            <ul class="uk-thumbnav" uk-margin>
-                                <li v-for="img in fb.images" class="uk-active" uk-margin>
-                                    <a class="uk-inline" :href="img.image"
-                                       :data-caption="img.description ? img.description : ''"
-                                    >
-                                        <img :src="img.image" width="100" height="100" alt="">
-                                    </a>
+        </h2>
+        <ul uk-accordion="multiple: true" :id="accordionId(key)" class="uk-list uk-list-divider">
+            <!--Feedback-->
+            <li v-for="fb in value" :key="fb.id" :id="'fb_' + fb.id">
+                <!--Header-->
+                <a class="uk-accordion-title" href="#">
+                    <!--Part name-->
+                    <span uk-icon="cog"></span> {{ fb.part.type }}
+                    <!--Car name-->
+                    <div v-if="fb.part.car" class="uk-display-inline-block">
+                        <span class="uk-icon uk-icon-image uk-margin-small-left"
+                              style="background-image: url(/static/images/car.svg);" uk-svg
+                        ></span>
+                        {{ fb.part.car.model }}
+                        {{ fb.part.car.manufacture_year ? ' ' + fb.part.car.manufacture_year + ' ' + $t('m.y.') : '' }}
+                        {{ fb.part.car.engine_volume ? ' ' + fb.part.car.engine_volume + ' ' + $t('cm3') : '' }}
+                    </div>
+                    <!--Stars-->
+                    <div class="uk-margin-medium-left uk-display-inline-block">
+                        <span v-for="i in [1,2,3,4,5]" :key="i"
+                             :class="getStarClass(i, fb.stars)"
+                              style="font-size: 125%"
+                        >★</span>
+                    </div>
+                </a>
+                <!--Content-->
+                <div class="uk-accordion-content">
+                    <article class="uk-comment">
+                        <!--Feedback text-->
+                        <div class="uk-comment-body"><p>{{ fb.description }}</p></div>
+                        <!--Images-->
+                        <template v-if="fb.images.length">
+                            <div uk-grid uk-lightbox="animation: scale" class="uk-margin-top">
+                                <ul class="uk-thumbnav" uk-margin>
+                                    <li v-for="img in fb.images" class="uk-active" uk-margin>
+                                        <a class="uk-inline" :href="img.image"
+                                           :data-caption="img.description ? img.description : ''"
+                                        >
+                                            <img :src="img.image" width="100" height="100" alt="">
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </template>
+                        <div class="uk-comment-meta uk-margin-top">
+                            <ul class="uk-iconnav uk-padding-remove-left">
+                                <li class="uk-padding-remove-left">
+                                    <span>{{ 'Created by' | translate }}&nbsp; <b>{{ fb.owner }}</b>&emsp; {{ (new Date(fb.created)).toLocaleString("ru") }}</span>
                                 </li>
+                                <!--<template v-if="fb.owner === $store.state.account.name">-->
+                                    <!--<li class="uk-margin-left"><a @click="" uk-icon="icon: plus"></a></li>-->
+                                    <!--<li><a href="#" uk-icon="icon: file-edit"></a></li>-->
+                                    <!--<li><a href="#" uk-icon="icon: trash"></a></li>-->
+                                <!--</template>-->
                             </ul>
                         </div>
-                    </template>
-                    <div class="uk-comment-meta uk-margin-top">
-                        <ul class="uk-iconnav uk-padding-remove-left">
-                            <li class="uk-padding-remove-left">
-                                <span>{{ 'Created by' | translate }}&nbsp; <b>{{ fb.owner }}</b>&emsp; {{ (new Date(fb.created)).toLocaleString("ru") }}</span>
-                            </li>
-                            <!--<template v-if="fb.owner === $store.state.account.name">-->
-                                <!--<li class="uk-margin-left"><a @click="" uk-icon="icon: plus"></a></li>-->
-                                <!--<li><a href="#" uk-icon="icon: file-edit"></a></li>-->
-                                <!--<li><a href="#" uk-icon="icon: trash"></a></li>-->
-                            <!--</template>-->
-                        </ul>
-                    </div>
-                </article>
-            </div>
-        </li>
-    </ul>
-</div>
+                    </article>
+                </div>
+            </li>
+        </ul>
+    </div>
     <!--Pagination-->
-<vk-pagination v-if="$store.state.all.pageQty > 1" align="left" class="uk-margin-medium-top"
-               :page.sync="pageNumber" :perPage="1"
-               :total="$store.state.all.pageQty" :range="20"
->
-    <vk-pagination-page-prev :label="$t('Previous')"></vk-pagination-page-prev>
-    <vk-pagination-pages></vk-pagination-pages>
-    <vk-pagination-page-next :label="$t('Next')"></vk-pagination-page-next>
-</vk-pagination>
+    <vk-pagination v-if="$store.state.all.pageQty > 1" align="left" class="uk-margin-medium-top"
+                   :page.sync="pageNumber" :perPage="1"
+                   :total="$store.state.all.pageQty" :range="20"
+    >
+        <vk-pagination-page-prev label="Previous"></vk-pagination-page-prev>
+        <vk-pagination-pages></vk-pagination-pages>
+        <vk-pagination-page-next label="Next"></vk-pagination-page-next>
+    </vk-pagination>
 </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex'
+import { Pagination, PaginationPageNext, PaginationPagePrev, PaginationPages } from 'vuikit/lib/pagination'
 
 export default {
     name: 'FBList',
+
+    components: {
+        VkPagination: Pagination,
+        VkPaginationPageNext: PaginationPageNext,
+        VkPaginationPagePrev: PaginationPagePrev,
+        VkPaginationPages: PaginationPages
+    },
 
     data () {
         return {
@@ -117,7 +125,7 @@ export default {
             showBrandInfo: false,
             collapse: [],
             // pagination
-            pageNumber: this.page, // load an appropriate page when page is updated
+            pageNumber: this.page // load an appropriate page when page is updated
         }
     },
 
@@ -163,7 +171,7 @@ export default {
             }
             this.$router.push({ name, params: { brandName: this.brandName }, query });
             this.collapse = [];
-        },
+        }
     },
 
     beforeRouteUpdate (to, from, next) {

@@ -1,13 +1,13 @@
 <template>
-<vk-grid gutter="large">
+<div class="uk-grid-large" uk-grid>
     <!--Menu-->
     <div class="uk-width-1-4@m">
         <div uk-sticky="top: #navbar; offset: 100" media="@m">
-            <vk-card padding="small" class="uk-background-muted"
-                     :class="{'uk-margin-top': showOnUp(), 'disabled-content': $store.state.all.loading}"
+            <div class="uk-card uk-card-small uk-card-default uk-card-body uk-background-muted"
+                 :class="{'uk-margin-top': showOnUp(), 'disabled-content': $store.state.all.loading}"
             >
                 <search></search>
-            </vk-card>
+            </div>
         </div>
     </div>
 
@@ -16,7 +16,7 @@
         <!--Add feedback or Show all feedbacks section-->
         <router-view class="uk-margin-medium-bottom"></router-view>
     </div>
-</vk-grid>
+</div>
 </template>
 
 <script>

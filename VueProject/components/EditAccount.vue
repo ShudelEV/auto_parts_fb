@@ -1,62 +1,70 @@
 <template>
-<vk-modal :show="show" center size="medium">
-    <vk-tabs :activeTab.sync="activeTab" align="justify" :active="account.showEditPassword ? 1:0">
-        <vk-tabs-item :title="$t('Change username')" v-vk-margin>
-            <vk-grid gutter="small" class="uk-child-width-1-1 uk-flex-center uk-text-center">
-                <div>
-                    <form ref="form3">
-                        <div class="uk-inline uk-margin-small-bottom">
-                            <span class="uk-form-icon" uk-icon="user"></span>
-                            <input class="uk-input uk-form-small" name="login"
-                                   type="text" :placeholder="$t('new username')"
-                                   v-model="newUsername"
-                            >
+<div id="modal-login-edit" ref="editLoginWindow" class="uk-flex-top" uk-modal="bg-close: false">
+    <div class="uk-modal-dialog uk-width-medium uk-margin-auto-vertical">
+        <div class="uk-modal-body">
+            <ul uk-tab>
+                <li><a @click="activeTab=0">{{ $t('Change username') }}</a></li>
+                <li><a @click="activeTab=1">{{ $t('Change password') }}</a></li>
+            </ul>
+            <ul class="uk-switcher uk-margin-medium-top">
+                <li>
+                    <div class="uk-grid-small uk-child-width-1-1 uk-flex-center uk-text-center" uk-grid>
+                        <div>
+                            <form ref="form3">
+                                <div class="uk-inline uk-margin-small-bottom">
+                                    <span class="uk-form-icon" uk-icon="user"></span>
+                                    <input class="uk-input uk-form-small" name="login"
+                                           type="text" :placeholder="$t('new username')"
+                                           v-model="newUsername"
+                                    >
+                                </div>
+                                <div class="uk-inline uk-margin-small-bottom">
+                                    <span class="uk-form-icon" uk-icon="lock"></span>
+                                    <input class="uk-input uk-form-small" name="password"
+                                           type="password" :placeholder="$t('password')"
+                                           v-model="newPassword"
+                                    >
+                                </div>
+                            </form>
                         </div>
-                        <div class="uk-inline uk-margin-small-bottom">
-                            <span class="uk-form-icon" uk-icon="lock"></span>
-                            <input class="uk-input uk-form-small" name="password"
-                                   type="password" :placeholder="$t('password')"
-                                   v-model="newPassword"
-                            >
+                    </div>
+                </li>
+                <li>
+                    <div class="uk-grid-small uk-child-width-1-1 uk-flex-center uk-text-center" uk-grid>
+                        <div class="uk-margin-top">
+                            <form ref="form3">
+                                <div class="uk-inline uk-margin-small-bottom">
+                                    <span class="uk-form-icon" uk-icon="lock"></span>
+                                    <input class="uk-input uk-form-small" name="password"
+                                           type="password" :placeholder="$t('new password')"
+                                           v-model="newPassword"
+                                    >
+                                </div>
+                                <div class="uk-inline uk-margin-small-bottom">
+                                    <span class="uk-form-icon" uk-icon="lock"></span>
+                                    <input class="uk-input uk-form-small" name="password2"
+                                           type="password" :placeholder="$t('confirm password')"
+                                           v-model="newPassword2"
+                                    >
+                                </div>
+                            </form>
                         </div>
-                    </form>
-                </div>
-            </vk-grid>
-        </vk-tabs-item>
-        <vk-tabs-item :title="$t('Change password')" v-vk-margin>
-            <vk-grid gutter="small" class="uk-child-width-1-1 uk-flex-center uk-text-center">
-                <div class="uk-margin-top">
-                    <form ref="form3">
-                        <div class="uk-inline uk-margin-small-bottom">
-                            <span class="uk-form-icon" uk-icon="lock"></span>
-                            <input class="uk-input uk-form-small" name="password"
-                                   type="password" :placeholder="$t('new password')"
-                                   v-model="newPassword"
-                            >
-                        </div>
-                        <div class="uk-inline uk-margin-small-bottom">
-                            <span class="uk-form-icon" uk-icon="lock"></span>
-                            <input class="uk-input uk-form-small" name="password2"
-                                   type="password" :placeholder="$t('confirm password')"
-                                   v-model="newPassword2"
-                            >
-                        </div>
-                    </form>
-                </div>
-                <div class="uk-margin-top uk-text-meta uk-text-left">*{{ $t('pass8') }}</div>
-            </vk-grid>
-        </vk-tabs-item>
-    </vk-tabs>
-    <div slot="footer" class="uk-clearfix">
-        <vk-button size="small" class="uk-float-left"
-                   @click="account.showEditUsername=false; account.showEditPassword=false"
-        >{{ $t('cancel') }}</vk-button>
-        <vk-button type="primary" size="small"
-                   class="uk-float-right" :disabled="isValid"
-                   @click="change()"
-        >{{ $t('change') }}</vk-button>
+                        <div class="uk-margin-top uk-text-meta uk-text-left">*{{ $t('pass8') }}</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="uk-modal-footer uk-clearfix">
+        <button class="uk-button uk-button-default uk-button-small uk-float-left"
+                @click="closeWindow()"
+        >{{ $t('cancel') }}</button>
+        <button class="uk-button uk-button-primary uk-button-small uk-float-right"
+                :disabled="isValid"
+                @click="change()"
+        >{{ $t('change') }}</button>
     </div>
-</vk-modal>
+    </div>
+</div>
 </template>
 
 <script>
@@ -73,14 +81,6 @@ export default {
             isValid: false,
             activeTab: 0
         }
-    },
-
-    props: ['show'],
-
-    computed: {
-        ...mapState({
-            account: state => state.account
-        })
     },
 
     methods: {
@@ -114,6 +114,9 @@ export default {
                 this.$store.dispatch('changePassword', { new_password: this.newPassword })
             }
         },
+        closeWindow () {
+            UIkit.modal(this.$refs.editLoginWindow).hide()
+        }
     }
 }
 </script>
