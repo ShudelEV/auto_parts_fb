@@ -216,10 +216,12 @@ export default {
     },
 
     created () {
-        this.$store.dispatch('verifySession', () => {});
-        const notSuggestLogin = sessionStorage.getItem('notSuggestLogin');
-        this.$store.state.account.showSuggestLogin = notSuggestLogin === null ?
-            !this.account.isAuthenticated : !notSuggestLogin
+        this.$store.dispatch('verifySession', (val) => {
+            if (!val) {
+                const notSuggestLogin = sessionStorage.getItem('notSuggestLogin');
+                this.$store.state.account.showSuggestLogin = notSuggestLogin === null ? true : !notSuggestLogin
+            }
+        })
     },
 
     computed: {
