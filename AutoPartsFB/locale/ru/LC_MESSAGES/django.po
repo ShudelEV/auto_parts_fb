@@ -268,17 +268,95 @@ msgstr "Вьетнам"
 msgid "Engine"
 msgstr "Двигатель"
 
+msgid "Timing Belt"
+msgstr "Ремень ГРМ"
+
+msgid "V-Ribbed Belt"
+msgstr "Поликлиновый ремень"
+
+msgid "Idler-/Guide Pulley"
+msgstr "Паразитный/ведущий ролик"
+
+msgid "Tensioner"
+msgstr "Натяжитель"
+
+msgid "Alternator Freewheel Clutch"
+msgstr "Обгонная муфта генератора"
+
+msgid "Timing Chain"
+msgstr "Цепь привода распредвала"
+
+msgid "Gear, camshaft"
+msgstr "Шестерня распределительного вала"
+
+msgid "Control Valve, camshaft adjustment"
+msgstr "Регулирующий клапан распределительного вала"
+
+msgid "EGR Valve"
+msgstr "Клапан EGR"
+
+msgid "Gasket/seal"
+msgstr "Прокладка/уплотнение"
+
+msgid "Oil Seals, shaft"
+msgstr "Сальник вала"
+
+msgid "Engine Mounting"
+msgstr "Подушка крепления двигателя"
+
 #: .\PartsFB\data.py:131
 msgid "Filters"
 msgstr "Фильтры"
+
+msgid "Fuel Filter"
+msgstr "Топливный фильтр"
+
+msgid "Air Filter"
+msgstr "Воздушный фильтр"
+
+msgid "Oil Filter"
+msgstr "Масляный фильтр"
+
+msgid "Filter, interior air"
+msgstr "Фильтр салона"
+
+msgid "Hydraulic Filter"
+msgstr "Фильтр АКПП"
 
 #: .\PartsFB\data.py:132
 msgid "Cooling System"
 msgstr "Система охлаждения"
 
+msgid "Water Pump/Gasket"
+msgstr "Водяной насос/ прокладка"
+
+msgid "Thermostat"
+msgstr "Термостат"
+
+msgid "Hoses/ Pipes/ Flanges"
+msgstr "Соединительные шланги и фланцы"
+
+msgid "Radiator"
+msgstr "Радиатор охлаждения двигателя"
+
+msgid "Heat Exchanger, interior heating"
+msgstr "Радиатор печки"
+
+msgid "Oil Cooler"
+msgstr "Масляный радиатор"
+
+msgid "Radiator Fan"
+msgstr "Вентилятор радиатора"
+
 #: .\PartsFB\data.py:133
 msgid "Exhaust System"
 msgstr "Система выпуска"
+
+msgid "Individual Assembly Parts"
+msgstr "Монтажные элементы"
+
+msgid "Lambda Sensor"
+msgstr "Лямбда-зонд"
 
 #: .\PartsFB\data.py:134
 msgid "Suspension and steering"
@@ -296,9 +374,27 @@ msgstr "Электрика"
 msgid "Fuel system"
 msgstr "Топливная система"
 
+msgid "Fuel Pump"
+msgstr "Топливный насос"
+
+msgid "Fuel Pressure Regulator/ Switch"
+msgstr "Датчик давления"
+
+msgid "Injector Valve"
+msgstr "Форсунка"
+
 #: .\PartsFB\data.py:138
 msgid "Heater"
 msgstr "Отопление и вентиляция"
+
+msgid "Compressor, Air Conditioning/ Parts"
+msgstr "Компрессор кондиционера/ детали"
+
+msgid "Condenser"
+msgstr "Конденсатор"
+
+msgid "Dryer"
+msgstr "Осушитель"
 
 #: .\PartsFB\data.py:139
 msgid "Transmission and gearing"
