@@ -23,7 +23,7 @@
                 <span class="uk-text-small">{{ $t('bad') }}</span>
             </label>
             <label for="nbad"><input class="uk-radio" id="nbad" value="nbad" type="radio" v-model="stars">
-                <span class="uk-text-small">{{ $t('not bad') }}</span>
+                <span class="uk-text-small">{{ $t('medium') }}</span>
             </label>
             <label for="good"><input class="uk-radio" id="good" value="good" type="radio" v-model="stars">
                 <span class="uk-text-small">{{ $t('good') }}</span>

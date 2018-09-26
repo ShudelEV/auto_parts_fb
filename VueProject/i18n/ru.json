@@ -44,7 +44,7 @@
 
   "All parts": "Все детали",
   "good": "хорошо",
-  "not bad": "норм",
+  "medium": "средне",
   "bad": "плохо",
 
   "Country": "Страна",
@@ -66,10 +66,10 @@
 
   "Go back": "Назад",
 
-  "m.y.": "г.в.",
-  "cm3": "см3",
+  "year": "г.в.",
+  "ccm": "см3",
 
-  "benzine": "бензин",
+  "petrol": "бензин",
   "diesel": "дизель",
   "gas-benzine": "газ-бензин",
   "electric": "электр.",
@@ -133,7 +133,7 @@
   "Turkmenistan": "Туркменистан",
   "Ukraine": "Украина",
   "United Arab Emirates": "ОАЭ",
-  "Great Britain": "Великобритания",
+  "United Kingdom": "Великобритания",
   "United States of America": "США",
   "Uzbekistan": "Узбекистан",
   "Venezuela": "Венесуэла",
