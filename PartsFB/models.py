@@ -11,8 +11,7 @@ def brand_image_path(instance, filename):
 # Abstract class Manufacturer
 class Manufacturer(models.Model):
     name = models.CharField(max_length=200, unique=True)
-    COUNTRY_CHOICES = tuple((key, _(value)) for key, value in COUNTRIES.items())
-    country = models.CharField(max_length=2, choices=COUNTRY_CHOICES)
+    country = models.CharField(max_length=2, choices=COUNTRIES)
     image = models.ImageField(blank=True, max_length=255, upload_to=brand_image_path)
     description = models.TextField(blank=True)
     site_url = models.URLField(blank=True, null=True)
@@ -31,8 +30,7 @@ class PartBrand(Manufacturer):
 
 class PartType(models.Model):
     name = models.CharField(max_length=200, unique=True)
-    CATEGORY_CHOICES = tuple((key, _(value)) for key, value in PART_CATEGORIES.items())
-    category = models.CharField(max_length=2, choices=CATEGORY_CHOICES)
+    category = models.CharField(max_length=2, choices=PART_CATEGORIES)
 
     def __str__(self):
         return self.name

@@ -3,18 +3,26 @@ from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.authentication import BasicAuthentication
+# from rest_framework.authentication import BasicAuthentication
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from django.contrib.auth.models import User
 from PartsFB.models import PartBrand, FeedBack, PartType, Part, CarModel, CarBrand, Car, Image
 from .serializers import PartBrandDetailSerializer, PartBrandShortSerializer, FeedBackSerializer, \
-    PartTypeSerializer, CreateFeedBackSerializer, CreatePartSerializer, CarModelSerializer, \
-    CreateCarModelSerializer, CreateCarSerializer, CreateImageSerializer, CarSerializer
+    PartTypeSerializer, TranslatablePartTypeSerializer, CreateFeedBackSerializer, CreatePartSerializer, \
+    CarModelSerializer, CreateCarModelSerializer, CreateCarSerializer, CreateImageSerializer, CarSerializer
 from django.views.decorators.csrf import csrf_protect
-from django.db.models import Prefetch
+# from django.db.models import Prefetch
 from PartsFB.data import PART_CATEGORIES, FIRST_NAMES, LAST_NAMES
 import random
+# import logging
+# from silk.profiling.profiler import silk_profile
+
+# logging.basicConfig(
+#     filename="test.log",
+#     level=logging.DEBUG,
+#     format="%(asctime)s:%(levelname)s:%(message)s"
+# )
 
 
 def bad_request(err_massage):
@@ -92,7 +100,7 @@ class FeedbackListView(mixins.ListModelMixin, generics.GenericAPIView):
 
 class PartTypeListView(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = PartType.objects.all()
-    serializer_class = PartTypeSerializer
+    serializer_class = TranslatablePartTypeSerializer
 
     def get(self, request, *args, **kwargs):
         response = self.list(request, *args, **kwargs)
