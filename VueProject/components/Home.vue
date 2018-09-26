@@ -39,7 +39,7 @@
                                         @click="search_pattern = ''"
                                     ></a>
                                     <span class="uk-form-icon" uk-icon="search"></span>
-                                    <input class="uk-input uk-form-small uk-form-width-medium"
+                                    <input class="uk-input uk-form-small"
                                            type="text"
                                            :placeholder="$t('Filter by brands')"
                                            :title="$t('Filter by brands')"
@@ -56,7 +56,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="uk-width-expand@m" style="padding-bottom: 240px">
+                <div class="uk-width-expand@m" style="padding-bottom: 280px">
                     <div v-if="!loading"
                          uk-grid="masonry: true"
                          class="uk-grid-small uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-3@m uk-child-width-1-4@l"

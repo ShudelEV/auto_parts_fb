@@ -44,8 +44,8 @@
                               style="background-image: url(/static/images/car.svg);" uk-svg
                         ></span>
                         {{ fb.part.car.model }}
-                        {{ fb.part.car.manufacture_year ? ' ' + fb.part.car.manufacture_year + ' ' + $t('m.y.') : '' }}
-                        {{ fb.part.car.engine_volume ? ' ' + fb.part.car.engine_volume + ' ' + $t('cm3') : '' }}
+                        {{ fb.part.car.manufacture_year ? ' ' + fb.part.car.manufacture_year + ' ' + $t('year') : '' }}
+                        {{ fb.part.car.engine_volume ? ' ' + fb.part.car.engine_volume/1000 + ' ' + ENGINE_TYPES[fb.part.car.engine_type] : '' }}
                     </div>
                     <!--Stars-->
                     <div class="uk-margin-medium-left uk-display-inline-block">
@@ -106,6 +106,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import { Pagination, PaginationPageNext, PaginationPagePrev, PaginationPages } from 'vuikit/lib/pagination'
+import { ENGINE_TYPES, GEAR_TYPES } from '../data'
 
 export default {
     name: 'FBList',
@@ -125,7 +126,8 @@ export default {
             showBrandInfo: false,
             collapse: [],
             // pagination
-            pageNumber: this.page // load an appropriate page when page is updated
+            pageNumber: this.page, // load an appropriate page when page is updated
+            ENGINE_TYPES
         }
     },
 

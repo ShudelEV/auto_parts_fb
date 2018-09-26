@@ -4,7 +4,7 @@
         <!--Search by Part category or Part type-->
         <div class="uk-margin">
             <div class="uk-form-controls">
-                <select id="part" v-model="part" name="part" class="uk-select" autofocus>
+                <select id="part" v-model="part" name="part" class="uk-select uk-width-1-1@m uk-width-1-2@s" autofocus>
                     <option :value="''">&emsp;{{ $t('All parts') }}</option>
                     <template v-for="(value, key) in partCategories">
                         <option style="color: darkgray"
@@ -18,14 +18,14 @@
                 </select>
             </div>
         </div>
-        <div class="uk-margin-top uk-grid-small uk-child-width-auto uk-grid">
+        <div class="uk-margin-top uk-grid-small uk-child-width-1-1@m uk-child-width-auto" uk-grid>
             <label for="bad"><input class="uk-radio" id="bad" value="bad" type="radio" v-model="stars">
                 <span class="uk-text-small">{{ $t('bad') }}</span>
             </label>
-            <label for="nbad"><input class="uk-radio" id="nbad" value="nbad" type="radio" v-model="stars">
+            <label for="nbad" class="uk-margin-remove-top"><input class="uk-radio" id="nbad" value="nbad" type="radio" v-model="stars">
                 <span class="uk-text-small">{{ $t('medium') }}</span>
             </label>
-            <label for="good"><input class="uk-radio" id="good" value="good" type="radio" v-model="stars">
+            <label for="good"  class="uk-margin-remove-top"><input class="uk-radio" id="good" value="good" type="radio" v-model="stars">
                 <span class="uk-text-small">{{ $t('good') }}</span>
             </label>
         </div>
