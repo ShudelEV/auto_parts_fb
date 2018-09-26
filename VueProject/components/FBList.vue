@@ -45,7 +45,8 @@
                         ></span>
                         {{ fb.part.car.model }}
                         {{ fb.part.car.manufacture_year ? ' ' + fb.part.car.manufacture_year + ' ' + $t('year') : '' }}
-                        {{ fb.part.car.engine_volume ? ' ' + fb.part.car.engine_volume/1000 + ' ' + ENGINE_TYPES[fb.part.car.engine_type] : '' }}
+                        {{ fb.part.car.engine_volume ? ' ' + (fb.part.car.engine_volume/1000).toFixed(1) : '' }}
+                        {{ ENGINE_TYPES[fb.part.car.engine_type] ? ' ' + ENGINE_TYPES[fb.part.car.engine_type] : '' }}
                     </div>
                     <!--Stars-->
                     <div class="uk-margin-medium-left uk-display-inline-block">
@@ -68,7 +69,7 @@
                                         <a class="uk-inline" :href="img.image"
                                            :data-caption="img.description ? img.description : ''"
                                         >
-                                            <img :src="img.image" width="100" height="100" alt="">
+                                            <img :src="img.image" width="100" height="100" alt="image">
                                         </a>
                                     </li>
                                 </ul>

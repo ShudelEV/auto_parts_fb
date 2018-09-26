@@ -279,7 +279,7 @@ export default {
                 for (let i = 0; i <= 5; i++) { setTimeout(this.setStar, i*150, i) }
                 setTimeout(this.setStar, 1250, 0);
                 // Push message
-                this.$store.commit('SET_MESSAGE', { message: 'Please, note the part.', status: 'danger' })
+                this.$store.commit('SET_MESSAGE', { message: 'Please, note the part.', status: 'warning' })
             } else if (this.account.isAnonymous && !this.account.isAuthenticated) {
                 // create anonymous user and then to send the FB
                  this.$store.dispatch('registerAnonymousUser', () => { this.sendFB(); })

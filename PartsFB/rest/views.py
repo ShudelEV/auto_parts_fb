@@ -106,7 +106,7 @@ class PartTypeListView(mixins.ListModelMixin, generics.GenericAPIView):
         response = self.list(request, *args, **kwargs)
         part_types = response.data
         # Add PART_CATEGORIES to response
-        response.data = {'category_list': PART_CATEGORIES, 'part_types': part_types}
+        response.data = {'category_list': dict((k, v) for k, v in PART_CATEGORIES), 'part_types': part_types}
         return response
 
 
