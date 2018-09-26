@@ -287,10 +287,10 @@ msgid "Timing Chain"
 msgstr "Цепь привода распредвала"
 
 msgid "Gear, camshaft"
-msgstr "Шестерня распределительного вала"
+msgstr "Шестерня распредвала"
 
 msgid "Control Valve, camshaft adjustment"
-msgstr "Регулирующий клапан распределительного вала"
+msgstr "Регулирующий клапан распредвала"
 
 msgid "EGR Valve"
 msgstr "Клапан EGR"
@@ -362,13 +362,85 @@ msgstr "Лямбда-зонд"
 msgid "Suspension and steering"
 msgstr "Подвеска и рулевое управление"
 
+msgid "Shock Absorber"
+msgstr "Амортизатор"
+
+msgid "Coil Spring"
+msgstr "Пружина"
+
+msgid "Top Strut Mounting"
+msgstr "Опора стойки амортизатора"
+
+msgid "Wheel Bearing"
+msgstr "Подшипник ступицы колеса"
+
+msgid "Wheel Hub"
+msgstr "Ступица колеса"
+
+msgid "Rod/Strut, stabiliser"
+msgstr "Тяга/стойка, стабилизатор"
+
+msgid "Track Control Arm"
+msgstr "Рычаг подвески"
+
+msgid "Bush"
+msgstr "Сайлентблок/втулка"
+
+msgid "Tie Rod Assembly"
+msgstr "Рулевая тяга"
+
+msgid "Bellow/Seal"
+msgstr "Гофрированный кожух/пыльник"
+
+msgid "Tie Rod End"
+msgstr "Наконечник рулевой тяги"
+
+msgid "Steering Gear"
+msgstr "Рулевая рейка"
+
+msgid "Steering Pump"
+msgstr "Насос гидроусилителя руля"
+
 #: .\PartsFB\data.py:135
 msgid "Brake System"
 msgstr "Тормозная система"
 
+msgid "Brake Disc"
+msgstr "Тормозной диск"
+
+msgid "Brake Pads"
+msgstr "Тормозные колодки"
+
+msgid "Brake Calipers"
+msgstr "Тормозной суппорт"
+
+msgid "Repair Kit, brake caliper"
+msgstr "Ремкомплект тормозного суппорта"
+
+msgid "Brake Hose"
+msgstr "Тормозной шланг"
+
 #: .\PartsFB\data.py:136
 msgid "Electrics"
 msgstr "Электрика"
+
+msgid "Starter"
+msgstr "Стартер"
+
+msgid "Alternator"
+msgstr "Генератор"
+
+msgid "Spark Plug"
+msgstr "Свеча зажигания"
+
+msgid "Ignition Coil"
+msgstr "Катушка зажигания"
+
+msgid "Ignition Cable/ Connectors"
+msgstr "Высоковольтные провода"
+
+msgid "Sender Units, Sensors, Relay"
+msgstr "Датчики, переключатели, реле"
 
 #: .\PartsFB\data.py:137
 msgid "Fuel system"
@@ -399,6 +471,24 @@ msgstr "Осушитель"
 #: .\PartsFB\data.py:139
 msgid "Transmission and gearing"
 msgstr "Трансмиссия и привод"
+
+msgid "Repair Kit, clutch complete"
+msgstr "Комплект сцепления"
+
+msgid "Clutch Releaser"
+msgstr "Выжимной подшипник сцепления"
+
+msgid "Flywheel"
+msgstr "Маховик"
+
+msgid "CV Joint/ Set"
+msgstr "Шрус"
+
+msgid "Bellow"
+msgstr "Пыльник"
+
+msgid "Drive Shaft"
+msgstr "Полуось"
 
 #: .\PartsFB\data.py:140
 msgid "Lighting"
