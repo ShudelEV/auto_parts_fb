@@ -3,6 +3,7 @@ from rest_framework.relations import StringRelatedField, SlugRelatedField
 from rest_framework.fields import JSONField
 from django.contrib.auth.models import User
 from PartsFB.models import PartBrand, FeedBack, Car, CarModel, Part, PartType, Image
+from django.utils.translation import gettext_lazy as _
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -57,6 +58,17 @@ class CreateCarSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class TranslatablePartTypeSerializer(serializers.ModelSerializer):
+    name_t = serializers.SerializerMethodField('get_name')
+
+    class Meta:
+        model = PartType
+        fields = ['id', 'name_t', 'category']
+
+    def get_name(self, obj):
+        return _(obj.name)
+
+
 class PartTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PartType
@@ -64,12 +76,15 @@ class PartTypeSerializer(serializers.ModelSerializer):
 
 
 class PartSerializer(serializers.ModelSerializer):
-    type = StringRelatedField()
+    type_t = serializers.SerializerMethodField('get_type_name')
     car = CarSerializer()
 
     class Meta:
         model = Part
-        fields = ['id', 'type', 'brand', 'car']
+        fields = ['id', 'type_t', 'brand', 'car']
+
+    def get_type_name(self, obj):
+        return _(obj.type.name)
 
 
 class CreatePartSerializer(serializers.ModelSerializer):

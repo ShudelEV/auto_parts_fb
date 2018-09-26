@@ -37,7 +37,7 @@
                 <!--Header-->
                 <a class="uk-accordion-title" href="#">
                     <!--Part name-->
-                    <span uk-icon="cog"></span> {{ fb.part.type }}
+                    <span uk-icon="cog"></span> {{ fb.part.type_t }}
                     <!--Car name-->
                     <div v-if="fb.part.car" class="uk-display-inline-block">
                         <span class="uk-icon uk-icon-image uk-margin-small-left"

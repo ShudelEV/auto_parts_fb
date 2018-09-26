@@ -34,7 +34,7 @@
                     <option v-for="partType in value"
                             :key="partType.id"
                             :value="partType.id"
-                    > &emsp;{{ partType.name }} </option>
+                    > &emsp;{{ partType.name_t }} </option>
                 </template>
             </select>
         </div>
