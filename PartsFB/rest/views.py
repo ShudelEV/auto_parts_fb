@@ -138,6 +138,7 @@ class CreateFBView(APIView):
     def post(self, request, format=None, **kwargs):
         data = request.data
         new_car_data = data.get('new_car')
+        new_part_type = None
         new_car = None
         # { Build a part serializer
         part_data = {
@@ -152,8 +153,8 @@ class CreateFBView(APIView):
                 'category': new_part_type_data.get('category')
             })
             if part_type_serializer.is_valid():
-                part_type = part_type_serializer.save()
-                part_data.update({'type': part_type.id})
+                new_part_type = part_type_serializer.save()
+                part_data.update({'type': new_part_type.id})
             else:
                 return bad_request(part_type_serializer.errors)
         # }
@@ -213,7 +214,10 @@ class CreateFBView(APIView):
                 # Add fb
                 fb_serializer.save()
                 response = Response(fb_serializer.data, status=status.HTTP_201_CREATED)
-                # If a new car is created, dispatch the data
+                # If a new part type is created
+                if new_part_type:
+                    response.data.update({'new_part_type': TranslatablePartTypeSerializer(new_part_type).data})
+                # and if a new car is created, dispatch the data
                 if new_car:
                     response.data.update({'new_car': CarSerializer(new_car).data})
                 return response

@@ -317,6 +317,9 @@ export default {
                     if (response.data.new_car) {
                         this.$store.state.account.cars.push(response.data.new_car)
                     }
+                    if (response.data.new_part_type) {
+                        this.$store.state.all.partTypes.push(response.data.new_part_type)
+                    }
                     if (Object.keys(this.$refs.images_form.image).length) {
                         this.uploadImages(response.data.id)
                     } else { this.gotoAllBrandFB() }
