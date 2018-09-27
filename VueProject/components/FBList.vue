@@ -43,10 +43,13 @@
                         <span class="uk-icon uk-icon-image uk-margin-small-left"
                               style="background-image: url(/static/images/car.svg);" uk-svg
                         ></span>
+                        <!--<span class="uk-icon uk-icon-image uk-margin-small-left" uk-svg-->
+                              <!--:style="{'background-image': 'url(' + $store.state.all.staticUrl + 'images/car.svg)'}"-->
+                        <!--&gt;</span>-->
                         {{ fb.part.car.model }}
                         {{ fb.part.car.manufacture_year ? ' ' + fb.part.car.manufacture_year + ' ' + $t('year') : '' }}
                         {{ fb.part.car.engine_volume ? ' ' + (fb.part.car.engine_volume/1000).toFixed(1) : '' }}
-                        {{ ENGINE_TYPES[fb.part.car.engine_type] ? ' ' + ENGINE_TYPES[fb.part.car.engine_type] : '' }}
+                        {{ ENGINE_TYPES[fb.part.car.engine_type] ? ' ' + $t(ENGINE_TYPES[fb.part.car.engine_type]) : '' }}
                     </div>
                     <!--Stars-->
                     <div class="uk-margin-medium-left uk-display-inline-block">
@@ -254,8 +257,14 @@ export default {
                 }, 2500)
             }
         },
-        // remove white spaces from string
-        accordionId (key) { return key.replace(/\s/g, "") }
+        accordionId (key) {
+            let accId = key.toLowerCase().replace(/\s/g, "");
+            // to cover cyrillic characters
+            if (/[\u0400-\u04FF]+/g.test(accId)) {
+                accId = encodeURI(accId).replace(/[^\w-]+/g,'')
+            }
+            return 'acc_' + accId
+        }
     }
 }
 </script>
